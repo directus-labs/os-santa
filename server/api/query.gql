@@ -1,0 +1,106 @@
+{
+	user(login: "bryantgillespie") {
+	  name
+	  twitterUsername
+	  url
+	  avatarUrl
+	  websiteUrl
+	  company
+	  bio
+	  gists{
+		totalCount
+	  }
+	  starredRepositories{
+		totalCount
+	  }
+	  followers {
+		totalCount
+	  }
+	  following {
+		totalCount
+	  }
+	  topRepositories(first: 5, orderBy: {field: STARGAZERS, direction: DESC}) {
+		nodes {
+		  name
+		  stargazerCount
+		  url
+		  licenseInfo {
+			name
+		  }
+		  discussions {
+			totalCount
+		  }
+		  forkCount
+		  isFork
+		  issues(states: OPEN) {
+			totalCount
+		  }
+		}
+	  }
+	  issueComments(first:10, orderBy:{
+		field:UPDATED_AT
+		direction:DESC
+	  }){
+		nodes{
+		  createdAt
+		  body
+	  }
+
+	  }
+	  organizations(first: 2, orderBy: {field: CREATED_AT, direction: DESC}) {
+		nodes {
+		  name
+		  createdAt
+		  description
+		  email
+		  url
+		  avatarUrl
+		  membersWithRole(first: 10) {
+			nodes {
+			  url
+			  name
+			  login
+			  bio
+			  avatarUrl
+			}
+		  }
+		}
+	  }
+	  # Owner Repositories
+	  repositories(visibility: PUBLIC, first: 25, ownerAffiliations: OWNER) {
+		totalCount
+		nodes {
+		  forkCount
+		  isFork
+		  name
+		  description
+		  descriptionHTML
+		  url
+		  createdAt
+		  stargazerCount
+		  issues(states: OPEN) {
+			totalCount
+		  }
+		}
+	  }
+
+	  # Contributions This Year
+	  contributionsCollection(
+		from: "2024-01-01T00:00:00Z"
+		to: "2024-12-31T23:59:59Z"
+	  ) {
+		totalRepositoryContributions
+		totalRepositoriesWithContributedIssues
+		totalRepositoriesWithContributedCommits
+		totalCommitContributions
+		totalIssueContributions
+		totalPullRequestContributions
+		totalPullRequestReviewContributions
+	  }
+
+	  # Sponsorships
+	  sponsorshipsAsSponsor(activeOnly: true, first: 100) {
+		totalCount
+	  }
+	}
+  }
