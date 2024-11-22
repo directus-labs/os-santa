@@ -1,0 +1,221 @@
+<script setup lang="ts">
+import { watchDebounced } from '@vueuse/core';
+
+type Mode = 'self' | 'friend';
+
+const { loggedIn, user } = useUserSession();
+
+const route = useRoute();
+
+const loading = ref(false);
+const username = ref('');
+const wishlist = ref('');
+const profileType = ref<'user' | 'organization'>('user');
+const isUserVerified = ref(false);
+
+const isFriendMode = computed(() => route.query.mode === 'friend' ?? false);
+const mode: Ref<Mode> = computed(() => (isFriendMode.value ? 'friend' : 'self'));
+
+const { updateQuery, debouncedUpdateQuery, clearQuery } = useQueryParams();
+
+
+const canSubmit = computed(() => {
+	if (!loggedIn.value) return false;
+	if (isFriendMode.value && username.value.length === 0) return false;
+	return true;
+});
+
+async function handleSubmit() {
+	loading.value = true;
+
+	try {
+		const response = await $fetch('/api/roast', {
+			method: 'POST',
+			body: {
+				wishlist: wishlist.value,
+				username: isFriendMode.value ? username.value : user.value?.login,
+				mode: mode.value,
+				roasted_by: isFriendMode.value ? user.value?.login : undefined,
+				type: () => {
+					if (isFriendMode.value) return profileType.value;
+					else return user.value?.type.toLowerCase() as 'user' | 'organization' ?? undefined;
+				},
+			},
+		});
+
+		// navigateTo(`/${username.value}`);
+	} catch (error) {
+		console.error(error);
+	} finally {
+		loading.value = false;
+	}
+}
+
+// Verify the user while typing
+async function verifyUser(username: string) {
+	loading.value = true;
+
+	if (username.length === 0) {
+		isUserVerified.value = false;
+		profileType.value = 'user';
+		loading.value = false;
+		return;
+	}
+
+	try {
+		const response = await $fetch(`/api/${username}/verify`);
+		isUserVerified.value = response.status === 'FOUND';
+		profileType.value = response.type.toLowerCase() as 'user' | 'organization';
+	} finally {
+		loading.value = false;
+	}
+}
+
+watchDebounced(username, verifyUser, { debounce: 300 });
+
+// Copy for the form based on the mode (self or friend)
+const copy = {
+	self: {
+		title: 'Write your letter to Open Source Santa! 📝',
+		description: `Are you on the open source naughty or nice list? Write your letter to Santa below to find out if you're on his good side.`,
+		formUsername: 'My GitHub username is',
+		formUsernamePlaceholder: 'Enter your Github username',
+		formWishList: 'and I would love to receive',
+		formWishListPlaceholder: "Tell Santa what coding gifts you'd like...",
+	},
+	friend: {
+		title: 'Write your letter to a friend! 📝',
+		description: `Is your friend on the open source naughty or nice list? Write Santa a letter to find out if they're on his good side.`,
+		formUsername: 'Their GitHub username is',
+		formUsernamePlaceholder: 'Enter their Github username',
+		formWishList: 'and I want Santa to give them',
+		formWishListPlaceholder: "Tell Santa what coding gifts you'd like your friend to receive...",
+		formYourUsernamePlaceholder: 'Enter your name',
+	},
+};
+</script>
+
+<template>
+	<div class="">
+		<UContainer class="py-16">
+			<div class="text-center mb-8 space-y-4">
+				<BaseHeadline content="Open Source Salty Santa" size="xl" shadow />
+				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200">
+					{{ copy[mode].description }}
+				</BaseText>
+			</div>
+
+			<div class="relative max-w-2xl mx-auto">
+				<NotebookPaper>
+					<UForm
+						:state="{
+							username,
+							wishlist,
+							profileType,
+						}"
+						class="relative space-y-6 border-4 rounded-2xl border-transparent px-8 py-12"
+						@submit="handleSubmit"
+					>
+						<UFormField label="Friend Mode" size="xl" class="absolute top-0 right-0 flex items-center gap-4">
+							<USwitch
+								:modelValue="isFriendMode"
+								@update:modelValue="updateQuery('mode', $event ? 'friend' : undefined)"
+							/>
+						</UFormField>
+						<div class="text-3xl font-bold text-gray-900 mb-4 font-cursive">Dear Open Source Santa,</div>
+						<div class="gap-2" v-auto-animate>
+							<p class="text-gray-900 text-2xl font-bold font-cursive">{{ copy[mode].formUsername }}</p>
+							<UButton
+								v-if="!isFriendMode && !loggedIn"
+								color="neutral"
+								leading-icon="i-mdi-github"
+								size="xl"
+								block
+								to="http://localhost:3000/auth/github"
+							>
+								1. Sign in with Github
+							</UButton>
+							<User v-else-if="loggedIn && !isFriendMode" :avatar="user.avatar_url" :username="user.login" />
+							<UFormField v-else block size="xl" class="flex-1">
+								<UInput
+									v-model="username"
+									class="border-red-200 focus:border-green-500 w-full"
+									:placeholder="copy[mode].formUsernamePlaceholder"
+									variant="soft"
+								>
+									<template #trailing>
+										<Icon v-if="isUserVerified" name="i-mdi-check" class="text-green-500 h-8" />
+										<Icon v-else-if="!isUserVerified" name="i-mdi-close" class="text-red-500 h-8" />
+										<Icon v-else-if="loading" name="i-mdi-loading" class="animate-spin h-8" />
+									</template>
+								</UInput>
+							</UFormField>
+							<BaseText
+								v-if="isUserVerified && isFriendMode && profileType === 'organization'"
+								size="sm"
+								class="font-bold mt-2 font-mono"
+							>
+								Ooohh... You're roasting an organization! That's spicy! 🌶️
+							</BaseText>
+						</div>
+
+						<div class="items-start gap-2">
+							<p class="text-gray-900 font-bold text-2xl font-cursive mt-2">{{ copy[mode].formWishList }}</p>
+							<UFormField block size="xl" class="flex-1">
+								<UTextarea
+									v-model="wishlist"
+									class="border-red-200 focus:border-green-500 w-full"
+									:placeholder="copy[mode].formWishListPlaceholder"
+									variant="soft"
+								/>
+							</UFormField>
+							<p class="text-gray-900 font-bold text-2xl font-cursive mt-2">for Christmas this year! 🎁</p>
+						</div>
+
+						<div class="flex flex-col items-end" v-auto-animate>
+							<p class="text-gray-900 text-right font-bold italic font-cursive text-2xl">Love from,</p>
+							<template v-if="loggedIn">
+								<p class="text-gray-900 text-right font-bold italic font-cursive text-2xl">{{ user.login }}</p>
+							</template>
+							<template v-else-if="!loggedIn && isFriendMode">
+								<UButton
+									color="neutral"
+									leading-icon="i-mdi-github"
+									size="xl"
+									class="justify-end text-right"
+									to="http://localhost:3000/auth/github"
+								>
+									1. Sign in with Github
+								</UButton>
+							</template>
+						</div>
+
+						<UButton
+							type="submit"
+							:disabled="!canSubmit"
+							:loading="loading"
+							class="w-full bg-green-600 hover:bg-green-700 text-white"
+							size="xl"
+						>
+							<span class="flex w-full items-center justify-center gap-2">
+								<span v-if="!loading">2. Send to Santa</span>
+								<span v-else>Checking twice...</span>
+								🎄
+							</span>
+						</UButton>
+					</UForm>
+					<p class="max-w-sm text-balance mt-4 text-gray-900 text-center text-sm mx-auto font-mono font-bold">
+						Note: Santa doesn't store any of your private Github data in his database. He just needs to verify your
+						identity.
+					</p>
+				</NotebookPaper>
+			</div>
+		</UContainer>
+	</div>
+</template>
+
+<style scoped>
+.text-shadow {
+	text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+</style>
