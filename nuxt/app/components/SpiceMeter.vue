@@ -62,12 +62,12 @@ playbackRate.value = 1 + level.value * 0.1;
 // Debounced function to update likes
 const updateLikes = useDebounceFn(async (newLevel: number, previousLevel: number) => {
 	try {
-		const { data } = await useFetch<LikeResponse>(`/api/${props.profile}/likes`, {
+		const data = await $fetch<LikeResponse>(`/api/${props.profile}/likes`, {
 			method: 'POST',
 			body: { count: newLevel },
 		});
 
-		if (!data.value?.success) {
+		if (!data.success) {
 			throw new Error('Failed to update spice level');
 		}
 
