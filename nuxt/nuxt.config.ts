@@ -20,7 +20,7 @@ export default defineNuxtConfig({
 
 	runtimeConfig: {
 		public: {
-			siteUrl: process.env.VERCEL_URL || process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+			siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
 		},
 		directusUrl: process.env.DIRECTUS_URL,
 		directusServerToken: process.env.DIRECTUS_SERVER_TOKEN,
@@ -61,7 +61,7 @@ export default defineNuxtConfig({
 	},
 
 	site: {
-		url: process.env.VERCEL_URL || process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+		url: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
 		name: 'Open Source Santa Claus',
 	},
 
