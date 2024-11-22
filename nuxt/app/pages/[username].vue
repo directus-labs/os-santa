@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useClipboard } from '@vueuse/core';
 const route = useRoute();
 const toast = useToast();
 
@@ -18,16 +19,17 @@ const username = computed(() => route.params.username as string);
 const avatarUrl = computed(() => `https://github.com/${username.value}.png`);
 const githubUrl = computed(() => `https://github.com/${username.value}`);
 
-const currentUrl = computed(() => (process.client ? window.location.origin + window.location.pathname : ''));
+const currentUrl = useRequestURL();
 
-const { copy } = useClipboard({ source: currentUrl });
-
-const copyUrl = () => {
-	toast.add({
-		title: 'Copied to clipboard',
-		description: 'Share this link with your friends',
-	});
-};
+const { copy } = useClipboard({ source: currentUrl.toString() });
+const copied = ref(false);
+function copyUrl() {
+	copy();
+	copied.value = true;
+	setTimeout(() => {
+		copied.value = false;
+	}, 2000);
+}
 
 defineOgImageComponent('Username', {
 	username: username.value,
@@ -36,7 +38,7 @@ defineOgImageComponent('Username', {
 </script>
 
 <template>
-	<div class="">
+	<div class="relative">
 		<UContainer class="pt-12 relative">
 			<!-- Festive Header -->
 			<div class="text-center mb-8 space-y-4">
@@ -66,16 +68,20 @@ defineOgImageComponent('Username', {
 						</NuxtLink>
 					</div>
 				</div>
-				<UButtonGroup size="xl" class="w-full mt-4">
+				<UButtonGroup size="xl" class="w-full mt-4 relative">
 					<UInput :value="currentUrl" readonly class="font-mono w-full" />
-					<UButton icon="uil:copy" variant="solid" color="primary" @click="copyUrl" />
+					<UButton icon="uil:copy" variant="solid" color="primary" @click="() => copyUrl()" />
+					<!-- Copied Alert -->
+					<Transition enter-active-class="transition-all duration-300" leave-active-class="transition-all duration-300" mode="out-in" enter-from-class="opacity-0" leave-to-class="opacity-0">
+						<UAlert v-if="copied" title="Copied" description="Link copied to clipboard!" class="absolute -top-1/2 -right-1/2 max-w-xs" />
+					</Transition>
 				</UButtonGroup>
 			</div>
 			<Page class="relative pt-12">
 				<template #left>
 					<!-- Share Buttons -->
 					<div class="sticky top-20 mt-12">
-						<p class="text-red-200 text-2xl font-cursive -rotate-2">Sharing is Caring</p>
+						<p class="text-red-200 text-2xl text-center font-cursive -rotate-2">Sharing is Caring</p>
 						<SocialShare class="text-4xl flex items-center space-x-3 text-white mt-4 justify-center">
 							<SocialShareTwitter class="hover:text-green-500" />
 							<SocialShareReddit class="hover:text-green-500" />
@@ -90,7 +96,6 @@ defineOgImageComponent('Username', {
 						<ClientOnly>
 							<p class="text-2xl font-cursive text-red-200 -rotate-2 text-center">Spicy-ness</p>
 							<SpiceMeter
-								v-if="showLetter"
 								:profile="username"
 								:user-count="data?.meta?.userLikeCount"
 								:total-count="data?.meta?.totalLikes"

@@ -2,7 +2,9 @@
 <template>
 	<div class="relative antialiased transition duration-150 text-gray-900 min-h-screen bg-gradient-to-b from-red-500 to-red-950 py-12">
 		<Navigation />
-		<slot />
+		<div class="relative">
+			<slot />
+		</div>
 		<PoweredBy class="mt-8" />
 		<ClientOnly>
 			<Snow />

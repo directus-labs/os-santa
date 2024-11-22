@@ -6,7 +6,7 @@ type Mode = 'self' | 'friend';
 const { loggedIn, user } = useUserSession();
 
 const route = useRoute();
-
+const { url } = useSiteConfig();
 const loading = ref(false);
 const username = ref('');
 const wishlist = ref('');
@@ -131,7 +131,7 @@ const copy = {
 								leading-icon="i-mdi-github"
 								size="xl"
 								block
-								to="http://localhost:3000/auth/github"
+								:to="`${url}/auth/github`"
 							>
 								1. Sign in with Github
 							</UButton>
@@ -183,7 +183,7 @@ const copy = {
 									leading-icon="i-mdi-github"
 									size="xl"
 									class="justify-end text-right"
-									to="http://localhost:3000/auth/github"
+									:to="`${url}/auth/github`"
 								>
 									1. Sign in with Github
 								</UButton>
