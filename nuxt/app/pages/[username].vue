@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
 const route = useRoute();
-const toast = useToast();
 
-const { data, pending, error } = useAsyncData(`letter-${route.params.username}`, () =>
+const { data, status, error } = useAsyncData(`letter-${route.params.username}`, () =>
 	$fetch(`/api/${route.params.username}`, {
 		method: 'GET',
 	}),
@@ -72,8 +71,19 @@ defineOgImageComponent('Username', {
 					<UInput :value="currentUrl" readonly class="font-mono w-full" />
 					<UButton icon="uil:copy" variant="solid" color="primary" @click="() => copyUrl()" />
 					<!-- Copied Alert -->
-					<Transition enter-active-class="transition-all duration-300" leave-active-class="transition-all duration-300" mode="out-in" enter-from-class="opacity-0" leave-to-class="opacity-0">
-						<UAlert v-if="copied" title="Copied" description="Link copied to clipboard!" class="absolute -top-1/2 -right-1/2 max-w-xs" />
+					<Transition
+						enter-active-class="transition-all duration-300"
+						leave-active-class="transition-all duration-300"
+						mode="out-in"
+						enter-from-class="opacity-0"
+						leave-to-class="opacity-0"
+					>
+						<UAlert
+							v-if="copied"
+							title="Copied"
+							description="Link copied to clipboard!"
+							class="absolute -top-1/2"
+						/>
 					</Transition>
 				</UButtonGroup>
 			</div>
@@ -107,7 +117,8 @@ defineOgImageComponent('Username', {
 
 				<SantaLetterPaper v-show="showLetter" class="max-w-3xl mx-auto letter-unfold mt-4">
 					<img src="/images/os-santa.svg" class="absolute bottom-0 right-0 w-64 -mb-32 z-10" />
-					<div v-if="pending" class="text-center py-4">
+
+					<div v-if="status === 'pending'" class="text-center py-4">
 						<p class="text-gray-600 mt-2">Loading your letter...</p>
 					</div>
 

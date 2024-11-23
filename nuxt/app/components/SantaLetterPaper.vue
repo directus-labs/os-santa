@@ -9,12 +9,6 @@ defineSlots<{
 		<!-- Main paper with subtle texture and warm color -->
 		<div class="absolute inset-0 bg-amber-50 shadow-xl rounded-xl overflow-hidden h-full">
 			<!-- Subtle paper texture overlay -->
-			<div
-				class="absolute inset-0 opacity-5"
-				style="
-					background-image: url('data:image/svg+xml,%3Csvg width='100' height='100' viewBox='00100100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E');
-				"
-			></div>
 
 			<!-- Decorative border -->
 			<div class="absolute inset-4 border-4 border-red-900/10 rounded-lg"></div>
@@ -22,14 +16,8 @@ defineSlots<{
 			<!-- Top decorative header -->
 			<div class="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-red-900/5 to-transparent">
 				<!-- North Pole Post seal -->
-				<div class="absolute -top-6 -right-6 w-32 h-32">
-					<div class="absolute inset-0 rounded-full bg-red-900/10 rotate-12"></div>
-					<div class="absolute inset-2 rounded-full bg-red-900/10 -rotate-6"></div>
-					<div
-						class="absolute inset-4 rounded-full bg-red-900/10 rotate-3 flex items-center justify-center text-red-900/30 font-serif text-xs"
-					>
-						NORTH POLE POST
-					</div>
+				<div class="absolute top-4 right-4 w-16 sm:w-32">
+					<NuxtImg provider="local" src="/images/stamp.png" alt="North Pole Post" class="object-contain " width="128" />
 				</div>
 
 				<!-- Santa's Workshop letterhead -->

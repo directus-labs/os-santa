@@ -11,16 +11,27 @@ export default defineNuxtConfig({
 		'@nuxt/ui',
 		'@nuxt/image',
 		'@nuxtjs/seo',
-		'@vueuse/motion/nuxt',
+		'@nuxt/scripts',
 		'@vueuse/nuxt',
 		'@formkit/auto-animate/nuxt',
 		'nuxt-auth-utils',
-		// 'nuxt-security',
+		'nuxt-security',
 	],
+
+	$production: {
+		scripts: {
+			registry: {
+				googleTagManager: true,
+			},
+		},
+	},
 
 	runtimeConfig: {
 		public: {
 			siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+			scripts: {
+				googleTagManagerId: process.env.GOOGLE_TAG_MANAGER_ID!,
+			},
 		},
 		directusUrl: process.env.DIRECTUS_URL,
 		directusServerToken: process.env.DIRECTUS_SERVER_TOKEN,
@@ -44,18 +55,31 @@ export default defineNuxtConfig({
 
 	// Image Configuration - https://image.nuxt.com/providers/directus
 	image: {
-		// provider: 'directus',
-		// directus: {
-		// 	baseURL: `${process.env.DIRECTUS_URL}/assets/`,
-		// },
+		providers: {
+			directus: {
+				provider: 'directus',
+				options: {
+					baseURL: `${process.env.DIRECTUS_URL}/assets/`,
+				},
+			},
+			local: {
+				provider: 'ipx',
+			},
+		},
+	},
+
+	colorMode: {
+		// Force light mode
+		preference: 'light',
 	},
 
 	ogImage: {
-		fonts: ['Caveat:400', 'DM+Sans:400', 'Playfair+Display:400'],
+		fonts: ['Caveat:400', 'DM Sans:400'],
 	},
 
 	vite: {
 		optimizeDeps: {
+			// Needed for vueuse/sound
 			include: ['howler'],
 		},
 	},
