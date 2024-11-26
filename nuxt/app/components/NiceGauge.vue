@@ -83,7 +83,6 @@ onMounted(() => {
 function toggleSound() {
 	isSoundEnabled.value = !isSoundEnabled.value;
 }
-
 </script>
 
 <template>

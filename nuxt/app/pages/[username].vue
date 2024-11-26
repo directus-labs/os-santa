@@ -16,6 +16,7 @@ const { data, status, error } = useAsyncData(`letter-${route.params.username}`, 
 
 const showLetter = ref(false);
 const letter = computed(() => markdownToHtml(data.value?.letter || ''));
+const shouldAnimate = computed(() => data.value?.list !== null);
 
 const list = computed(() => data.value?.list || null);
 const username = computed(() => route.params.username as string);
@@ -39,11 +40,6 @@ defineOgImageComponent('Username', {
 	avatarUrl: avatarUrl.value,
 });
 
-watch(list, (newList) => {
-	if (newList !== null) {
-		showLetter.value = false;
-	}
-});
 
 function loginWithGithub(redirectUri: string) {
 	redirect.value = redirectUri;
@@ -67,8 +63,8 @@ function loginWithGithub(redirectUri: string) {
 			<div class="relative max-w-sm mx-auto">
 				<div class="relative w-full">
 					<NiceGauge
-						:animate="list !== null"
-						:list
+						:animate="shouldAnimate"
+						:list="list"
 						class="w-full mx-auto relative"
 						@animation-completed="showLetter = true"
 					/>
