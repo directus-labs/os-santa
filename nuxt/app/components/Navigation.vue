@@ -30,7 +30,7 @@ const routes = [{ name: "Santa's List", path: '/list' }];
 					<NuxtLink to="/" class="text-white font-serif text-2xl font-bold">Salty Open Source Santa</NuxtLink>
 				</div>
 
-				<div class="flex items-center space-x-4 hidden md:flex">
+				<div class="items-center gap-4 hidden md:flex">
 					<NuxtLink
 						v-for="route in routes"
 						:key="route.path"

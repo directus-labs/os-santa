@@ -20,7 +20,7 @@ const avatarUrl = computed(() => {
 const isFriendMode = computed(() => route.query.mode === 'friend' ?? false);
 const mode: Ref<Mode> = computed(() => (isFriendMode.value ? 'friend' : 'self'));
 
-const { updateQuery, debouncedUpdateQuery, clearQuery } = useQueryParams();
+const { updateQuery } = useQueryParams();
 
 const canSubmit = computed(() => {
 	if (!loggedIn.value) return false;
@@ -46,7 +46,7 @@ async function handleSubmit() {
 			},
 		});
 
-		navigateTo(`/${username.value}`);
+		// navigateTo(`/${response.username}`);
 	} catch (error) {
 		console.error(error);
 	} finally {
@@ -101,9 +101,9 @@ const copy = {
 <template>
 	<div class="">
 		<UContainer class="py-16">
-			<div class="text-center mb-8 space-y-4">
+			<div class="text-center mb-8">
 				<BaseHeadline content="Salty Open Source Santa" size="xl" shadow />
-				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200">
+				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200 mt-4">
 					{{ copy[mode].description }}
 				</BaseText>
 			</div>
@@ -116,7 +116,7 @@ const copy = {
 							wishlist,
 							profileType,
 						}"
-						class="relative space-y-6 border-4 rounded-2xl border-transparent px-8 py-12"
+						class="relative flex flex-col gap-4 border-4 rounded-2xl border-transparent px-8 py-12"
 						@submit="handleSubmit"
 					>
 						<UFormField label="Friend Mode" size="xl" class="absolute top-0 right-0 flex items-center gap-4">
@@ -142,8 +142,8 @@ const copy = {
 							<User
 								class="mt-2"
 								v-else-if="loggedIn && !isFriendMode"
-								:avatar="user.avatar_url"
-								:username="user.login"
+								:avatar="user?.avatar_url"
+								:username="user?.login"
 							/>
 							<UFormField v-else block size="xl" class="flex-1 mt-2">
 								<UInput

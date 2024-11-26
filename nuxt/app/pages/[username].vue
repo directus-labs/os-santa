@@ -53,9 +53,9 @@ function loginWithGithub(redirectUri: string) {
 	<div class="relative">
 		<UContainer class="pt-12 relative">
 			<!-- Festive Header -->
-			<div class="text-center mb-8 space-y-4">
+			<div class="text-center mb-8">
 				<BaseHeadline content="Salty Open Source Santa" size="lg" shadow />
-				<BaseText as="p" size="lg" class="mx-auto max-w-md text-red-200">
+				<BaseText as="p" size="lg" class="mx-auto max-w-md text-red-200 mt-4">
 					Are you on the open source naughty or nice list? Test your open source spirit below.
 				</BaseText>
 			</div>
@@ -167,8 +167,8 @@ function loginWithGithub(redirectUri: string) {
 							<p class="text-2xl font-cursive text-red-200 -rotate-2 text-center">Spicy-ness</p>
 							<SpiceMeter
 								:profile="username"
-								:user-count="data?.meta?.userLikeCount"
-								:total-count="data?.meta?.totalLikes"
+								:user-count="data?.likes?.userLikeCount"
+								:total-count="data?.likes?.totalLikes"
 								class="w-32"
 							/>
 						</ClientOnly>
