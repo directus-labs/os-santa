@@ -30,6 +30,7 @@ function copyUrl() {
 	}, 2000);
 }
 
+
 defineOgImageComponent('Username', {
 	username: username.value,
 	avatarUrl: avatarUrl.value,
@@ -66,6 +67,15 @@ defineOgImageComponent('Username', {
 							{{ username }}
 						</NuxtLink>
 					</div>
+					<Transition
+					enter-active-class="transition-all duration-300"
+					leave-active-class="transition-all duration-300"
+					mode="out-in"
+					enter-from-class="opacity-0"
+					leave-to-class="opacity-0"
+				>
+					<UAlert v-if="copied" title="Copied" description="Link copied to clipboard!" class="absolute -top-1/2" />
+				</Transition>
 				</div>
 				<UButtonGroup size="xl" class="w-full mt-4 relative">
 					<UInput :value="currentUrl" readonly class="font-mono w-full" />
@@ -86,8 +96,8 @@ defineOgImageComponent('Username', {
 				</aside>
 
 				<div class="content">
-					<SantaLetterPaper v-show="showLetter" class="max-w-3xl mx-auto letter-unfold mt-4">
-						<img src="/images/os-santa.svg" class="absolute bottom-0 right-0 w-64 -mb-32 z-10" />
+					<SantaLetterPaper v-show="showLetter" class="max-w-3xl mx-auto letter-unfold mt-4 p-4">
+						<img src="/images/os-santa.svg" class="absolute bottom-0 right-0 w-32 md:w-64 -mb-16 md:-mb-32 z-10" />
 						<div v-if="status === 'pending'" class="text-center py-4">
 							<p class="text-gray-600 mt-2">Loading your letter...</p>
 						</div>
@@ -96,10 +106,10 @@ defineOgImageComponent('Username', {
 						</div>
 						<div v-else-if="data" class="relative w-full">
 							<div class="relative z-10 prose prose-2xl text-gray-900 text-3xl font-cursive" v-html="letter" />
-							<p class="relative z-10 prose prose-2xl text-gray-900 text-3xl font-cursive">
+							<p class="relative z-10 prose prose-2xl text-gray-900 text-3xl font-cursive mt-8">
 								Sarcastically yours,
 								<br />
-								Salty Open Source Santa
+								<span class="font-bold text-red-900">Salty Open Source Santa</span>
 							</p>
 						</div>
 					</SantaLetterPaper>

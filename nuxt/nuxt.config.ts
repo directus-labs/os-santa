@@ -16,6 +16,7 @@ export default defineNuxtConfig({
 		'@formkit/auto-animate/nuxt',
 		'nuxt-auth-utils',
 		'nuxt-security',
+		// 'nuxt-posthog',
 	],
 
 	$production: {
@@ -35,6 +36,7 @@ export default defineNuxtConfig({
 		},
 		directusUrl: process.env.DIRECTUS_URL,
 		directusServerToken: process.env.DIRECTUS_SERVER_TOKEN,
+		anthropicApiKey: process.env.ANTHROPIC_API_KEY,
 		oauth: {
 			github: {
 				clientId: process.env.GITHUB_CLIENT_ID,
@@ -75,6 +77,9 @@ export default defineNuxtConfig({
 
 	ogImage: {
 		fonts: ['Caveat:400', 'DM Sans:400'],
+		defaults: {
+			cacheMaxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+		},
 	},
 
 	vite: {

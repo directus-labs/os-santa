@@ -66,7 +66,7 @@ export default defineCachedEventHandler(
 	},
 
 	{
-		maxAge: 60 * 5, // Cache for 5 minutes
+		maxAge: 60 * 1, // Cache for 5 minutes
 		name: 'profiles-list',
 		getKey: (event) => {
 			const query = getQuery(event);

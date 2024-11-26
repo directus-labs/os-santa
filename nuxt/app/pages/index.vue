@@ -43,7 +43,7 @@ async function handleSubmit() {
 			},
 		});
 
-		// navigateTo(`/${username.value}`);
+		navigateTo(`/${username.value}`);
 	} catch (error) {
 		console.error(error);
 	} finally {
@@ -99,7 +99,7 @@ const copy = {
 	<div class="">
 		<UContainer class="py-16">
 			<div class="text-center mb-8 space-y-4">
-				<BaseHeadline content="Open Source Salty Santa" size="xl" shadow />
+				<BaseHeadline content="Salty Open Source Santa" size="xl" shadow />
 				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200">
 					{{ copy[mode].description }}
 				</BaseText>
@@ -131,12 +131,13 @@ const copy = {
 								leading-icon="i-mdi-github"
 								size="xl"
 								block
+								class="mt-2"
 								:to="`${url}/auth/github`"
 							>
-								1. Sign in with Github
+								Sign in with Github
 							</UButton>
-							<User v-else-if="loggedIn && !isFriendMode" :avatar="user.avatar_url" :username="user.login" />
-							<UFormField v-else block size="xl" class="flex-1">
+							<User class="mt-2" v-else-if="loggedIn && !isFriendMode" :avatar="user.avatar_url" :username="user.login" />
+							<UFormField v-else block size="xl" class="flex-1 mt-2">
 								<UInput
 									v-model="username"
 									class="border-red-200 focus:border-green-500 w-full"
@@ -161,12 +162,13 @@ const copy = {
 
 						<div class="items-start gap-2">
 							<p class="text-gray-900 font-bold text-2xl font-cursive mt-2">{{ copy[mode].formWishList }}</p>
-							<UFormField block size="xl" class="flex-1">
+							<UFormField block size="xl" class="flex-1 mt-2">
 								<UTextarea
 									v-model="wishlist"
 									class="border-red-200 focus:border-green-500 w-full"
 									:placeholder="copy[mode].formWishListPlaceholder"
 									variant="soft"
+									autoresize
 								/>
 							</UFormField>
 							<p class="text-gray-900 font-bold text-2xl font-cursive mt-2">for Christmas this year! 🎁</p>
@@ -182,10 +184,10 @@ const copy = {
 									color="neutral"
 									leading-icon="i-mdi-github"
 									size="xl"
-									class="justify-end text-right"
+									class="justify-end text-right mt-2"
 									:to="`${url}/auth/github`"
 								>
-									1. Sign in with Github
+									Sign in with Github
 								</UButton>
 							</template>
 						</div>
@@ -198,7 +200,7 @@ const copy = {
 							size="xl"
 						>
 							<span class="flex w-full items-center justify-center gap-2">
-								<span v-if="!loading">2. Send to Santa</span>
+								<span v-if="!loading">Send to Santa</span>
 								<span v-else>Checking twice...</span>
 								🎄
 							</span>

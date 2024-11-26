@@ -2,15 +2,15 @@
 import { useSound } from '@vueuse/sound';
 import { useDebounceFn } from '@vueuse/core';
 
-import shortSizzle from '~/assets/audio/slide-whistle.mp3';
+import slideWhistleUp from '~/assets/audio/slide-whistle-up.mp3';
 import steamWhistle from '~/assets/audio/steam-whistle.mp3';
-import downWhistle from '~/assets/audio/slide-whistle-down.mp3';
+import slideWhistleDown from '~/assets/audio/slide-whistle-down.mp3';
 
 const soundOn = useCookie('soundOn');
 
 const playbackRate = ref(0.8);
 
-const { play: playUpWhistle } = useSound(shortSizzle, {
+const { play: playUpWhistle } = useSound(slideWhistleUp, {
 	playbackRate,
 	interrupt: true,
 });
@@ -20,7 +20,7 @@ const { play: playSteamWhistle } = useSound(steamWhistle, {
 	interrupt: true,
 });
 
-const { play: playDownWhistle } = useSound(downWhistle, {
+const { play: playDownWhistle } = useSound(slideWhistleDown, {
 	playbackRate,
 	interrupt: true,
 });
@@ -126,7 +126,6 @@ function decrementLevel() {
 			playDownWhistle();
 		}
 
-		// Pass both values to updateLikes for proper error handling
 		updateLikes(newLevel, previousLevel);
 	}
 }

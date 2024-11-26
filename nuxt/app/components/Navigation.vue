@@ -25,7 +25,7 @@ const routes = [{ name: "Santa's List", path: '/list' }];
 			<div class="flex justify-between items-center h-16">
 				<!-- Logo and Navigation Links -->
 				<div class="flex items-center space-x-8">
-					<NuxtLink to="/" class="text-white font-serif text-2xl font-bold">OS Xmas</NuxtLink>
+					<NuxtLink to="/" class="text-white font-serif text-2xl font-bold">Salty Open Source Santa</NuxtLink>
 				</div>
 
 				<div class="flex items-center space-x-4 hidden md:flex">

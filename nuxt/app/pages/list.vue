@@ -12,7 +12,8 @@ interface Profile {
 
 const route = useRoute();
 
-const { data: profiles, refresh } = await useAsyncData('profiles', () =>
+
+const { data: profiles, status, refresh } = await useAsyncData('profiles', () =>
 	$fetch('/api/profiles', {
 		method: 'GET',
 		params: {
@@ -66,11 +67,13 @@ const niceProfiles = computed(() => profiles.value?.filter((profile) => profile.
 						<UInput
 							:modelValue="route.query.q"
 							@update:modelValue="debouncedUpdateQuery('q', $event ?? undefined)"
+							:loading="status === 'pending'"
 							type="search"
 							placeholder="Search developers..."
 						icon="lucide:search"
 							variant="none"
-							class="rounded-full border-2 border-[#d4b995] bg-[#f0e0c6] focus-within:outline-none focus-within:border-red-800 focus-within:ring focus-within:ring-red-600 focus-within:ring-opacity-50"
+							class="rounded-full basis-1/2 border-2 border-[#d4b995] bg-[#f0e0c6]
+							focus-within:outline-none focus-within:border-red-800 focus-within:ring focus-within:ring-red-600 focus-within:ring-opacity-50"
 							:ui="{
 								leadingIcon: 'text-[#d4b995]',
 								trailingIcon: 'text-[#d4b995]',

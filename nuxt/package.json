@@ -53,8 +53,12 @@
 		"pnpm": ">=8.6.0"
 	},
 	"dependencies": {
+		"@ai-sdk/anthropic": "^1.0.2",
 		"@nuxtjs/seo": "2.0.0-rc.23",
+		"ai": "^4.0.5",
 		"motion": "^11.11.17",
-		"nuxt-og-image": "^3.0.8"
+		"nuxt-og-image": "^3.0.8",
+		"nuxt-posthog": "^1.5.4",
+		"sharp": "^0.33.5"
 	}
 }
