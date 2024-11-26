@@ -46,7 +46,7 @@ async function handleSubmit() {
 			},
 		});
 
-		// navigateTo(`/${response.username}`);
+		navigateTo(`/${response.username}`);
 	} catch (error) {
 		console.error(error);
 	} finally {
