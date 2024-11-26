@@ -16,7 +16,7 @@ const { data, status, error } = useAsyncData(`letter-${route.params.username}`, 
 
 const showLetter = ref(false);
 const letter = computed(() => markdownToHtml(data.value?.letter || ''));
-const shouldAnimate = computed(() => data.value?.list !== null);
+const shouldAnimate = computed(() => data.value?.list !== null && data.value?.is_new !== true);
 
 const list = computed(() => data.value?.list || null);
 const username = computed(() => route.params.username as string);
