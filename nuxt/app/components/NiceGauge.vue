@@ -5,6 +5,7 @@ import ding from '~/assets/audio/ding.mp3';
 
 const props = defineProps<{
 	list: 'nice' | 'naughty';
+	animate: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -47,39 +48,42 @@ const soundOn = useCookie('soundOn');
 
 // Initialize audio on mount
 onMounted(() => {
-	let startTime = Date.now();
-	const duration = 3000; // 3 seconds
-	const swingAmplitude = 60; // Maximum swing angle
-	const frequency = 5; // Number of swings
+	if (props.animate) {
+		let startTime = Date.now();
+		const duration = 3000; // 3 seconds
+		const swingAmplitude = 60; // Maximum swing angle
+		const frequency = 5; // Number of swings
 
-	function animate() {
-		const elapsed = Date.now() - startTime;
+		function animate() {
+			const elapsed = Date.now() - startTime;
 
-		if (elapsed < duration) {
-			// Decreasing amplitude over time
-			const dampening = 1 - elapsed / duration;
-			const angle = Math.sin((elapsed / duration) * Math.PI * frequency) * swingAmplitude * dampening;
-			currentRotation.value = angle;
-			requestAnimationFrame(animate);
-		} else {
-			isAnimating.value = false;
+			if (elapsed < duration) {
+				// Decreasing amplitude over time
+				const dampening = 1 - elapsed / duration;
+				const angle = Math.sin((elapsed / duration) * Math.PI * frequency) * swingAmplitude * dampening;
+				currentRotation.value = angle;
+				requestAnimationFrame(animate);
+			} else {
+				isAnimating.value = false;
 
-			// Play sound if enabled
-			if (soundOn.value) {
-				playDing();
+				// Play sound if enabled
+				if (soundOn.value) {
+					playDing();
+				}
+
+				emit('animation-completed');
 			}
-
-			emit('animation-completed');
 		}
-	}
 
-	animate();
+		animate();
+	}
 });
 
 // Toggle sound function
 function toggleSound() {
 	isSoundEnabled.value = !isSoundEnabled.value;
 }
+
 </script>
 
 <template>

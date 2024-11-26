@@ -8,16 +8,19 @@ const { loggedIn, user } = useUserSession();
 const route = useRoute();
 const { url } = useSiteConfig();
 const loading = ref(false);
-const username = ref('');
+const username = ref((route.query.username as string) ?? '');
 const wishlist = ref('');
 const profileType = ref<'user' | 'organization'>('user');
 const isUserVerified = ref(false);
 
+const avatarUrl = computed(() => {
+	if (isUserVerified.value) return `https://github.com/${username.value}.png`;
+	return undefined;
+});
 const isFriendMode = computed(() => route.query.mode === 'friend' ?? false);
 const mode: Ref<Mode> = computed(() => (isFriendMode.value ? 'friend' : 'self'));
 
 const { updateQuery, debouncedUpdateQuery, clearQuery } = useQueryParams();
-
 
 const canSubmit = computed(() => {
 	if (!loggedIn.value) return false;
@@ -38,7 +41,7 @@ async function handleSubmit() {
 				roasted_by: isFriendMode.value ? user.value?.login : undefined,
 				type: () => {
 					if (isFriendMode.value) return profileType.value;
-					else return user.value?.type.toLowerCase() as 'user' | 'organization' ?? undefined;
+					else return (user.value?.type.toLowerCase() as 'user' | 'organization') ?? undefined;
 				},
 			},
 		});
@@ -136,13 +139,21 @@ const copy = {
 							>
 								Sign in with Github
 							</UButton>
-							<User class="mt-2" v-else-if="loggedIn && !isFriendMode" :avatar="user.avatar_url" :username="user.login" />
+							<User
+								class="mt-2"
+								v-else-if="loggedIn && !isFriendMode"
+								:avatar="user.avatar_url"
+								:username="user.login"
+							/>
 							<UFormField v-else block size="xl" class="flex-1 mt-2">
 								<UInput
 									v-model="username"
 									class="border-red-200 focus:border-green-500 w-full"
 									:placeholder="copy[mode].formUsernamePlaceholder"
 									variant="soft"
+									:avatar="{
+										src: avatarUrl,
+									}"
 								>
 									<template #trailing>
 										<Icon v-if="isUserVerified" name="i-mdi-check" class="text-green-500 h-8" />

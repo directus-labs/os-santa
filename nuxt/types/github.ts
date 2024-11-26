@@ -20,6 +20,7 @@ export interface GithubOrg {
 
 export interface GithubUser {
 	id: string;
+	login: string;
 	username: string;
 	name: string;
 	twitter: string;

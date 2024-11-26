@@ -130,8 +130,7 @@ export default defineEventHandler(async (event) => {
 
 		const metadata = {
 			ai_response: aiResponse.object,
-			flagged: aiResponse?.object?.flagged ?? false,
-			flagged_reason: aiResponse?.object?.flagged_reason ?? '',
+
 		}
 
 		console.log('metadata', metadata);

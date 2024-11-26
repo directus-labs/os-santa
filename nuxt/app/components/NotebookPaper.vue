@@ -11,12 +11,12 @@ const numberOfHoles = computed(() => {
 </script>
 
 <template>
-	<div class="relative flex flex-col min-h-[800px] overflow-hidden">
+	<div class="relative flex flex-col overflow-hidden">
 		<!-- Notebook paper styling -->
 		<div class="absolute inset-0 bg-white shadow-lg rounded-r-xl">
 			<!-- Blue horizontal lines - using fixed height container -->
 			<div
-				class="absolute inset-0 min-h-[800px]"
+				class="absolute inset-0"
 				style="
 					background-image: repeating-linear-gradient(0deg, transparent, transparent 23px, #e6e9f0 23px, #e6e9f0 24px);
 				"

@@ -6,6 +6,8 @@ const soundOn = useCookie('soundOn', {
 	default: () => true,
 });
 
+const { loggedIn, user, clear } = useUserSession();
+
 const { play: playOn } = useSound(popOn, {
 	interrupt: true,
 });
@@ -45,6 +47,17 @@ const routes = [{ name: "Santa's List", path: '/list' }];
 						:icon="soundOn ? 'lucide:volume-2' : 'lucide:volume-x'"
 						@click="toggleSound"
 					/>
+					<UDropdownMenu
+						v-if="loggedIn"
+						:items="[
+							{ label: 'My Letter', icon: 'mdi:account', to: `/${user?.login}` },
+							{ label: 'Logout', icon: 'mdi:logout', onSelect: clear },
+						]"
+					>
+						<button type="button" class="flex items-center gap-2 ring-2 ring-white rounded-full bg-white">
+							<UAvatar :src="user?.avatar_url" size="lg" />
+						</button>
+					</UDropdownMenu>
 				</div>
 			</div>
 		</div>
