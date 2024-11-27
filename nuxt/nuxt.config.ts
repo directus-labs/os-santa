@@ -16,7 +16,7 @@ export default defineNuxtConfig({
 		'@formkit/auto-animate/nuxt',
 		'nuxt-auth-utils',
 		'nuxt-security',
-		// 'nuxt-posthog',
+		'nuxt-posthog',
 	],
 
 	$production: {
@@ -49,6 +49,19 @@ export default defineNuxtConfig({
 		headers: {
 			contentSecurityPolicy: {
 				'img-src': ["'self'", 'data:', 'https://github.com', 'https://*.githubusercontent.com'],
+				'script-src': [
+					"'self'",
+					"'unsafe-inline'",
+					'https://www.googletagmanager.com',
+					'https://us.i.posthog.com',
+					'https://us-assets.i.posthog.com'
+				],
+				'connect-src': [
+					"'self'",
+					'https://www.google-analytics.com',
+					'https://us.i.posthog.com',
+					'https://us-assets.i.posthog.com'
+				],
 			},
 		},
 	},
