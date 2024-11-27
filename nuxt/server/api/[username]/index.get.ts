@@ -51,7 +51,7 @@ export default defineEventHandler(async (event): Promise<ProfileResponse> => {
 		// No need to fetch likes data if the user is new
 		if (!isNewUser) {
 			// Get visitor hash
-			const ip = getRequestIP(event) || (event.node.req.headers['x-forwarded-for'] as string);
+			const ip = (event.node.req.headers['x-forwarded-for'] as string) || (event.node.req.headers['x-vercel-forwarded-for'] as string);
 			const visitorHash = createVisitorHash(ip, process.env.SALT as string);
 
 			// Fetch likes data in parallel

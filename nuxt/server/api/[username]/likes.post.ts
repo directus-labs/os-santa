@@ -1,14 +1,16 @@
-export default defineEventHandler(async (event) => {
+interface LikeResponse {
+	success: boolean;
+	count: number;
+	previousCount: number;
+}
+
+export default defineEventHandler(async (event): Promise<LikeResponse> => {
 	const username = getRouterParam(event, 'username');
 
 	if (!username) throw createError({ statusCode: 400, message: 'Missing username. username is required.' });
 
-	// Generate visitor hash
-	let ip = getRequestIP(event);
 
-	if (!ip) {
-		ip = event.node.req.headers['x-forwarded-for'] as string;
-	}
+	const ip = (event.node.req.headers['x-forwarded-for'] as string) || (event.node.req.headers['x-vercel-forwarded-for'] as string);
 
 	const visitorHash = createVisitorHash(ip, process.env.SALT as string);
 
@@ -66,11 +68,13 @@ export default defineEventHandler(async (event) => {
 			);
 		}
 
-		return {
+		const response: LikeResponse = {
 			success: true,
 			count: newCount,
 			previousCount,
 		};
+
+		return response;
 	} catch (error) {
 		console.error('Error updating like count:', error);
 		throw createError({
