@@ -8,7 +8,7 @@ onMounted(() => {
 	if (!url.value) url.value = window.location.origin + window.location.pathname;
 });
 
-provide(key, url);
+provide(key, url as Ref<string>);
 </script>
 
 <template>

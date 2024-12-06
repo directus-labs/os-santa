@@ -16,7 +16,7 @@ export default defineNuxtConfig({
 		'@formkit/auto-animate/nuxt',
 		'nuxt-auth-utils',
 		'nuxt-security',
-		// 'nuxt-posthog',
+		'nuxt-posthog',
 	],
 
 	$production: {
@@ -54,13 +54,13 @@ export default defineNuxtConfig({
 					"'unsafe-inline'",
 					'https://www.googletagmanager.com',
 					'https://us.i.posthog.com',
-					'https://us-assets.i.posthog.com'
+					'https://us-assets.i.posthog.com',
 				],
 				'connect-src': [
 					"'self'",
 					'https://www.google-analytics.com',
 					'https://us.i.posthog.com',
-					'https://us-assets.i.posthog.com'
+					'https://us-assets.i.posthog.com',
 				],
 			},
 		},
@@ -81,6 +81,12 @@ export default defineNuxtConfig({
 				provider: 'ipx',
 			},
 		},
+	},
+
+	// Posthog Configuration - https://nuxt-posthog.cmitjans.dev/configuration
+	// @ts-ignore
+	posthog: {
+		disabled: process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test',
 	},
 
 	colorMode: {
