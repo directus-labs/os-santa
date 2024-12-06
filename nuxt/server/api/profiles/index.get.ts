@@ -1,13 +1,9 @@
-import type { Profile } from '~~/shared/types/schema';
-
-export interface ProfileWithLikes extends Profile {
-	meta: {
-		totalLikes: number;
-	};
-}
+import type { Profile } from '#shared/types/schema';
+import type { ProfileWithLikes } from '#shared/types/endpoints';
+import type { H3Error } from 'h3';
 
 export default defineCachedEventHandler(
-	async (event) => {
+	async (event): Promise<ProfileWithLikes[] | H3Error> => {
 		const query = getQuery(event);
 		const { q, list, type, sort } = query;
 

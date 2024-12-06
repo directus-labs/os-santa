@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { ProfileWithLikes } from '#shared/types/endpoints';
+
 interface Profile {
 	username: string;
 	list: 'naughty' | 'nice';
@@ -13,7 +15,7 @@ interface Profile {
 const route = useRoute();
 
 
-const { data: profiles, status, refresh } = await useAsyncData('profiles', () =>
+const { data: profiles, status, refresh } = await useAsyncData<ProfileWithLikes[]>('profiles', () =>
 	$fetch('/api/profiles', {
 		method: 'GET',
 		params: {
@@ -65,7 +67,7 @@ const niceProfiles = computed(() => profiles.value?.filter((profile) => profile.
 					<!-- Search Bar -->
 					<div class="pb-6 flex w-full justify-between items-end gap-4 border-b border-[#d4b995] pt-4">
 						<UInput
-							:modelValue="route.query.q"
+							:modelValue="route.query.q as string"
 							@update:modelValue="debouncedUpdateQuery('q', $event ?? undefined)"
 							:loading="status === 'pending'"
 							type="search"
@@ -84,7 +86,7 @@ const niceProfiles = computed(() => profiles.value?.filter((profile) => profile.
 
 						<USelectMenu
 							icon="lucide:filter"
-							:modelValue="route.query.type"
+							:modelValue="route.query.type as any"
 							@update:modelValue="updateQuery('type', $event?.value ?? undefined)"
 							:items="filterTypes"
 							color="neutral"

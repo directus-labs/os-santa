@@ -1,5 +1,8 @@
 import type { Profile } from '#shared/types/schema.js';
 import type { GithubUser } from '#shared/types/github.js';
+
+
+
 export interface LikesResponse {
 	username: string;
 	totalLikes: number;
@@ -17,5 +20,11 @@ export interface RoastResponse extends Partial<Profile> {
 
 export interface SearchResponse {
 	status: 'SUCCESS' | 'ERROR';
-	users: Partial<GithubUser>[];
+	users: Partial<GithubUser>[] | [];
+}
+
+export interface ProfileWithLikes extends Profile {
+	meta: {
+		totalLikes: number;
+	};
 }

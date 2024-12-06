@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { GithubProfileType, GithubUser } from '~~/shared/types/github';
+import type { RoastResponse, SearchResponse } from '#shared/types/endpoints.js';
 type Mode = 'self' | 'friend';
 
 const route = useRoute();
@@ -7,7 +8,7 @@ const { loggedIn, user } = useUserSession();
 const { url } = useSiteConfig();
 
 const loading = ref(false);
-const username = ref((route.query.username as string) ?? '');
+const username: Ref<string> = ref((route.query.username as string) ?? '');
 const wishlist = ref('');
 const profileType = ref<GithubProfileType>('User');
 
@@ -25,11 +26,15 @@ const canSubmit = computed(() => {
 	return true;
 });
 
+/**
+ * Handles the submission of the roast form
+ * @returns {Promise<RoastResponse>} The response from the roast endpoint
+ */
 async function handleSubmit() {
 	loading.value = true;
 
 	try {
-		const response = await $fetch('/api/roast', {
+		const response = await $fetch<RoastResponse>('/api/roast', {
 			method: 'POST',
 			body: {
 				wishlist: wishlist.value,
@@ -53,17 +58,6 @@ async function handleSubmit() {
 	}
 }
 
-interface GithubUser {
-	login: string;
-	type: 'user' | 'organization';
-	avatarUrl: string;
-}
-
-interface GithubResponse {
-	status: 'SUCCESS' | 'ERROR';
-	users: GithubUser[];
-}
-
 /**
  * Composable for searching Github users
  * @returns {Object} The search composable object
@@ -73,7 +67,7 @@ interface GithubResponse {
  * @returns {(query: string) => void} search - Function to perform the search
  */
 function useGithubSearch() {
-	const users = ref<GithubUser[]>([]);
+	const users = ref<Partial<GithubUser>[]>([]);
 	const isLoading = ref(false);
 	const searchQuery = ref('');
 
@@ -85,18 +79,18 @@ function useGithubSearch() {
 
 		isLoading.value = true;
 		try {
-			const response = await $fetch<GithubResponse>(`/api/search?q=${query}`);
+			const response = await $fetch<SearchResponse>(`/api/search?q=${query}`);
 			users.value = response.users.map((user) => ({
 				label: user.login,
 				avatar: {
-					src: user.avatarUrl,
+					src: user.avatar_url,
 				},
 				...user,
 			}));
 		} finally {
 			isLoading.value = false;
 		}
-	}, 300);
+	}, 250);
 
 	return {
 		users,
@@ -107,6 +101,26 @@ function useGithubSearch() {
 }
 
 const { users, isLoading, searchQuery, search } = useGithubSearch();
+
+/**
+ * Handles the selection of a user from the select menu
+ */
+function handleUserSelection(item: Partial<GithubUser> | null) {
+	username.value = typeof item === 'string' ? item : (item?.login ?? '');
+
+	if (item && typeof item === 'object') {
+		profileType.value = item.type as GithubProfileType;
+	}
+}
+
+/**
+ * Handles the search term updates
+ */
+function handleSearchTermUpdate(term: any) {
+	if (term !== username.value) {
+		search(term);
+	}
+}
 
 // Copy for the form based on the mode (self or friend)
 const copy = {
@@ -174,37 +188,21 @@ const copy = {
 							<User
 								class="mt-2"
 								v-else-if="loggedIn && !isFriendMode"
-								:avatar="user?.avatar_url"
-								:username="user?.login"
+								:avatar="user?.avatar_url ?? ''"
+								:username="user?.login ?? ''"
 							/>
 							<UFormField v-else block size="xl" class="flex-1 mt-2">
+								<!-- @ts-ignore // TODO: Weirdness going on with USelectMenu and types-->
 								<USelectMenu
 									type="text"
-									v-model="username"
+									:model-value="username as any"
+									@update:model-value="handleUserSelection"
+									@update:search-term="handleSearchTermUpdate"
 									:items="users || []"
-									@update:model-value="
-										(item) => {
-											console.log('item', item);
-											username = typeof item === 'string' ? item : (item?.login ?? '');
-											if (typeof item === 'object' && item) {
-												profileType = item.type.toLowerCase() as 'user' | 'organization';
-											}
-										}
-									"
-									@update:search-term="
-										(term) => {
-											if (term !== username) {
-												search(term);
-											}
-										}
-									"
 									class="border-red-200 focus:border-green-500 w-full"
 									:placeholder="copy[mode].formUsernamePlaceholder"
 									variant="soft"
-									:avatar="{
-										src: avatarUrl,
-									}"
-									data-1p-ignore
+									:avatar="{ src: avatarUrl }"
 								>
 									<template #trailing>
 										<UButton v-if="username" variant="ghost" @click="username = ''" icon="i-mdi-close" />

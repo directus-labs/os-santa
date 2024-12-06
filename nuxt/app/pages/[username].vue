@@ -19,6 +19,7 @@ const letter = computed(() => markdownToHtml(data.value?.letter || ''));
 const shouldAnimate = computed(() => data.value?.list !== null && data.value?.is_new !== true);
 
 const list: Ref<ProfileResponse['list'] | null> = computed(() => data.value?.list || null);
+
 const username = computed(() => route.params.username as string);
 const avatarUrl = computed(() => `https://github.com/${username.value}.png`);
 const githubUrl = computed(() => `https://github.com/${username.value}`);

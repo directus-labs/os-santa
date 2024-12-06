@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ProfileWithLikes } from '~~/server/api/profiles/index.get';
+import type { ProfileWithLikes } from '#shared/types/endpoints';
 
 interface Props {
   title: string

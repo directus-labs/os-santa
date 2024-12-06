@@ -56,7 +56,7 @@ export default defineEventHandler(async (event): Promise<LikesResponse> => {
 		}
 
 		// Calculate total likes by summing all likes
-		const totalLikes = existingProfile.likes.reduce((sum, like) => {
+		const totalLikes = existingProfile.likes?.reduce((sum, like) => {
 			// If this is the user's like, use the new count
 			if (like.visitor_hash === visitorHash) {
 				return sum + newCount;
@@ -66,7 +66,7 @@ export default defineEventHandler(async (event): Promise<LikesResponse> => {
 
 		const response: LikesResponse = {
 			username: existingProfile.username,
-			totalLikes,
+			totalLikes: totalLikes || 0,
 			userLikeCount: newCount,
 		};
 
