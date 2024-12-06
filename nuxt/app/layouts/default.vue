@@ -5,7 +5,7 @@
 		<div class="relative">
 			<slot />
 		</div>
-		<PoweredBy class="mt-8" />
+		<PoweredBy class="mt-8 pb-8" />
 		<ClientOnly>
 			<Snow />
 		</ClientOnly>

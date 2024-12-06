@@ -1,4 +1,4 @@
-export default `query getUserProfile($username: String!, $year: String!) {
+export default `query getUserProfile($username: String!) {
   user(login: $username) {
     login
     name
@@ -59,8 +59,8 @@ export default `query getUserProfile($username: String!, $year: String!) {
       }
     }
     contributionsCollection(
-      from: $year
-      to: $year
+      from: "2024-01-01T00:00:00Z"
+      to: "2024-12-31T23:59:59Z"
     ) {
       totalRepositoryContributions
       totalRepositoriesWithContributedIssues
@@ -74,4 +74,4 @@ export default `query getUserProfile($username: String!, $year: String!) {
       totalCount
     }
   }
-}`
+}`;

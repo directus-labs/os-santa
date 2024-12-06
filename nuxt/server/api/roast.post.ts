@@ -46,15 +46,9 @@ export default defineEventHandler(async (event) => {
 
 	try {
 		// Get the profile data based on type
-		const variables = profileType === 'user'
-			? {
-					username,
-					year: `2024-01-01T00:00:00Z`
-				}
-			: {
-					org: username
-				};
-
+		const variables = {
+			username,
+		}
 
 		console.log('profileType', profileType);
 
@@ -86,11 +80,11 @@ export default defineEventHandler(async (event) => {
 
 		const prompt = `
 			You are the open source Santa Claus. You determine who's open source contributions are naughty or nice.
-			Analyze the following Github ${profileType === 'user' ? 'user' : 'organization'}.
+			Analyze the following Github ${profileType === 'user' ? 'user' : 'organization'}'s profile carefully and in detail.
 			We've determined the ${profileType}'s score based on their contributions. Whether they're on the nice list
-			or the naughty list, give them a roast. Write a short letter in a snarky sarcastic tone.
+			or the naughty list, give them a roast accordingly. Write a short letter in a snarky sarcastic tone.
 			Include a couple lines from the wish list in the letter if it's provided.
-			If the mode provided is "friend", then make to mention roasted_by user in one of the paragraphs.
+			If the mode provided is "friend", then make a short mention of the roasted_by user in one of the paragraphs.
 
 			STRUCTURE:
 			- Intro

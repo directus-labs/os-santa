@@ -1,5 +1,5 @@
-export default `query getOrgProfile($org: String!) {
-	organization(login: $org) {
+export default `query getOrgProfile($username: String!) {
+	organization(login: $username) {
 		login
 		name
 		url
