@@ -73,7 +73,7 @@ export const ghFetch = defineCachedFunction(
 // });
 
 // export const ghOrgMembers = defineCachedFunction(
-// 	(org: GithubOrg) => ghFetch<GithubContributor[]>(`/orgs/${org.name}/members`),
+// 	(org: GithubOrg) => ghFetch(`/orgs/${org.name}/members`),
 // 	{
 // 		...cacheOptions(`org-members-${org.name}`),
 // 	},

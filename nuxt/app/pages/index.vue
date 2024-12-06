@@ -14,8 +14,7 @@ const profileType = ref<'user' | 'organization'>('user');
 const isUserVerified = ref(false);
 
 const avatarUrl = computed(() => {
-	if (isUserVerified.value) return `https://github.com/${username.value}.png`;
-	return undefined;
+	return `https://github.com/${username.value}.png`;
 });
 const isFriendMode = computed(() => route.query.mode === 'friend' ?? false);
 const mode: Ref<Mode> = computed(() => (isFriendMode.value ? 'friend' : 'self'));
@@ -36,6 +35,7 @@ async function handleSubmit() {
 			method: 'POST',
 			body: {
 				wishlist: wishlist.value,
+				profileType: profileType.value,
 				username: isFriendMode.value ? username.value : user.value?.login,
 				mode: mode.value,
 				roasted_by: isFriendMode.value ? user.value?.login : undefined,
@@ -46,7 +46,7 @@ async function handleSubmit() {
 			},
 		});
 
-		navigateTo(`/${response.username}`);
+		// navigateTo(`/${response.username}`);
 	} catch (error) {
 		console.error(error);
 	} finally {
@@ -54,27 +54,54 @@ async function handleSubmit() {
 	}
 }
 
-// Verify the user while typing
-async function verifyUser(username: string) {
-	loading.value = true;
-
-	if (username.length === 0) {
-		isUserVerified.value = false;
-		profileType.value = 'user';
-		loading.value = false;
-		return;
-	}
-
-	try {
-		const response = await $fetch(`/api/${username}/verify`);
-		isUserVerified.value = response.status === 'FOUND';
-		profileType.value = response.type.toLowerCase() as 'user' | 'organization';
-	} finally {
-		loading.value = false;
-	}
+interface GithubUser {
+	login: string;
+	type: 'user' | 'organization';
+	avatarUrl: string;
 }
 
-watchDebounced(username, verifyUser, { debounce: 300 });
+interface GithubResponse {
+	status: 'SUCCESS' | 'ERROR';
+	users: GithubUser[];
+}
+
+function useGithubSearch() {
+	const users = ref<GithubUser[]>([]);
+	const isLoading = ref(false);
+	const searchQuery = ref('');
+
+	const debouncedSearch = useDebounceFn(async (query: string) => {
+		if (!query || query.length === 0) {
+			users.value = [];
+			return;
+		}
+
+		isLoading.value = true;
+		try {
+			const response = await $fetch<GithubResponse>(`/api/search?q=${query}`);
+			users.value = response.users.map((user) => ({
+				label: user.login,
+				avatar: {
+					src: user.avatarUrl,
+				},
+				...user,
+			}));
+		} finally {
+			isLoading.value = false;
+		}
+	}, 300);
+
+	return {
+		users,
+		isLoading,
+		searchQuery,
+		search: debouncedSearch,
+	};
+}
+
+// Use the composable
+const { users, isLoading, searchQuery, search } = useGithubSearch();
+
 
 // Copy for the form based on the mode (self or friend)
 const copy = {
@@ -146,24 +173,38 @@ const copy = {
 								:username="user?.login"
 							/>
 							<UFormField v-else block size="xl" class="flex-1 mt-2">
-								<UInput
+								<UInputMenu
+									type="text"
 									v-model="username"
+									:items="users || []"
+									@update:model-value="(item) => {
+										console.log('item', item);
+										username = typeof item === 'string' ? item : item?.login ?? '';
+										if (typeof item === 'object' && item) {
+											profileType = item.type.toLowerCase() as 'user' | 'organization';
+										}
+									}"
+									@update:search-term="(term) => {
+										if (term !== username) {
+											search(term);
+										}
+									}"
 									class="border-red-200 focus:border-green-500 w-full"
 									:placeholder="copy[mode].formUsernamePlaceholder"
 									variant="soft"
 									:avatar="{
 										src: avatarUrl,
 									}"
+									data-1p-ignore
 								>
+
 									<template #trailing>
-										<Icon v-if="isUserVerified" name="i-mdi-check" class="text-green-500 h-8" />
-										<Icon v-else-if="!isUserVerified" name="i-mdi-close" class="text-red-500 h-8" />
-										<Icon v-else-if="loading" name="i-mdi-loading" class="animate-spin h-8" />
+										<UButton v-if="username" variant="ghost" @click="username = ''" icon="i-mdi-close" />
 									</template>
-								</UInput>
+								</UInputMenu>
 							</UFormField>
 							<BaseText
-								v-if="isUserVerified && isFriendMode && profileType === 'organization'"
+								v-if="isFriendMode && profileType === 'organization'"
 								size="sm"
 								class="font-bold mt-2 font-mono"
 							>

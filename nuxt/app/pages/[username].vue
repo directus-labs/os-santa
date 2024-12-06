@@ -102,7 +102,7 @@ function loginWithGithub(redirectUri: string) {
 			<div class="relative pt-12 wrapper">
 				<aside class="left" v-if="list !== null">
 					<!-- Share Buttons -->
-					<div class="sticky top-20 mt-12">
+					<div class="lg:sticky lg:top-20 lg:mt-12">
 						<p class="text-red-200 text-2xl text-center font-cursive -rotate-2">Sharing is Caring</p>
 						<SocialShare class="text-4xl flex items-center space-x-3 text-white mt-4 justify-center">
 							<SocialShareTwitter class="hover:text-green-500" />
@@ -169,7 +169,7 @@ function loginWithGithub(redirectUri: string) {
 								:profile="username"
 								:user-count="data?.likes?.userLikeCount"
 								:total-count="data?.likes?.totalLikes"
-								class="w-32"
+								class="w-32 mx-auto"
 							/>
 						</ClientOnly>
 					</div>

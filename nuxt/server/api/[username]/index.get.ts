@@ -56,8 +56,8 @@ export default defineEventHandler(async (event): Promise<ProfileResponse> => {
 
 			// Fetch likes data in parallel
 			const [likesData, userLike] = await Promise.all([getLikesByProfile(username), getUserLike(username, visitorHash)]);
-			totalLikes = likesData[0]?.sum?.count || 0;
-			userLikeCount = userLike[0]?.count || 0;
+			totalLikes = Number(likesData[0]?.sum?.count) || 0;
+			userLikeCount = Number(userLike[0]?.count) || 0;
 		}
 
 		return {
