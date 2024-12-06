@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
-import { watch } from 'vue';
+import type { ProfileResponse } from '#shared/types/endpoints.js';
 
 const route = useRoute();
 const { url } = useSiteConfig();
@@ -8,8 +8,8 @@ const redirect = useCookie('redirect_uri');
 
 const { loggedIn, user } = useUserSession();
 
-const { data, status, error } = useAsyncData(`letter-${route.params.username}`, () =>
-	$fetch(`/api/${route.params.username}`, {
+const { data, status, error } = useAsyncData<ProfileResponse>(`letter-${route.params.username}`, () =>
+	$fetch(`/api/profiles/${route.params.username}`, {
 		method: 'GET',
 	}),
 );
@@ -18,7 +18,7 @@ const showLetter = ref(false);
 const letter = computed(() => markdownToHtml(data.value?.letter || ''));
 const shouldAnimate = computed(() => data.value?.list !== null && data.value?.is_new !== true);
 
-const list = computed(() => data.value?.list || null);
+const list: Ref<ProfileResponse['list'] | null> = computed(() => data.value?.list || null);
 const username = computed(() => route.params.username as string);
 const avatarUrl = computed(() => `https://github.com/${username.value}.png`);
 const githubUrl = computed(() => `https://github.com/${username.value}`);
@@ -165,12 +165,7 @@ function loginWithGithub(redirectUri: string) {
 						<!-- Like Button -->
 						<ClientOnly>
 							<p class="text-2xl font-cursive text-red-200 -rotate-2 text-center">Spicy-ness</p>
-							<SpiceMeter
-								:profile="username"
-								:user-count="data?.likes?.userLikeCount"
-								:total-count="data?.likes?.totalLikes"
-								class="w-32 mx-auto"
-							/>
+							<SpiceMeter :username class="w-32 mx-auto" />
 						</ClientOnly>
 					</div>
 				</aside>

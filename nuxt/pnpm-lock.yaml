@@ -11,40 +11,12 @@ importers:
       '@ai-sdk/anthropic':
         specifier: ^1.0.2
         version: 1.0.2(zod@3.23.8)
-      '@nuxtjs/seo':
-        specifier: 2.0.0-rc.23
-        version: 2.0.0-rc.23(h3@1.13.0)(magicast@0.3.5)(rollup@4.27.3)(vite@5.4.11(@types/node@22.9.1)(lightningcss@1.28.1)(terser@5.36.0))(vue@3.5.13(typescript@5.6.3))
-      ai:
-        specifier: ^4.0.5
-        version: 4.0.5(react@18.3.1)(zod@3.23.8)
-      motion:
-        specifier: ^11.11.17
-        version: 11.11.17(react@18.3.1)
-      nuxt-og-image:
-        specifier: ^3.0.8
-        version: 3.0.8(magicast@0.3.5)(rollup@4.27.3)(vite@5.4.11(@types/node@22.9.1)(lightningcss@1.28.1)(terser@5.36.0))(vue@3.5.13(typescript@5.6.3))
-      nuxt-posthog:
-        specifier: ^1.5.4
-        version: 1.5.4(magicast@0.3.5)(rollup@4.27.3)
-      sharp:
-        specifier: ^0.33.5
-        version: 0.33.5
-    devDependencies:
-      '@anthropic-ai/sdk':
-        specifier: ^0.32.1
-        version: 0.32.1
       '@directus/sdk':
         specifier: 18.0.0
         version: 18.0.0
-      '@directus/types':
-        specifier: 12.2.2
-        version: 12.2.2(knex@3.1.0)(vue@3.5.13(typescript@5.6.3))
       '@formkit/auto-animate':
         specifier: 0.8.2
         version: 0.8.2
-      '@nuxt/devtools':
-        specifier: 1.6.1
-        version: 1.6.1(rollup@4.27.3)(vite@5.4.11(@types/node@22.9.1)(lightningcss@1.28.1)(terser@5.36.0))(vue@3.5.13(typescript@5.6.3))
       '@nuxt/image':
         specifier: 1.8.1
         version: 1.8.1(ioredis@5.4.1)(magicast@0.3.5)(rollup@4.27.3)
@@ -54,18 +26,9 @@ importers:
       '@nuxt/ui':
         specifier: 3.0.0-alpha.9
         version: 3.0.0-alpha.9(@babel/core@7.26.0)(@babel/parser@7.26.2)(axios@1.7.7)(change-case@5.4.4)(embla-carousel@8.5.1)(focus-trap@7.6.2)(ioredis@5.4.1)(magicast@0.3.5)(postcss@8.4.49)(rollup@4.27.3)(svelte@5.2.7)(typescript@5.6.3)(vite@5.4.11(@types/node@22.9.1)(lightningcss@1.28.1)(terser@5.36.0))(vue@3.5.13(typescript@5.6.3))
-      '@nuxtjs/color-mode':
-        specifier: 3.5.2
-        version: 3.5.2(magicast@0.3.5)(rollup@4.27.3)
-      '@nuxtjs/eslint-config-typescript':
-        specifier: 12.1.0
-        version: 12.1.0(eslint@9.15.0(jiti@2.4.0))(typescript@5.6.3)
-      '@nuxtjs/eslint-module':
-        specifier: 4.1.0
-        version: 4.1.0(eslint@9.15.0(jiti@2.4.0))(magicast@0.3.5)(rollup@4.27.3)(vite@5.4.11(@types/node@22.9.1)(lightningcss@1.28.1)(terser@5.36.0))(webpack@5.96.1(esbuild@0.21.5))
-      '@tailwindcss/typography':
-        specifier: 0.5.15
-        version: 0.5.15(tailwindcss@4.0.0-alpha.34)
+      '@nuxtjs/seo':
+        specifier: 2.0.0-rc.23
+        version: 2.0.0-rc.23(h3@1.13.0)(magicast@0.3.5)(rollup@4.27.3)(vite@5.4.11(@types/node@22.9.1)(lightningcss@1.28.1)(terser@5.36.0))(vue@3.5.13(typescript@5.6.3))
       '@tsparticles/slim':
         specifier: ^3.5.0
         version: 3.6.0
@@ -81,30 +44,9 @@ importers:
       '@vueuse/sound':
         specifier: ^2.0.1
         version: 2.0.1(vue@3.5.13(typescript@5.6.3))
-      date-fns:
-        specifier: 4.1.0
-        version: 4.1.0
-      defu:
-        specifier: ^6.1.4
-        version: 6.1.4
-      destr:
-        specifier: ^2.0.3
-        version: 2.0.3
-      directus-sdk-typegen:
-        specifier: ^0.1.6
-        version: 0.1.6
-      eslint:
-        specifier: 9.15.0
-        version: 9.15.0(jiti@2.4.0)
-      eslint-config-prettier:
-        specifier: 9.1.0
-        version: 9.1.0(eslint@9.15.0(jiti@2.4.0))
-      eslint-plugin-prettier:
-        specifier: 5.2.1
-        version: 5.2.1(@types/eslint@9.6.1)(eslint-config-prettier@9.1.0(eslint@9.15.0(jiti@2.4.0)))(eslint@9.15.0(jiti@2.4.0))(prettier@3.3.3)
-      eslint-plugin-vue:
-        specifier: 9.31.0
-        version: 9.31.0(eslint@9.15.0(jiti@2.4.0))
+      ai:
+        specifier: ^4.0.5
+        version: 4.0.5(react@18.3.1)(zod@3.23.8)
       micromark:
         specifier: 4.0.1
         version: 4.0.1
@@ -117,9 +59,61 @@ importers:
       nuxt-auth-utils:
         specifier: ^0.5.5
         version: 0.5.5(magicast@0.3.5)(rollup@4.27.3)
+      nuxt-og-image:
+        specifier: ^3.0.8
+        version: 3.0.8(magicast@0.3.5)(rollup@4.27.3)(vite@5.4.11(@types/node@22.9.1)(lightningcss@1.28.1)(terser@5.36.0))(vue@3.5.13(typescript@5.6.3))
+      nuxt-posthog:
+        specifier: ^1.5.4
+        version: 1.5.4(magicast@0.3.5)(rollup@4.27.3)
       nuxt-security:
         specifier: ^2.1.4
         version: 2.1.4(magicast@0.3.5)(rollup@4.27.3)
+      sharp:
+        specifier: ^0.33.5
+        version: 0.33.5
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@directus/types':
+        specifier: 12.2.2
+        version: 12.2.2(knex@3.1.0)(vue@3.5.13(typescript@5.6.3))
+      '@nuxt/devtools':
+        specifier: 1.6.1
+        version: 1.6.1(rollup@4.27.3)(vite@5.4.11(@types/node@22.9.1)(lightningcss@1.28.1)(terser@5.36.0))(vue@3.5.13(typescript@5.6.3))
+      '@nuxtjs/eslint-config-typescript':
+        specifier: 12.1.0
+        version: 12.1.0(eslint@9.15.0(jiti@2.4.0))(typescript@5.6.3)
+      '@nuxtjs/eslint-module':
+        specifier: 4.1.0
+        version: 4.1.0(eslint@9.15.0(jiti@2.4.0))(magicast@0.3.5)(rollup@4.27.3)(vite@5.4.11(@types/node@22.9.1)(lightningcss@1.28.1)(terser@5.36.0))(webpack@5.96.1(esbuild@0.21.5))
+      '@tailwindcss/typography':
+        specifier: 0.5.15
+        version: 0.5.15(tailwindcss@4.0.0-alpha.34)
+      defu:
+        specifier: ^6.1.4
+        version: 6.1.4
+      destr:
+        specifier: ^2.0.3
+        version: 2.0.3
+      directus-sdk-typegen:
+        specifier: ^0.1.6
+        version: 0.1.6
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
+      eslint:
+        specifier: 9.15.0
+        version: 9.15.0(jiti@2.4.0)
+      eslint-config-prettier:
+        specifier: 9.1.0
+        version: 9.1.0(eslint@9.15.0(jiti@2.4.0))
+      eslint-plugin-prettier:
+        specifier: 5.2.1
+        version: 5.2.1(@types/eslint@9.6.1)(eslint-config-prettier@9.1.0(eslint@9.15.0(jiti@2.4.0)))(eslint@9.15.0(jiti@2.4.0))(prettier@3.3.3)
+      eslint-plugin-vue:
+        specifier: 9.31.0
+        version: 9.31.0(eslint@9.15.0(jiti@2.4.0))
       prettier:
         specifier: 3.3.3
         version: 3.3.3
@@ -129,9 +123,6 @@ importers:
       vue-tsc:
         specifier: 2.1.10
         version: 2.1.10(typescript@5.6.3)
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
 
 packages:
 
@@ -200,9 +191,6 @@ packages:
 
   '@antfu/utils@0.7.10':
     resolution: {integrity: sha512-+562v9k4aI80m1+VuMHehNJWLOFjBnXn3tdOitzD0il5b7smkSBal4+a3oKiQTbrwMmN/TBUMDvbdoWDehgOww==}
-
-  '@anthropic-ai/sdk@0.32.1':
-    resolution: {integrity: sha512-U9JwTrDvdQ9iWuABVsMLj8nJVwAyQz6QXvgLsVhryhCEPkLsbcP/MXxm+jYcAwLoV8ESbaTTjnD4kuAFa+Hyjg==}
 
   '@babel/code-frame@7.26.2':
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
@@ -1860,12 +1848,6 @@ packages:
   '@types/ms@0.7.34':
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
-  '@types/node-fetch@2.6.12':
-    resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
-
-  '@types/node@18.19.64':
-    resolution: {integrity: sha512-955mDqvO2vFf/oL7V3WiUtiz+BugyX8uVbaT2H8oj3+8dRyH2FLiNdowe7eNqRM7IOIZvzDH76EoAT+gwm6aIQ==}
-
   '@types/node@22.9.1':
     resolution: {integrity: sha512-p8Yy/8sw1caA8CdRIQBG5tiLHmxtQKObCijiAa9Ez+d4+PRffM4054xbju0msf+cvhJpnFEeNjxmVT/0ipktrg==}
 
@@ -2366,10 +2348,6 @@ packages:
   agent-base@7.1.1:
     resolution: {integrity: sha512-H0TSyFNDMomMNJQBn8wFV5YC/2eJ+VXECwOadZJT554xP6cODZHPX3H9QMQECxvrgiSOP1pHjy1sMWQVYJOUOA==}
     engines: {node: '>= 14'}
-
-  agentkeepalive@4.5.0:
-    resolution: {integrity: sha512-5GG/5IbQQpC9FpkRGsSvZI5QYeSCzlJHdpBQntCsuTOxhKD8lqKhrleg2Yi7yvMIf82Ycmmqln9U8V9qwEiJew==}
-    engines: {node: '>= 8.0.0'}
 
   ai@4.0.5:
     resolution: {integrity: sha512-urkcVP+8gooXlSIAwofVrMrmR8RzsGlOPhTf65+W1z+eLtuHWLxGDa6/j5TNDrlcFgqwkCnoy4JxtrcTryn9qw==}
@@ -2967,9 +2945,6 @@ packages:
     resolution: {integrity: sha512-t/Ygsytq+R995EJ5PZlD4Cu56sWa8InXySaViRzw9apusqsOO2bQP+SbYzAhR0pFKoB+43lYy8rWban9JSuXnA==}
     engines: {node: '>= 0.4'}
 
-  date-fns@4.1.0:
-    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
-
   db0@0.2.1:
     resolution: {integrity: sha512-BWSFmLaCkfyqbSEZBQINMVNjCVfrogi7GQ2RSy1tmtfK9OXlsup6lUMwLsqSD7FbAjD04eWFdXowSHHUp6SE/Q==}
     peerDependencies:
@@ -3153,8 +3128,8 @@ packages:
     resolution: {integrity: sha512-1gxPBJpI/pcjQhKgIU91II6Wkay+dLcN3M6rf2uwP8hRur3HtQXjVrdAK3sjC0piaEuxzMwjXChcETiJl47lAQ==}
     engines: {node: '>=18'}
 
-  dotenv@16.4.5:
-    resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
+  dotenv@16.4.7:
+    resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
 
   duplexer@0.1.2:
@@ -3670,33 +3645,12 @@ packages:
     resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
     engines: {node: '>=14'}
 
-  form-data-encoder@1.7.2:
-    resolution: {integrity: sha512-qfqtYan3rxrnCk1VYaA4H+Ms9xdpPqvLZa6xmMgFvhO32x7/3J/ExcTd6qpxM0vH2GdMI+poehyBZvqfMTto8A==}
-
   form-data@4.0.1:
     resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
     engines: {node: '>= 6'}
 
-  formdata-node@4.4.1:
-    resolution: {integrity: sha512-0iirZp3uVDjVGt9p49aTaqjk84TrglENEDuqfdlZQ1roC9CWlPk6Avf8EEnZNcAqPonwkG35x4n3ww/1THYAeQ==}
-    engines: {node: '>= 12.20'}
-
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
-
-  framer-motion@11.11.17:
-    resolution: {integrity: sha512-O8QzvoKiuzI5HSAHbcYuL6xU+ZLXbrH7C8Akaato4JzQbX2ULNeniqC2Vo5eiCtFktX9XsJ+7nUhxcl2E2IjpA==}
-    peerDependencies:
-      '@emotion/is-prop-valid': '*'
-      react: ^18.0.0
-      react-dom: ^18.0.0
-    peerDependenciesMeta:
-      '@emotion/is-prop-valid':
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
 
   fresh@0.5.2:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
@@ -3965,9 +3919,6 @@ packages:
   human-signals@8.0.0:
     resolution: {integrity: sha512-/1/GPCpDUCCYwlERiYjxoczfP0zfvZMU/OWgQPMya9AbAE24vseigFdhAMObpc8Q4lc/kjutPfUddDYyAmejnA==}
     engines: {node: '>=18.18.0'}
-
-  humanize-ms@1.2.1:
-    resolution: {integrity: sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==}
 
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
@@ -4734,20 +4685,6 @@ packages:
   mlly@1.7.3:
     resolution: {integrity: sha512-xUsx5n/mN0uQf4V548PKQ+YShA4/IW0KI1dZhrNrPCLG+xizETbHTkOa1f8/xut9JRPp8kQuMnz0oqwkTiLo/A==}
 
-  motion@11.11.17:
-    resolution: {integrity: sha512-y6mXYElvJ5HHwPBUpYG/5wclKVGW4hJhqPkTjWccib5/WrcRM185adg3+4aSmG5iD10XKFt5uBOAiKwuzMHPPQ==}
-    peerDependencies:
-      '@emotion/is-prop-valid': '*'
-      react: ^18.0.0
-      react-dom: ^18.0.0
-    peerDependenciesMeta:
-      '@emotion/is-prop-valid':
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -4809,10 +4746,6 @@ packages:
 
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
-
-  node-domexception@1.0.0:
-    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
-    engines: {node: '>=10.5.0'}
 
   node-fetch-native@1.6.4:
     resolution: {integrity: sha512-IhOigYzAKHd244OC0JIMIUrjzctirCmPkaIfhDeGcEETWof5zKYUW7e7MYvChGWh/4CJeXEgsRyGzuF334rOOQ==}
@@ -6110,9 +6043,6 @@ packages:
   unctx@2.3.1:
     resolution: {integrity: sha512-PhKke8ZYauiqh3FEMVNm7ljvzQiph0Mt3GBRve03IJm7ukfaON2OBK795tLwhbyfzknuRRkW0+Ze+CQUmzOZ+A==}
 
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
-
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
@@ -6499,10 +6429,6 @@ packages:
     resolution: {integrity: sha512-TnbFSbcOCcDgjZ4piURLCbJ3nJhznVh9kw6F6iokjiFPl8ONxe9A6nMDVXDiNbrSfLILs6vB07F7wLBrwPYzJw==}
     engines: {node: '>=10.13.0'}
 
-  web-streams-polyfill@4.0.0-beta.3:
-    resolution: {integrity: sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==}
-    engines: {node: '>= 14'}
-
   web-vitals@4.2.4:
     resolution: {integrity: sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==}
 
@@ -6720,18 +6646,6 @@ snapshots:
       tinyexec: 0.3.1
 
   '@antfu/utils@0.7.10': {}
-
-  '@anthropic-ai/sdk@0.32.1':
-    dependencies:
-      '@types/node': 18.19.64
-      '@types/node-fetch': 2.6.12
-      abort-controller: 3.0.0
-      agentkeepalive: 4.5.0
-      form-data-encoder: 1.7.2
-      formdata-node: 4.4.1
-      node-fetch: 2.7.0
-    transitivePeerDependencies:
-      - encoding
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -7830,7 +7744,7 @@ snapshots:
       create-require: 1.1.1
       defu: 6.1.4
       destr: 2.0.3
-      dotenv: 16.4.5
+      dotenv: 16.4.7
       git-url-parse: 15.0.0
       is-docker: 3.0.0
       jiti: 1.21.6
@@ -8791,15 +8705,6 @@ snapshots:
 
   '@types/ms@0.7.34': {}
 
-  '@types/node-fetch@2.6.12':
-    dependencies:
-      '@types/node': 18.19.64
-      form-data: 4.0.1
-
-  '@types/node@18.19.64':
-    dependencies:
-      undici-types: 5.26.5
-
   '@types/node@22.9.1':
     dependencies:
       undici-types: 6.19.8
@@ -9565,10 +9470,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  agentkeepalive@4.5.0:
-    dependencies:
-      humanize-ms: 1.2.1
-
   ai@4.0.5(react@18.3.1)(zod@3.23.8):
     dependencies:
       '@ai-sdk/provider': 1.0.1
@@ -9877,7 +9778,7 @@ snapshots:
       chokidar: 4.0.1
       confbox: 0.1.8
       defu: 6.1.4
-      dotenv: 16.4.5
+      dotenv: 16.4.7
       giget: 1.2.3
       jiti: 2.4.0
       mlly: 1.7.3
@@ -10234,8 +10135,6 @@ snapshots:
       es-errors: 1.3.0
       is-data-view: 1.0.1
 
-  date-fns@4.1.0: {}
-
   db0@0.2.1: {}
 
   de-indent@1.0.2: {}
@@ -10363,7 +10262,7 @@ snapshots:
     dependencies:
       type-fest: 4.27.0
 
-  dotenv@16.4.5: {}
+  dotenv@16.4.7: {}
 
   duplexer@0.1.2: {}
 
@@ -11057,26 +10956,13 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  form-data-encoder@1.7.2: {}
-
   form-data@4.0.1:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
-  formdata-node@4.4.1:
-    dependencies:
-      node-domexception: 1.0.0
-      web-streams-polyfill: 4.0.0-beta.3
-
   fraction.js@4.3.7: {}
-
-  framer-motion@11.11.17(react@18.3.1):
-    dependencies:
-      tslib: 2.8.1
-    optionalDependencies:
-      react: 18.3.1
 
   fresh@0.5.2: {}
 
@@ -11375,10 +11261,6 @@ snapshots:
   human-signals@5.0.0: {}
 
   human-signals@8.0.0: {}
-
-  humanize-ms@1.2.1:
-    dependencies:
-      ms: 2.1.3
 
   iconv-lite@0.6.3:
     dependencies:
@@ -12222,13 +12104,6 @@ snapshots:
       pkg-types: 1.2.1
       ufo: 1.5.4
 
-  motion@11.11.17(react@18.3.1):
-    dependencies:
-      framer-motion: 11.11.17(react@18.3.1)
-      tslib: 2.8.1
-    optionalDependencies:
-      react: 18.3.1
-
   mri@1.2.0: {}
 
   mrmime@2.0.0: {}
@@ -12355,8 +12230,6 @@ snapshots:
     optional: true
 
   node-addon-api@7.1.1: {}
-
-  node-domexception@1.0.0: {}
 
   node-fetch-native@1.6.4: {}
 
@@ -14007,8 +13880,6 @@ snapshots:
       magic-string: 0.30.13
       unplugin: 1.16.0
 
-  undici-types@5.26.5: {}
-
   undici-types@6.19.8: {}
 
   undici@6.21.0: {}
@@ -14476,8 +14347,6 @@ snapshots:
     dependencies:
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
-
-  web-streams-polyfill@4.0.0-beta.3: {}
 
   web-vitals@4.2.4: {}
 

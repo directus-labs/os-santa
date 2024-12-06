@@ -16,7 +16,7 @@ export default defineNuxtConfig({
 		'@formkit/auto-animate/nuxt',
 		'nuxt-auth-utils',
 		'nuxt-security',
-		'nuxt-posthog',
+		// 'nuxt-posthog',
 	],
 
 	$production: {

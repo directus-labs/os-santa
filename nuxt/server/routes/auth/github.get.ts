@@ -8,7 +8,7 @@ export default defineOAuthGitHubEventHandler({
 		const redirectUri = getCookie(event, 'redirect_uri');
 
 		await setUserSession(event, {
-			user,
+			user: user,
 		});
 
 		return sendRedirect(event, redirectUri ?? '/');

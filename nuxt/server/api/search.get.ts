@@ -1,5 +1,7 @@
+import type { SearchResponse } from '#shared/types/endpoints.js';
+
 export default defineCachedEventHandler(
-	async (event) => {
+	async (event): Promise<SearchResponse> => {
 		const query = getQuery(event);
 		const searchTerm = query.q as string;
 
@@ -20,16 +22,16 @@ export default defineCachedEventHandler(
 			}>('https://api.github.com/search/users', {
 				params: {
 					q: searchTerm,
-					per_page: 5, // Limit results
+					per_page: 10,
 				},
 			});
 
 			return {
 				status: 'SUCCESS',
-				users: data.items.map(user => ({
+				users: data.items.map((user) => ({
 					login: user.login,
-					type: user.type.toLowerCase(),
-					avatarUrl: user.avatar_url,
+					type: user.type,
+					avatar_url: user.avatar_url,
 				})),
 			};
 		} catch (error) {

@@ -37,11 +37,11 @@ const filterTypes = [
 	},
 	{
 		label: 'User',
-		value: 'user',
+		value: 'User',
 	},
 	{
 		label: 'Organization',
-		value: 'organization',
+		value: 'Organization',
 	},
 ];
 
@@ -73,17 +73,19 @@ const niceProfiles = computed(() => profiles.value?.filter((profile) => profile.
 						icon="lucide:search"
 							variant="none"
 							class="rounded-full basis-1/2 border-2 border-[#d4b995] bg-[#f0e0c6]
-							focus-within:outline-none focus-within:border-red-800 focus-within:ring focus-within:ring-red-600 focus-within:ring-opacity-50"
+							focus-within:outline-none focus-within:border-red-800 focus-within:ring focus-within:ring-red-600 focus-within:ring-opacity-50 "
 							:ui="{
+								base: 'placeholder:text-[#d4b995]',
 								leadingIcon: 'text-[#d4b995]',
 								trailingIcon: 'text-[#d4b995]',
+
 							}"
 						/>
 
 						<USelectMenu
 							icon="lucide:filter"
 							:modelValue="route.query.type"
-							@update:modelValue="updateQuery('type', $event.value ?? undefined)"
+							@update:modelValue="updateQuery('type', $event?.value ?? undefined)"
 							:items="filterTypes"
 							color="neutral"
 							variant="none"

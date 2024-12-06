@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { watchDebounced } from '@vueuse/core';
-
+import type { GithubProfileType, GithubUser } from '~~/shared/types/github';
 type Mode = 'self' | 'friend';
 
-const { loggedIn, user } = useUserSession();
-
 const route = useRoute();
+const { loggedIn, user } = useUserSession();
 const { url } = useSiteConfig();
+
 const loading = ref(false);
 const username = ref((route.query.username as string) ?? '');
 const wishlist = ref('');
-const profileType = ref<'user' | 'organization'>('user');
-const isUserVerified = ref(false);
+const profileType = ref<GithubProfileType>('User');
 
 const avatarUrl = computed(() => {
 	return `https://github.com/${username.value}.png`;
@@ -45,8 +43,9 @@ async function handleSubmit() {
 				},
 			},
 		});
-
-		// navigateTo(`/${response.username}`);
+		if (response.redirect) {
+			navigateTo(response.redirect);
+		}
 	} catch (error) {
 		console.error(error);
 	} finally {
@@ -65,6 +64,14 @@ interface GithubResponse {
 	users: GithubUser[];
 }
 
+/**
+ * Composable for searching Github users
+ * @returns {Object} The search composable object
+ * @returns {Ref<GithubUser[]>} users - Array of Github users
+ * @returns {Ref<boolean>} isLoading - Loading state indicator
+ * @returns {Ref<string>} searchQuery - Current search query
+ * @returns {(query: string) => void} search - Function to perform the search
+ */
 function useGithubSearch() {
 	const users = ref<GithubUser[]>([]);
 	const isLoading = ref(false);
@@ -99,9 +106,7 @@ function useGithubSearch() {
 	};
 }
 
-// Use the composable
 const { users, isLoading, searchQuery, search } = useGithubSearch();
-
 
 // Copy for the form based on the mode (self or friend)
 const copy = {
@@ -173,22 +178,26 @@ const copy = {
 								:username="user?.login"
 							/>
 							<UFormField v-else block size="xl" class="flex-1 mt-2">
-								<UInputMenu
+								<USelectMenu
 									type="text"
 									v-model="username"
 									:items="users || []"
-									@update:model-value="(item) => {
-										console.log('item', item);
-										username = typeof item === 'string' ? item : item?.login ?? '';
-										if (typeof item === 'object' && item) {
-											profileType = item.type.toLowerCase() as 'user' | 'organization';
+									@update:model-value="
+										(item) => {
+											console.log('item', item);
+											username = typeof item === 'string' ? item : (item?.login ?? '');
+											if (typeof item === 'object' && item) {
+												profileType = item.type.toLowerCase() as 'user' | 'organization';
+											}
 										}
-									}"
-									@update:search-term="(term) => {
-										if (term !== username) {
-											search(term);
+									"
+									@update:search-term="
+										(term) => {
+											if (term !== username) {
+												search(term);
+											}
 										}
-									}"
+									"
 									class="border-red-200 focus:border-green-500 w-full"
 									:placeholder="copy[mode].formUsernamePlaceholder"
 									variant="soft"
@@ -197,14 +206,13 @@ const copy = {
 									}"
 									data-1p-ignore
 								>
-
 									<template #trailing>
 										<UButton v-if="username" variant="ghost" @click="username = ''" icon="i-mdi-close" />
 									</template>
-								</UInputMenu>
+								</USelectMenu>
 							</UFormField>
 							<BaseText
-								v-if="isFriendMode && profileType === 'organization'"
+								v-if="isFriendMode && profileType === 'Organization'"
 								size="sm"
 								class="font-bold mt-2 font-mono"
 							>
@@ -229,7 +237,7 @@ const copy = {
 						<div class="flex flex-col items-end" v-auto-animate>
 							<p class="text-gray-900 text-right font-bold italic font-cursive text-2xl">Love from,</p>
 							<template v-if="loggedIn">
-								<p class="text-gray-900 text-right font-bold italic font-cursive text-2xl">{{ user.login }}</p>
+								<p class="text-gray-900 text-right font-bold italic font-cursive text-2xl">{{ user?.login }}</p>
 							</template>
 							<template v-else-if="!loggedIn && isFriendMode">
 								<UButton

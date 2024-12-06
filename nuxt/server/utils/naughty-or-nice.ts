@@ -1,60 +1,6 @@
-export interface GitHubUserData {
-	followers: {
-		totalCount: number;
-	};
-	contributionsCollection: {
-		totalCommitContributions: number;
-		totalPullRequestContributions: number;
-		totalPullRequestReviewContributions: number;
-		totalIssueContributions: number;
-	};
-
-	repositories: {
-		nodes: Array<{
-			name: string;
-			stargazerCount: number;
-			isFork: boolean;
-			pushedAt: string;
-			issues: {
-				totalCount: number;
-			};
-			createdAt: string;
-		}>;
-	};
-	organizations: {
-		nodes: Array<{
-			name: string;
-		}>;
-	};
-	sponsorshipsAsSponsor: {
-		totalCount: number;
-	};
-}
-
-export interface GitHubOrgData {
-	repositories: {
-		totalCount: number;
-		nodes: Array<{
-			name: string;
-			stargazerCount: number;
-			forkCount: number;
-			issues: {
-				totalCount: number;
-			};
-			pushedAt: string;
-			createdAt: string;
-		}>;
-	};
-	membersWithRole: {
-		totalCount: number;
-	};
-	teams: {
-		totalCount: number;
-	};
-	sponsorshipsAsSponsor: {
-		totalCount: number;
-	};
-}
+import type { GitHubOrgData } from '../graphql/getOrgProfile';
+import type { GitHubUserData } from '../graphql/getUserProfile';
+import type { GithubProfileType } from '#shared/types/github.js';
 
 export interface ScoreMetric {
 	raw: number;
@@ -79,13 +25,6 @@ export interface ScoreBreakdown {
 	list: 'naughty' | 'nice';
 }
 
-export interface Badge {
-	id: string;
-	name: string;
-	description: string;
-	criteria: (data: GitHubUserData) => boolean;
-};
-
 export const NICE_SCORE_THRESHOLD = 500;
 
 export function calculateOrgNiceScore(data: GitHubOrgData): ScoreBreakdown {
@@ -97,9 +36,9 @@ export function calculateOrgNiceScore(data: GitHubOrgData): ScoreBreakdown {
 		const breakdown = {} as ScoreBreakdown;
 
 		// Core Contributions
-		const activeRepos = data.repositories.nodes.filter(
+		const activeRepos = data.repositories?.nodes?.filter(
 			(repo) => new Date(repo.pushedAt) > sixMonthsAgo
-		).length;
+		).length ?? 0;
 		const repoScore = activeRepos * 50;
 
 		breakdown.commits = {
@@ -111,7 +50,7 @@ export function calculateOrgNiceScore(data: GitHubOrgData): ScoreBreakdown {
 		score += repoScore;
 
 		// Project Impact
-		const totalStars = data.repositories.nodes.reduce((acc, repo) => acc + repo.stargazerCount, 0);
+		const totalStars = data.repositories?.nodes?.reduce((acc, repo) => acc + repo.stargazerCount, 0) ?? 0;
 		const projectImpactScore = totalStars * 2;
 
 		breakdown.projectImpact = {
@@ -124,25 +63,25 @@ export function calculateOrgNiceScore(data: GitHubOrgData): ScoreBreakdown {
 
 
 		// Sponsorships
-		const sponsorshipScore = data.sponsorshipsAsSponsor.totalCount * 25;
+		const sponsorshipScore = data.sponsorshipsAsSponsor?.totalCount * 25 ?? 0;
 		score += sponsorshipScore;
 
 		breakdown.sponsorships = {
-			raw: data.sponsorshipsAsSponsor.totalCount,
+			raw: data.sponsorshipsAsSponsor?.totalCount ?? 0,
 			score: sponsorshipScore,
-			explanation: `${data.sponsorshipsAsSponsor.totalCount} sponsorships = ${sponsorshipScore} points (25 points per sponsorship)`,
+			explanation: `${data.sponsorshipsAsSponsor?.totalCount ?? 0} sponsorships = ${sponsorshipScore} points (25 points per sponsorship)`,
 		};
 
 		// Bonus Multipliers
 		let multiplier = 1;
 		const multiplierExplanation: string[] = [];
 
-		if (data.repositories.nodes.some((repo) => repo.stargazerCount > 500)) {
+		if (data.repositories?.nodes?.some((repo) => repo.stargazerCount > 500)) {
 			multiplier *= 1.2;
 			multiplierExplanation.push('20% bonus for having a project with >500 stars');
 		}
 
-		if (data.teams.totalCount > 0) {
+		if (data.teams?.totalCount && data.teams.totalCount > 0) {
 			multiplier *= 1.1;
 			multiplierExplanation.push('10% bonus for having organized teams');
 		}
@@ -165,13 +104,14 @@ export function calculateOrgNiceScore(data: GitHubOrgData): ScoreBreakdown {
 	}
 }
 
-export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: 'user' | 'organization' = 'user'): ScoreBreakdown {
+export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: GithubProfileType): ScoreBreakdown {
 
-	console.log('data', data);
-	console.log('type', type);
-	if (type === 'organization') {
+	// If the data is an organization, calculate the organization nice score because there's no contributionsCollection
+	if (type === 'Organization') {
 		return calculateOrgNiceScore(data as GitHubOrgData);
 	}
+
+	let userData = data as GitHubUserData;
 
 	const sixMonthsAgo = new Date()
 	sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
@@ -179,47 +119,48 @@ export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: '
 	let score = 0;
 	const breakdown = {} as ScoreBreakdown;
 
+
 	// Core Contributions
-	const commitScore = Math.floor(data.contributionsCollection.totalCommitContributions);
-	const prScore = data.contributionsCollection.totalPullRequestContributions * 2;
-	const reviewScore = data.contributionsCollection.totalPullRequestReviewContributions * 3;
-	const issueScore = data.contributionsCollection.totalIssueContributions * 0.5;
-	const followerScore = data.followers.totalCount * 2;
+	const commitScore = Math.floor(userData.contributionsCollection.totalCommitContributions);
+	const prScore = userData.contributionsCollection.totalPullRequestContributions * 2;
+	const reviewScore = userData.contributionsCollection.totalPullRequestReviewContributions * 3;
+	const issueScore = userData.contributionsCollection.totalIssueContributions * 0.5;
+	const followerScore = userData.followers.totalCount * 2;
 
 	breakdown.commits = {
-		raw: data.contributionsCollection.totalCommitContributions,
+		raw: userData.contributionsCollection.totalCommitContributions,
 		score: commitScore,
-		explanation: `${data.contributionsCollection.totalCommitContributions} commits = ${commitScore} points (1 point per 1 commit)`,
+		explanation: `${userData.contributionsCollection.totalCommitContributions} commits = ${commitScore} points (1 point per 1 commit)`,
 	};
 
 	breakdown.pullRequests = {
-		raw: data.contributionsCollection.totalPullRequestContributions,
+		raw: userData.contributionsCollection.totalPullRequestContributions,
 		score: prScore,
-		explanation: `${data.contributionsCollection.totalPullRequestContributions} PRs = ${prScore} points (2 points per PR)`,
+		explanation: `${userData.contributionsCollection.totalPullRequestContributions} PRs = ${prScore} points (2 points per PR)`,
 	};
 
 	breakdown.reviews = {
-		raw: data.contributionsCollection.totalPullRequestReviewContributions,
+		raw: userData.contributionsCollection.totalPullRequestReviewContributions,
 		score: reviewScore,
-		explanation: `${data.contributionsCollection.totalPullRequestReviewContributions} reviews = ${reviewScore} points (3 points per review)`,
+		explanation: `${userData.contributionsCollection.totalPullRequestReviewContributions} reviews = ${reviewScore} points (3 points per review)`,
 	};
 
 	breakdown.issues = {
-		raw: data.contributionsCollection.totalIssueContributions,
+		raw: userData.contributionsCollection.totalIssueContributions,
 		score: issueScore,
-		explanation: `${data.contributionsCollection.totalIssueContributions} issues = ${issueScore} points (0.5 point per issue)`,
+		explanation: `${userData.contributionsCollection.totalIssueContributions} issues = ${issueScore} points (0.5 point per issue)`,
 	};
 
 	breakdown.followers = {
-		raw: data.followers.totalCount,
+		raw: userData.followers.totalCount,
 		score: followerScore,
-		explanation: `${data.followers.totalCount} followers = ${followerScore} points (2 points per follower)`,
+		explanation: `${userData.followers.totalCount} followers = ${followerScore} points (2 points per follower)`,
 	};
 
 	score += commitScore + prScore + reviewScore + issueScore + followerScore;
 
 	// Project Impact
-	const ownedRepos = data.repositories.nodes.filter((repo) => !repo.isFork);
+	const ownedRepos = userData.repositories.nodes?.filter((repo) => !repo.isFork) ?? [];
 	const totalStars = ownedRepos.reduce((acc, repo) => acc + repo.stargazerCount, 0);
 	const projectImpactScore = totalStars * 2;
 
@@ -232,7 +173,7 @@ export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: '
 	score += projectImpactScore;
 
 	// Negative Signals
-	const abandonedForks = data.repositories.nodes.filter((repo) => repo.isFork && new Date(repo.pushedAt) < sixMonthsAgo).length;
+	const abandonedForks = userData.repositories.nodes?.filter((repo) => repo.isFork && new Date(repo.pushedAt) < sixMonthsAgo).length ?? 0;
 	const forkPenalty = abandonedForks * -2;
 
 	breakdown.forkPenalty = {
@@ -244,13 +185,13 @@ export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: '
 	score += forkPenalty;
 
 	// Sponsorships
-	const sponsorshipScore = data.sponsorshipsAsSponsor.totalCount * 25;
+	const sponsorshipScore = userData.sponsorshipsAsSponsor?.totalCount * 25 ?? 0;
 	score += sponsorshipScore;
 
 	breakdown.sponsorships = {
-		raw: data.sponsorshipsAsSponsor.totalCount,
+		raw: userData.sponsorshipsAsSponsor.totalCount,
 		score: sponsorshipScore,
-		explanation: `${data.sponsorshipsAsSponsor.totalCount} sponsorships = ${sponsorshipScore} points (25 points per sponsorship)`,
+		explanation: `${userData.sponsorshipsAsSponsor.totalCount} sponsorships = ${sponsorshipScore} points (25 points per sponsorship)`,
 	};
 
 	// Bonus Multipliers
@@ -264,7 +205,7 @@ export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: '
 	}
 
 	// Organization membership
-	if (data.organizations.nodes.length > 0) {
+	if (userData.organizations.nodes?.length && userData.organizations.nodes.length > 0) {
 		multiplier *= 1.1;
 		multiplierExplanation.push('10% bonus for organization membership');
 	}

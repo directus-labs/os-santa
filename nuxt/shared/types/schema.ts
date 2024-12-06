@@ -16,7 +16,7 @@ export interface Profile {
 	created_at?: string | null;
 	updated_by?: DirectusUser | string | null;
 	updated_at?: string | null;
-	type?: 'organization' | 'user' | null;
+	type?: 'Organization' | 'User' | null;
 	list?: 'naughty' | 'nice' | null;
 	wishlist?: string | null;
 	score?: number | null;
@@ -24,6 +24,8 @@ export interface Profile {
 	metadata?: Record<string, any> | null;
 	referred_by?: string | null;
 	roasted_by?: string | null;
+	mode?: 'self' | 'friend' | null;
+	is_public?: boolean | null;
 	likes?: Like[] | string[];
 }
 
@@ -46,7 +48,6 @@ export interface DirectusActivity {
 	user_agent?: string | null;
 	collection?: string;
 	item?: string;
-	comment?: string | null;
 	origin?: string | null;
 	revisions?: DirectusRevision[] | string[];
 }

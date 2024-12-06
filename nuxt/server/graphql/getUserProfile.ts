@@ -75,3 +75,72 @@ export default `query getUserProfile($username: String!) {
     }
   }
 }`;
+
+export interface GitHubUserData {
+	login: string;
+	name: string;
+	location?: string;
+	twitterUsername?: string;
+	url: string;
+	avatarUrl: string;
+	websiteUrl?: string;
+	company?: string;
+	bio?: string;
+	readme?: {
+		object?: {
+			text?: string;
+		};
+	};
+	starredRepositories: {
+		totalCount: number;
+	};
+	followers: {
+		totalCount: number;
+	};
+	following: {
+		totalCount: number;
+	};
+	contributionsCollection: {
+		totalRepositoryContributions: number;
+		totalRepositoriesWithContributedIssues: number;
+		totalRepositoriesWithContributedCommits: number;
+		totalCommitContributions: number;
+		totalIssueContributions: number;
+		totalPullRequestContributions: number;
+		totalPullRequestReviewContributions: number;
+	};
+	repositories: {
+		totalCount: number;
+		nodes?: Array<{
+			forkCount: number;
+			isFork: boolean;
+			name: string;
+			description?: string;
+			descriptionHTML?: string;
+			url: string;
+			createdAt: string;
+			stargazerCount: number;
+			issues: {
+				totalCount: number;
+			};
+			readme?: {
+				text?: string;
+			};
+			pushedAt: string;
+			commitComments: {
+				totalCount: number;
+			};
+		}>;
+	};
+	organizations: {
+		nodes?: Array<{
+			name: string;
+			description?: string;
+			url: string;
+			avatarUrl: string;
+		}>;
+	};
+	sponsorshipsAsSponsor: {
+		totalCount: number;
+	};
+}

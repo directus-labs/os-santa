@@ -1,3 +1,11 @@
+import type { Profile } from '~~/shared/types/schema';
+
+export interface ProfileWithLikes extends Profile {
+	meta: {
+		totalLikes: number;
+	};
+}
+
 export default defineCachedEventHandler(
 	async (event) => {
 		const query = getQuery(event);
@@ -36,7 +44,7 @@ export default defineCachedEventHandler(
 
 			if (q) {
 				filteredProfiles = filteredProfiles.filter((profile) =>
-					profile.username.toLowerCase().includes(q.toLowerCase()),
+					profile.username.toLowerCase().includes(q.toString().toLowerCase()),
 				);
 			}
 
@@ -66,7 +74,7 @@ export default defineCachedEventHandler(
 	},
 
 	{
-		maxAge: 60 * 1, // Cache for 5 minutes
+		maxAge: 60 * 1, // Cache for 1 minute
 		name: 'profiles-list',
 		getKey: (event) => {
 			const query = getQuery(event);

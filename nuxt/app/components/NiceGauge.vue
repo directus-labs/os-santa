@@ -1,10 +1,11 @@
 <script setup lang="ts">
+//@ts-ignore Missing types
 import { useSound } from '@vueuse/sound';
 
 import ding from '~/assets/audio/ding.mp3';
 
 const props = defineProps<{
-	list: 'nice' | 'naughty';
+	list: 'nice' | 'naughty' | undefined | null;
 	animate: boolean;
 }>();
 
@@ -44,13 +45,13 @@ const { play: playDing } = useSound(ding, {
 	interrupt: true,
 });
 
-const soundOn = useCookie('soundOn');
+const soundOn: Ref<boolean> = useCookie('soundOn');
 
 // Initialize audio on mount
 onMounted(() => {
 	if (props.animate) {
 		let startTime = Date.now();
-		const duration = 3000; // 3 seconds
+		const duration = 2000; // 2 seconds
 		const swingAmplitude = 60; // Maximum swing angle
 		const frequency = 5; // Number of swings
 
@@ -81,7 +82,7 @@ onMounted(() => {
 
 // Toggle sound function
 function toggleSound() {
-	isSoundEnabled.value = !isSoundEnabled.value;
+	soundOn.value = !soundOn.value;
 }
 </script>
 

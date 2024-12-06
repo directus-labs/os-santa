@@ -4,6 +4,7 @@ export default `query getOrgProfile($username: String!) {
 		name
 		url
 		avatarUrl
+		twitterUsername
 		description
 		repositories(first: 10, orderBy: { field: PUSHED_AT, direction: DESC }) {
 			totalCount
@@ -37,3 +38,45 @@ export default `query getOrgProfile($username: String!) {
 	}
 }
 `
+
+export interface GitHubOrgResponse {
+	data: {
+		organization: GitHubOrgData;
+	};
+}
+
+export interface GitHubOrgData {
+	login: string;
+	name: string;
+	url: string;
+	avatarUrl: string;
+	twitterUsername?: string;
+	description?: string;
+	repositories: {
+		totalCount: number;
+		nodes?: Array<{
+			name: string;
+			description?: string;
+			url: string;
+			createdAt: string;
+			stargazerCount: number;
+			forkCount: number;
+			issues: {
+				totalCount: number;
+			};
+			readme?: {
+				text?: string;
+			};
+			pushedAt: string;
+		}>;
+	};
+	membersWithRole: {
+		totalCount: number;
+	};
+	teams: {
+		totalCount: number;
+	};
+	sponsorshipsAsSponsor: {
+		totalCount: number;
+	};
+}

@@ -1,33 +1,35 @@
 <script setup lang="ts">
+// @ts-ignore Missing types
 import { useSound } from '@vueuse/sound';
 import { useDebounceFn } from '@vueuse/core';
+
+import type { LikesResponse } from '#shared/types/endpoints.js';
 
 import slideWhistleUp from '~/assets/audio/slide-whistle-up.mp3';
 import steamWhistle from '~/assets/audio/steam-whistle.mp3';
 import slideWhistleDown from '~/assets/audio/slide-whistle-down.mp3';
 
-const soundOn = useCookie('soundOn');
+const soundOn: Ref<boolean> = useCookie('soundOn');
 
 const playbackRate = ref(0.8);
 
-const { play: playUpWhistle } = useSound(slideWhistleUp, {
-	playbackRate,
-	interrupt: true,
-});
-
-const { play: playSteamWhistle } = useSound(steamWhistle, {
-	playbackRate: 1,
-	interrupt: true,
-});
-
-const { play: playDownWhistle } = useSound(slideWhistleDown, {
-	playbackRate,
-	interrupt: true,
-});
+const sounds = {
+	up: useSound(slideWhistleUp, {
+		playbackRate,
+		interrupt: true,
+	}),
+	steam: useSound(steamWhistle, {
+		playbackRate: 1,
+		interrupt: true,
+	}),
+	down: useSound(slideWhistleDown, {
+		playbackRate,
+		interrupt: true,
+	}),
+}
 
 const MAX_LEVELS = 11;
 const MIN_LEVEL = 0;
-
 const SPICE_COLORS = [
 	'#90EE90',
 	'#ADFF2F',
@@ -42,37 +44,57 @@ const SPICE_COLORS = [
 	'#8B0000',
 ] as const;
 
-interface LikeResponse {
-	success: boolean;
-	count: number;
-	previousCount: number;
-	totalLikes: number;
-}
 
 const props = defineProps<{
-	profile: string;
-	userCount?: number;
-	totalCount?: number;
+	username: string;
 }>();
 
-const level = ref(Number(props.userCount) || MIN_LEVEL);
-const totalLikes = ref(Number(props.totalCount) || 0);
-playbackRate.value = 1 + level.value * 0.1;
+// Fetch the initial likes data
+const { data: likesData, status, error } = useLazyFetch<LikesResponse>(`/api/profiles/${props.username}/likes`, {
 
-// Debounced function to update likes
+});
+
+// Individual spice(like) level for the visitor
+const level = computed({
+	get() {
+		return Number(likesData.value?.userLikeCount) || MIN_LEVEL;
+	},
+	set(value: number) {
+		likesData.value = { ...likesData.value, userLikeCount: value } as LikesResponse;
+	},
+})
+
+// Total likes for the profile
+const totalLikes = computed({
+	get() {
+		return Number(likesData.value?.totalLikes) || 0;
+	},
+	set(value: number) {
+		likesData.value = { ...likesData.value, totalLikes: value } as LikesResponse;
+	},
+});
+
+watchEffect(() => {
+	playbackRate.value = 1 + level.value * 0.1;
+});
+
+/*
+	Update the likes data - debounced to prevent excessive API calls
+	@param {number} newLevel - The new level of likes
+	@param {number} previousLevel - The previous level of likes
+*/
 const updateLikes = useDebounceFn(async (newLevel: number, previousLevel: number) => {
 	try {
-		const data = await $fetch<LikeResponse>(`/api/${props.profile}/likes`, {
+		const data = await $fetch(`/api/profiles/${props.username}/likes`, {
 			method: 'POST',
 			body: { count: newLevel },
 		});
 
-		if (!data.success) {
+		if (!data) {
 			throw new Error('Failed to update spice level');
 		}
 
-		// Server confirmed the update, no need to do anything
-		// as we've already updated optimistically
+		likesData.value = data as LikesResponse;
 	} catch (error) {
 		console.error('Failed to update spice level:', error);
 		// Revert both level and totalLikes on error
@@ -86,50 +108,53 @@ const updateLikes = useDebounceFn(async (newLevel: number, previousLevel: number
 const showChange = ref(false);
 const lastChange = ref(0);
 
-function incrementLevel() {
-	if (level.value < MAX_LEVELS) {
-		const newLevel = Math.min(Number(level.value) + 1, MAX_LEVELS);
-		const previousLevel = Number(level.value);
-		const difference = newLevel - previousLevel;
 
-		// Optimistically update both values
-		level.value = newLevel;
-		totalLikes.value += difference;
-		playbackRate.value = 1 + newLevel * 0.1;
-		showChangeIndicator(1);
+/*
+	Update the spice level
+	@param {boolean} isIncrement - Whether to increment or decrement the level
+*/
+function updateLevel(isIncrement: boolean) {
+	const currentLevel = Number(level.value);
+	const targetLevel = isIncrement
+		? Math.min(currentLevel + 1, MAX_LEVELS)
+		: Math.max(currentLevel - 1, MIN_LEVEL);
 
-		if (level.value === MAX_LEVELS) {
-			soundOn.value && playSteamWhistle();
+	// Check bounds before proceeding
+	if ((isIncrement && currentLevel >= MAX_LEVELS) || (!isIncrement && currentLevel <= MIN_LEVEL)) {
+		isIncrement && showChangeIndicator('max');
+		return;
+	}
+
+	const difference = targetLevel - currentLevel;
+
+	// Optimistically update likesData
+	if (likesData.value) {
+		likesData.value = {
+			...likesData.value,
+			userLikeCount: targetLevel,
+			totalLikes: (likesData.value.totalLikes || 0) + difference
+		};
+	}
+
+	playbackRate.value = 1 + targetLevel * 0.1;
+	showChangeIndicator(difference);
+
+	// Play appropriate sound
+	if (soundOn.value) {
+		if (isIncrement && targetLevel === MAX_LEVELS) {
+			sounds.steam.play();
 		} else {
-			soundOn.value && playUpWhistle();
+			isIncrement ? sounds.up.play() : sounds.down.play();
 		}
-
-		// Pass both values to updateLikes for proper error handling
-		updateLikes(newLevel, previousLevel);
-	} else {
-		showChangeIndicator('max');
 	}
+
+	updateLikes(targetLevel, currentLevel);
 }
 
-function decrementLevel() {
-	if (level.value > MIN_LEVEL) {
-		const newLevel = Math.max(Number(level.value) - 1, MIN_LEVEL);
-		const previousLevel = Number(level.value);
-		const difference = newLevel - previousLevel;
-
-		// Optimistically update both values
-		level.value = newLevel;
-		totalLikes.value += difference; // This will subtract since difference is negative
-		playbackRate.value = 1 + newLevel * 0.1;
-		showChangeIndicator(-1);
-		if (soundOn.value) {
-			playDownWhistle();
-		}
-
-		updateLikes(newLevel, previousLevel);
-	}
-}
-
+/*
+	Show the change indicator
+	@param {number | 'max'} change - The change in the spice level
+*/
 function showChangeIndicator(change: number | 'max') {
 	lastChange.value = typeof change === 'number' ? change : 0;
 	showChange.value = true;
@@ -145,8 +170,8 @@ function showChangeIndicator(change: number | 'max') {
 		<button
 			class="w-full h-full transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gray-900/10 rounded-full cursor-pointer"
 			:aria-label="`Spice level: ${level + 1} out of ${MAX_LEVELS}. Click to increase, right click to decrease.`"
-			@click="incrementLevel"
-			@contextmenu.prevent="decrementLevel"
+			@click="() => updateLevel(true)"
+			@contextmenu.prevent="() => updateLevel(false)"
 		>
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" class="w-full h-full">
 				<defs>
