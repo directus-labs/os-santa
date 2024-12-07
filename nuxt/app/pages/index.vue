@@ -194,7 +194,6 @@ const copy = {
 							<UFormField v-else block size="xl" class="flex-1 mt-2">
 								<!-- @ts-ignore // TODO: Weirdness going on with USelectMenu and types-->
 								<USelectMenu
-									type="text"
 									:model-value="username as any"
 									@update:model-value="handleUserSelection"
 									@update:search-term="handleSearchTermUpdate"

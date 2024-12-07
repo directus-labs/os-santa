@@ -77,9 +77,10 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 
 		const typedResponse = response as { data: { user?: GitHubUserData; organization?: GitHubOrgData } };
 
-		const profileData = profileType === 'User'
-			? typedResponse.data.user as GitHubUserData
-			: typedResponse.data.organization as GitHubOrgData;
+		const profileData =
+			profileType === 'User'
+				? (typedResponse.data.user as GitHubUserData)
+				: (typedResponse.data.organization as GitHubOrgData);
 
 		// Score the contributions based on the profile type
 		const score = calculateNiceScore(profileData, profileType);
@@ -133,7 +134,7 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 				score: score.finalScore,
 				roasted_by,
 				metadata,
-				type,
+				type: profileType,
 			}),
 		);
 
@@ -146,7 +147,7 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 			score: directusResponse.score,
 			type: directusResponse.type,
 			username: directusResponse.username,
-			wishlist: directusResponse.wishlist
+			wishlist: directusResponse.wishlist,
 		};
 	} catch (error) {
 		console.error(JSON.stringify(error));

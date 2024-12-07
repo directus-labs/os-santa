@@ -11,7 +11,14 @@ export default defineCachedEventHandler(
 			// Fetch base profiles
 			const profiles = await directusServer.request(
 				readItems('profiles', {
-					fields: ['username', 'list', 'letter', 'type'],
+					fields: ['username', 'list', 'letter', 'type', 'is_public'],
+					filter: {
+						_or: [
+							// Only fetch public profiles
+							{ is_public: { _eq: true } },
+							{ is_public: { _null: true } },
+						],
+					},
 					sort: ['-created_at'],
 				}),
 			);

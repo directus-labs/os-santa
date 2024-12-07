@@ -47,6 +47,27 @@ function loginWithGithub(redirectUri: string) {
 		external: true,
 	});
 }
+
+const isOwner = computed(() => loggedIn.value && user.value?.login === username.value);
+
+const isPublic: Ref<boolean> = ref(data.value?.is_public ?? true);
+
+async function toggleVisibility() {
+	if (!isOwner.value) return;
+
+	try {
+		const response = await $fetch<ProfileResponse>(`/api/profiles/${username.value}/visibility`, {
+			method: 'POST',
+			body: {
+				is_public: !isPublic.value,
+			},
+		});
+
+		isPublic.value = response.is_public ?? true;
+	} catch (error) {
+		console.error('Error updating visibility:', error);
+	}
+}
 </script>
 
 <template>
@@ -113,7 +134,7 @@ function loginWithGithub(redirectUri: string) {
 				</aside>
 
 				<div class="content">
-					<NotebookPaper v-if="data?.is_new" class="text-center space-y-6 bg-red-900/80 p-4 rounded-lg">
+					<NotebookPaper v-if="data?.is_new" class="relative text-center space-y-6 bg-red-900/80 p-4 rounded-lg">
 						<BaseHeadline content="Letter Not Found" size="lg" color="secondary" />
 						<BaseText as="p" size="lg" class="mx-auto max-w-md mt-4">
 							It looks like Santa doesn't have a letter for
@@ -159,6 +180,15 @@ function loginWithGithub(redirectUri: string) {
 						</div>
 						<!-- Letter Content -->
 						<div v-else-if="data" class="relative w-full">
+							<!-- Visiblity Switch for privacy minded folks -->
+							<UFormField
+								v-if="isOwner"
+								label="Show Publicly"
+								size="xl"
+								class="absolute z-20 top-0 right-0 flex items-center gap-4"
+							>
+								<USwitch :model-value="isPublic" @update:model-value="toggleVisibility" />
+							</UFormField>
 							<div class="relative z-10 prose text-2xl text-gray-900 md:text-3xl font-cursive" v-html="letter" />
 							<p class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8">
 								Sarcastically yours,

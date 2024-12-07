@@ -1,8 +1,6 @@
 import type { Profile } from '#shared/types/schema.js';
 import type { GithubUser } from '#shared/types/github.js';
 
-
-
 export interface LikesResponse {
 	username: string;
 	totalLikes: number;
@@ -11,8 +9,8 @@ export interface LikesResponse {
 
 export interface ProfileResponse extends Profile {
 	is_new?: boolean;
+	is_public?: boolean;
 }
-
 
 export interface RoastResponse extends Partial<Profile> {
 	redirect: string;

@@ -57,7 +57,9 @@ const niceProfiles = computed(() => profiles.value?.filter((profile) => profile.
 					</div>
 
 					<!-- Search Bar -->
-					<div class="pb-6 flex w-full justify-between items-end gap-4 border-b border-[#d4b995] pt-4">
+					<div
+						class="pb-6 flex flex-col md:flex-row w-full md:justify-between md:items-end gap-4 border-b border-[#d4b995] pt-4"
+					>
 						<UInput
 							:modelValue="route.query.q as string"
 							@update:modelValue="debouncedUpdateQuery('q', $event ?? undefined)"
