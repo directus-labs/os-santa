@@ -8,15 +8,10 @@
 		</p>
 		<p class="text-center font-cursive text-white text-3xl mt-4">The CMS + backend that sleighs</p>
 
-		<p class="text-center text-white opacity-75 text-sm mt-6 flex justify-center items-center gap-2">
-			DISCLAIMER: This is just for fun and should not be taken seriously. All letters are AI generated and may not be accurate.
+		<p class="text-center text-white opacity-75 text-sm mt-6 gap-2 max-w-xl mx-auto">
+			<strong>DISCLAIMER:</strong>
+			This is just for fun and letters should not be taken seriously. All letters are AI generated and may be somewhat
+			inappropriate or inaccurate.
 		</p>
-
-		<!-- <p class="text-center text-white opacity-75 text-sm mt-6 flex justify-center items-center gap-2">
-			Frontend Hosted on
-			<a href="https://vercel.com?ref=os_santa_footer" class="hover:text-green-500 transition-colors duration-300">
-				<img src="~/assets/images/vercel.svg" class="h-3" />
-			</a>
-		</p> -->
 	</div>
 </template>

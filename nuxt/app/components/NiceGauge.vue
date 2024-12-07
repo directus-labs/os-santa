@@ -51,7 +51,7 @@ const soundOn: Ref<boolean> = useCookie('soundOn');
 onMounted(() => {
 	if (props.animate) {
 		let startTime = Date.now();
-		const duration = 2000; // 2 seconds
+		const duration = 2500; // 2.5 seconds
 		const swingAmplitude = 60; // Maximum swing angle
 		const frequency = 5; // Number of swings
 

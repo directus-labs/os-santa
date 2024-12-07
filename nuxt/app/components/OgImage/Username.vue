@@ -5,35 +5,11 @@ const props = withDefaults(
 	defineProps<{
 		username?: string;
 		avatarUrl?: string;
-		description?: string;
-		emoji?: string;
-		downloads?: string | number;
-		stars?: string | number;
-		contributors?: string | number;
 	}>(),
 	{
 		username: 'random_hacker_323',
-		description: 'Minimal H(TTP) framework built for high performance and portability',
-		emoji: '⚡',
-		downloads: '2500000',
-		stars: '2400',
-		contributors: '30',
 	},
 );
-
-const org = computed(() => props.username.split('/')[0]);
-const repo = computed(() => props.username.split('/')[1]);
-
-const stars = computed(() => {
-	return new Intl.NumberFormat('en-US', { notation: 'compact', compactDisplay: 'short' }).format(
-		Number(props.stars || 0),
-	);
-});
-const downloads = computed(() =>
-	new Intl.NumberFormat('en-US', { notation: 'compact', compactDisplay: 'short' }).format(Number(props.downloads || 0)),
-);
-
-const description = computed(() => (props.description || '').slice(0, 200));
 </script>
 
 <template>
