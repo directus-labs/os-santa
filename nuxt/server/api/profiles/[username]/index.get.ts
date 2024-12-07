@@ -32,6 +32,7 @@ export default defineEventHandler(async (event): Promise<ProfileResponse> => {
 
 		return {
 			username: ghProfile?.login || '',
+			type: ghProfile?.type || 'User',
 			is_new: isNewUser,
 			...profile,
 		};

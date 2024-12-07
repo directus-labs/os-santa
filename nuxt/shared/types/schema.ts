@@ -6,7 +6,16 @@ export interface Like {
 	visitor_hash?: string | null;
 	count?: number | null;
 	profile?: Profile | string | null;
-	referred_by?: string | null;
+}
+
+export interface Metric {
+	/** @required */
+	id: number;
+	timestamp?: string | null;
+	key?: string | null;
+	label?: string | null;
+	/** @required */
+	value: number;
 }
 
 export interface Profile {
@@ -22,7 +31,6 @@ export interface Profile {
 	score?: number | null;
 	letter?: string | null;
 	metadata?: Record<string, any> | null;
-	referred_by?: string | null;
 	roasted_by?: string | null;
 	mode?: 'self' | 'friend' | null;
 	is_public?: boolean | null;
@@ -262,12 +270,31 @@ export interface DirectusSettings {
 	public_background?: DirectusFile | string | null;
 	public_note?: string | null;
 	auth_login_attempts?: number | null;
-	auth_password_policy?: null | `/^.{8,}$/` | `/(?=^.{8,}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{\';\'?>.<,])(?!.*\\s).*$/` | null;
+	auth_password_policy?:
+		| null
+		| `/^.{8,}$/`
+		| `/(?=^.{8,}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{\';\'?>.<,])(?!.*\\s).*$/`
+		| null;
 	storage_asset_transform?: 'all' | 'none' | 'presets' | null;
-	storage_asset_presets?: Array<{ key: string; fit: 'contain' | 'cover' | 'inside' | 'outside'; width: number; height: number; quality: number; withoutEnlargement: boolean; format: 'auto' | 'jpeg' | 'png' | 'webp' | 'tiff' | 'avif'; transforms: any }> | null;
+	storage_asset_presets?: Array<{
+		key: string;
+		fit: 'contain' | 'cover' | 'inside' | 'outside';
+		width: number;
+		height: number;
+		quality: number;
+		withoutEnlargement: boolean;
+		format: 'auto' | 'jpeg' | 'png' | 'webp' | 'tiff' | 'avif';
+		transforms: any;
+	}> | null;
 	custom_css?: string | null;
 	storage_default_folder?: DirectusFolder | string | null;
-	basemaps?: Array<{ name: string; type: 'raster' | 'tile' | 'style'; url: string; tileSize: number; attribution: string }> | null;
+	basemaps?: Array<{
+		name: string;
+		type: 'raster' | 'tile' | 'style';
+		url: string;
+		tileSize: number;
+		attribution: string;
+	}> | null;
 	mapbox_key?: string | null;
 	module_bar?: any | null;
 	project_descriptor?: string | null;
@@ -464,6 +491,7 @@ export interface DirectusExtension {
 
 export interface Schema {
 	likes: Like[];
+	metrics: Metric[];
 	profiles: Profile[];
 	directus_access: DirectusAccess[];
 	directus_activity: DirectusActivity[];

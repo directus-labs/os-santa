@@ -24,7 +24,6 @@ export const profileSchema = z.object({
 	wishlist: z.string().optional(),
 	type: z.enum(['user', 'organization']).optional().default('user'),
 	mode: z.enum(['self', 'friend']).optional().default('self'),
-	referred_by: z.string().optional(),
 	roasted_by: z.string().optional(),
 	profileType: z.enum(['User', 'Organization']),
 });

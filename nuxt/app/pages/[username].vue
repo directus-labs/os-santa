@@ -164,7 +164,7 @@ async function toggleVisibility() {
 								variant="solid"
 								color="neutral"
 								size="xl"
-								@click="loginWithGithub(`/?mode=friend&username=${username}`)"
+								@click="loginWithGithub(`/?mode=friend&username=${username}&profileType=${data?.type}`)"
 							>
 								<Icon name="mdi:github" class="mr-2" />
 								Sign in with Github to Write Letter
@@ -180,6 +180,7 @@ async function toggleVisibility() {
 									query: {
 										mode: 'friend',
 										username: username,
+										profileType: data?.type,
 									},
 								}"
 							>
