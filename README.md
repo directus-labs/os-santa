@@ -4,7 +4,7 @@
 
 <p align="center">A fun holiday project that uses AI to generate personalized roast letters from Salty Open Source Santa based on your GitHub open source contributions. Find out if you're on the naughty or nice list! 🎅</p>
 
-<p align="center"><em>Built with ❤️ by the <a href="https://github.com/directus/directus" target="_blank">Directus Labs</a></em></p>
+<p align="center"><em>Built with ❤️ by the <a href="https://github.com/directus/directus" target="_blank">Directus team</a></em></p>
 
 <p align="center">
   <a href="#introduction"><strong>Introduction</strong></a> ·
@@ -141,7 +141,13 @@ GITHUB_CLIENT_SECRET=your_github_client_secret
 
 # AI Generation
 ANTHROPIC_API_KEY=your_anthropic_api_key
+
+# Analytics (Optional)
+POSTHOG_API_KEY=your_posthog_api_key
+POSTHOG_API_HOST=your_posthog_host # defaults to https://app.posthog.com
 ```
+
+Note: PostHog analytics is optional and will be disabled in development mode. If you don't need product analytics, you can skip these environment variables.
 
 ## 5. Application Setup
 

@@ -37,7 +37,7 @@ const anthropic = createAnthropic({
 
 export default defineEventHandler(async (event): Promise<RoastResponse | H3Error> => {
 	const body = await readValidatedBody(event, (body) => profileSchema.parse(body));
-	const { username, wishlist, type, mode, roasted_by, profileType } = body;
+	const { username, wishlist, mode, roasted_by, profileType } = body;
 
 	// Check to see if the profile already exists in Directus if so, redirect to the profile
 	const [directusResponse] = await directusServer.request(
@@ -117,11 +117,22 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 			messages: [{ role: 'user', content: prompt }],
 		});
 
+		// If the user has organizations and membersWithRoles exist, loop through the organizations and add the members to the metadata as possible_roasts
+		const possibleRoasts: any[] = [];
+		if (profileType === 'User' && (profileData as GitHubUserData).organizations?.nodes) {
+			for (const org of (profileData as GitHubUserData).organizations.nodes ?? []) {
+				if (org?.membersWithRole?.nodes) {
+					possibleRoasts.push(...org.membersWithRole.nodes);
+				}
+			}
+		}
+
 		// Generate metadata to store with the profile
 		const metadata = {
 			ai_usage: aiResponse.usage,
 			ai_response: aiResponse.object,
 			score: score,
+			possible_roasts: possibleRoasts,
 		};
 
 		// Store the profile in Directus
@@ -131,6 +142,7 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 				letter: aiResponse.object.letter,
 				list: score.list,
 				wishlist,
+				mode,
 				score: score.finalScore,
 				roasted_by,
 				metadata,
@@ -146,6 +158,7 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 			roasted_by: directusResponse.roasted_by,
 			score: directusResponse.score,
 			type: directusResponse.type,
+			mode: directusResponse.mode,
 			username: directusResponse.username,
 			wishlist: directusResponse.wishlist,
 		};

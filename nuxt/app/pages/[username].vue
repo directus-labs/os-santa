@@ -8,7 +8,7 @@ const redirect = useCookie('redirect_uri');
 
 const { loggedIn, user } = useUserSession();
 
-const { data, status, error } = useAsyncData<ProfileResponse>(`letter-${route.params.username}`, () =>
+const { data, status, error } = await useAsyncData<ProfileResponse>(`letter-${route.params.username}`, () =>
 	$fetch<ProfileResponse>(`/api/profiles/${route.params.username as string}`, {
 		method: 'GET',
 	}),
@@ -49,7 +49,6 @@ function loginWithGithub(redirectUri: string) {
 }
 
 const isOwner = computed(() => loggedIn.value && user.value?.login === username.value);
-
 const isPublic: Ref<boolean> = ref(data.value?.is_public ?? true);
 
 async function toggleVisibility() {
@@ -122,14 +121,32 @@ async function toggleVisibility() {
 			</div>
 			<div class="relative pt-12 wrapper">
 				<aside class="left" v-if="list !== null">
-					<!-- Share Buttons -->
 					<div class="lg:sticky lg:top-20 lg:mt-12">
-						<p class="text-red-200 text-2xl text-center font-cursive -rotate-2">Sharing is Caring</p>
-						<SocialShare class="text-4xl flex items-center space-x-3 text-white mt-4 justify-center">
-							<SocialShareTwitter class="hover:text-green-500" />
-							<SocialShareReddit class="hover:text-green-500" />
-							<SocialShareLinkedIn class="hover:text-green-500" />
-						</SocialShare>
+						<!-- Roast a Friend -->
+						<template v-if="data?.metadata?.possible_roasts.length > 0">
+							<p class="text-red-200 text-2xl text-center font-cursive -rotate-2 mt-8">Roast a teammate</p>
+							<div class="flex flex-wrap md:flex-nowrap md:flex-col gap-4 mt-2">
+								<ULink
+									v-for="roast in data?.metadata?.possible_roasts"
+									:key="roast.login"
+									:to="{
+										path: '/',
+										query: {
+											mode: 'friend',
+											profileType: 'User',
+											username: roast.login,
+										},
+									}"
+								>
+									<User
+										:username="roast.login"
+										:avatar="roast.avatarUrl"
+										size="sm"
+										class="md:opacity-75 md:hover:opacity-100 transition-opacity duration-150 text-white"
+									/>
+								</ULink>
+							</div>
+						</template>
 					</div>
 				</aside>
 
@@ -172,6 +189,16 @@ async function toggleVisibility() {
 					</NotebookPaper>
 					<SantaLetterPaper v-show="showLetter" class="max-w-3xl mx-auto letter-unfold mt-4 p-4">
 						<img src="/images/os-santa.svg" class="absolute bottom-0 right-0 w-32 md:w-64 -mb-16 md:-mb-32 z-10" />
+						<!-- Visiblity Switch for privacy minded folks -->
+
+						<UFormField
+							v-if="isOwner"
+							label="Show Publicly"
+							size="xl"
+							class="absolute z-20 top-32 right-4 flex items-center gap-4"
+						>
+							<USwitch :model-value="isPublic" @update:model-value="toggleVisibility" name="visibility" />
+						</UFormField>
 						<div v-if="status === 'pending'" class="text-center py-4">
 							<p class="text-gray-600 mt-2">Loading your letter...</p>
 						</div>
@@ -180,16 +207,10 @@ async function toggleVisibility() {
 						</div>
 						<!-- Letter Content -->
 						<div v-else-if="data" class="relative w-full">
-							<!-- Visiblity Switch for privacy minded folks -->
-							<UFormField
-								v-if="isOwner"
-								label="Show Publicly"
-								size="xl"
-								class="absolute z-20 top-0 right-0 flex items-center gap-4"
-							>
-								<USwitch :model-value="isPublic" @update:model-value="toggleVisibility" />
-							</UFormField>
-							<div class="relative z-10 prose text-2xl text-gray-900 md:text-3xl font-cursive" v-html="letter" />
+							<div
+								class="relative z-10 mt-8 md:mt-0 prose text-2xl text-gray-900 md:text-3xl font-cursive"
+								v-html="letter"
+							/>
 							<p class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8">
 								Sarcastically yours,
 								<br />
@@ -206,6 +227,14 @@ async function toggleVisibility() {
 							<p class="text-2xl font-cursive text-red-200 -rotate-2 text-center">Spicy-ness</p>
 							<SpiceMeter :username class="w-32 mx-auto" />
 						</ClientOnly>
+
+						<!-- Sharing -->
+						<p class="text-red-200 text-2xl text-center font-cursive -rotate-2 mt-8">Sharing is Caring</p>
+						<SocialShare class="text-4xl flex items-center space-x-3 text-white mt-4 justify-center">
+							<SocialShareTwitter class="hover:text-green-500" />
+							<SocialShareReddit class="hover:text-green-500" />
+							<SocialShareLinkedIn class="hover:text-green-500" />
+						</SocialShare>
 					</div>
 				</aside>
 			</div>
@@ -243,6 +272,21 @@ async function toggleVisibility() {
 	position: relative;
 }
 
+/* On mobile, we want this order: content -> left -> right */
+.content {
+	order: 1;
+}
+
+.left {
+	order: 2;
+	margin-top: 2rem;
+}
+
+.right {
+	order: 3;
+	margin-top: 2rem;
+}
+
 @media (min-width: 64rem) {
 	.wrapper {
 		display: grid;
@@ -253,15 +297,20 @@ async function toggleVisibility() {
 	.left {
 		grid-column: 1;
 		position: relative;
+		margin-top: 0;
+		order: unset;
 	}
 
 	.right {
 		grid-column: 3;
 		position: relative;
+		margin-top: 0;
+		order: unset;
 	}
 
 	.content {
 		grid-column: 2;
+		order: unset;
 	}
 }
 </style>

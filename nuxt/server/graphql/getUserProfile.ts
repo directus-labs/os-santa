@@ -31,6 +31,13 @@ export default `query getUserProfile($username: String!) {
         description
         url
         avatarUrl
+		 membersWithRole(first: 10){
+          nodes{
+            name
+            login
+            avatarUrl
+          }
+        }
       }
     }
     repositories(visibility: PUBLIC, first: 10, ownerAffiliations: OWNER, orderBy: {field: PUSHED_AT, direction: DESC}) {
@@ -138,6 +145,13 @@ export interface GitHubUserData {
 			description?: string;
 			url: string;
 			avatarUrl: string;
+			membersWithRole: {
+				nodes?: Array<{
+					name: string;
+					login: string;
+					avatarUrl: string;
+				}>;
+			};
 		}>;
 	};
 	sponsorshipsAsSponsor: {

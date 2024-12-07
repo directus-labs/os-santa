@@ -9,8 +9,8 @@ const { url } = useSiteConfig();
 
 const loading = ref(false);
 const username: Ref<string> = ref((route.query.username as string) ?? '');
+const profileType = ref<GithubProfileType>((route.query.profileType as GithubProfileType) ?? 'User');
 const wishlist = ref('');
-const profileType = ref<GithubProfileType>('User');
 
 const avatarUrl = computed(() => {
 	return `https://github.com/${username.value}.png`;
