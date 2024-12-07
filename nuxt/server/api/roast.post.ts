@@ -88,7 +88,7 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 			You are the open source Santa Claus. You determine who's open source contributions are naughty or nice.
 			Analyze the following Github ${profileType === 'User' ? 'user' : 'organization'}'s profile carefully and in detail.
 			We've determined the ${profileType}'s score based on their contributions. Whether they're on the nice list
-			or the naughty list, give them a roast accordingly. Write a short letter in a snarky sarcastic tone.
+			or the naughty list, roast them accordingly. Write a short, funny letter in a snarky sarcastic tone.
 			Include a couple lines from the wish list in the letter if it's provided.
 			If the mode provided is "friend", then make a short mention of the roasted_by user in one of the paragraphs.
 
