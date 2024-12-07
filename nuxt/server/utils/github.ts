@@ -49,36 +49,6 @@ export const ghFetch = defineCachedFunction(
 	},
 );
 
-// Individual Calls
-// export const ghUser = defineCachedFunction((username: string) => ghFetch<GithubUser>(`/users/${username}`), {
-// 	...cacheOptions(`user-${username}`),
-// });
-
-// export const ghUserHasStarred = defineCachedFunction(
-// 	(username: string, repo: string) => ghFetch<boolean>(`/users/${username}/starred/${repo}`),
-// 	{
-// 		...cacheOptions(`user-has-starred-${username}-${repo}`),
-// 	},
-// );
-
-// export const ghUserRepos = defineCachedFunction(
-// 	(username: string) => ghFetch<GithubRepo[]>(`/users/${username}/repos`),
-// 	{
-// 		...cacheOptions(`user-repos-${username}`),
-// 	},
-// );
-
-// export const ghRepo = defineCachedFunction((repo: GithubRepo) => ghFetch<GithubRepo>(`/repos/${repo.full_name}`), {
-// 	...cacheOptions(`repo-${repo.full_name}`),
-// });
-
-// export const ghOrgMembers = defineCachedFunction(
-// 	(org: GithubOrg) => ghFetch(`/orgs/${org.name}/members`),
-// 	{
-// 		...cacheOptions(`org-members-${org.name}`),
-// 	},
-// );
-
 // Helpers
 function isEmptyArray(val: any) {
 	return Array.isArray(val) && val.length === 0;
