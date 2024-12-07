@@ -176,7 +176,7 @@ const copy = {
 					<UButton class="mt-4">How does this work?</UButton>
 					<template #content>
 						<UContainer>
-							<div v-html="copy.help" class="prose py-8 md:py-16"></div>
+							<div v-html="copy.help" class="prose py-8 md:py-16 overflow-y-auto"></div>
 						</UContainer>
 					</template>
 				</UDrawer>
