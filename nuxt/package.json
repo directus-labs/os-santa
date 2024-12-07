@@ -1,4 +1,8 @@
 {
+	"name": "os-santa",
+	"repository": {
+		"url": "https://github.com/directus-labs/os-santa"
+	},
 	"private": true,
 	"type": "module",
 	"scripts": {
