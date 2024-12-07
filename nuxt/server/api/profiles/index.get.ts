@@ -36,6 +36,7 @@ export default defineCachedEventHandler(
 					return {
 						...profile,
 						meta: {
+							// @ts-ignore
 							totalLikes: totalLikes[0]?.sum?.count || 0,
 						},
 					};

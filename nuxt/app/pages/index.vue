@@ -15,7 +15,7 @@ const profileType = ref<GithubProfileType>('User');
 const avatarUrl = computed(() => {
 	return `https://github.com/${username.value}.png`;
 });
-const isFriendMode = computed(() => route.query.mode === 'friend' ?? false);
+const isFriendMode = computed(() => route.query.mode === 'friend');
 const mode: Ref<Mode> = computed(() => (isFriendMode.value ? 'friend' : 'self'));
 
 const { updateQuery } = useQueryParams();

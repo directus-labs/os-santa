@@ -9,7 +9,6 @@ export interface LikesResponse {
 
 export interface ProfileResponse extends Profile {
 	is_new?: boolean;
-	is_public?: boolean;
 }
 
 export interface RoastResponse extends Partial<Profile> {

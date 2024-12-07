@@ -9,7 +9,7 @@ const redirect = useCookie('redirect_uri');
 const { loggedIn, user } = useUserSession();
 
 const { data, status, error } = useAsyncData<ProfileResponse>(`letter-${route.params.username}`, () =>
-	$fetch(`/api/profiles/${route.params.username}`, {
+	$fetch<ProfileResponse>(`/api/profiles/${route.params.username as string}`, {
 		method: 'GET',
 	}),
 );

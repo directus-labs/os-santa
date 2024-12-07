@@ -44,7 +44,7 @@ const options = {
 	},
 };
 
-const particlesLoaded = (container?: Container) => {};
+const particlesLoaded = (container?: any) => {};
 </script>
 
 <style scoped></style>

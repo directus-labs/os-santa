@@ -16,10 +16,14 @@ export default defineEventHandler(async (event): Promise<LikesResponse> => {
 			(event.node.req.headers['x-vercel-forwarded-for'] as string);
 		const visitorHash = createVisitorHash(ip, process.env.SALT as string);
 
-		const [likesData, userLike] = await Promise.all([getProfileTotalLikes(username), getVisitorLikes(username, visitorHash)]);
+		const [likesData, userLike] = await Promise.all([
+			getProfileTotalLikes(username),
+			getVisitorLikes(username, visitorHash),
+		]);
 
 		return {
 			username,
+			// @ts-ignore
 			totalLikes: Number(likesData[0]?.sum?.count) || 0,
 			userLikeCount: Number(userLike[0]?.count) || 0,
 		};

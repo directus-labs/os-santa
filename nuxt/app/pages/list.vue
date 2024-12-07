@@ -8,7 +8,7 @@ const {
 	status,
 	refresh,
 } = await useAsyncData<ProfileWithLikes[]>('profiles', () =>
-	$fetch('/api/profiles', {
+	$fetch<ProfileWithLikes[]>('/api/profiles', {
 		method: 'GET',
 		params: {
 			list: route.query.list as string,

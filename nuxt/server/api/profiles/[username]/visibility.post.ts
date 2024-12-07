@@ -15,7 +15,7 @@ export default defineEventHandler(async (event): Promise<ProfileResponse> => {
 	if (!session) {
 		throw createError({
 			statusCode: 401,
-			message: 'Unauthorized',
+			message: 'Unauthorized. Please login to update your profile visibility.',
 		});
 	}
 

@@ -36,9 +36,7 @@ export function calculateOrgNiceScore(data: GitHubOrgData): ScoreBreakdown {
 		const breakdown = {} as ScoreBreakdown;
 
 		// Core Contributions
-		const activeRepos = data.repositories?.nodes?.filter(
-			(repo) => new Date(repo.pushedAt) > sixMonthsAgo
-		).length ?? 0;
+		const activeRepos = data.repositories?.nodes?.filter((repo) => new Date(repo.pushedAt) > sixMonthsAgo).length ?? 0;
 		const repoScore = activeRepos * 50;
 
 		breakdown.commits = {
@@ -61,9 +59,8 @@ export function calculateOrgNiceScore(data: GitHubOrgData): ScoreBreakdown {
 
 		score += projectImpactScore;
 
-
 		// Sponsorships
-		const sponsorshipScore = data.sponsorshipsAsSponsor?.totalCount * 25 ?? 0;
+		const sponsorshipScore = (data.sponsorshipsAsSponsor?.totalCount ?? 0) * 25;
 		score += sponsorshipScore;
 
 		breakdown.sponsorships = {
@@ -105,7 +102,6 @@ export function calculateOrgNiceScore(data: GitHubOrgData): ScoreBreakdown {
 }
 
 export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: GithubProfileType): ScoreBreakdown {
-
 	// If the data is an organization, calculate the organization nice score because there's no contributionsCollection
 	if (type === 'Organization') {
 		return calculateOrgNiceScore(data as GitHubOrgData);
@@ -113,12 +109,11 @@ export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: G
 
 	let userData = data as GitHubUserData;
 
-	const sixMonthsAgo = new Date()
-	sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
+	const sixMonthsAgo = new Date();
+	sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
 	let score = 0;
 	const breakdown = {} as ScoreBreakdown;
-
 
 	// Core Contributions
 	const commitScore = Math.floor(userData.contributionsCollection.totalCommitContributions);
@@ -173,7 +168,8 @@ export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: G
 	score += projectImpactScore;
 
 	// Negative Signals
-	const abandonedForks = userData.repositories.nodes?.filter((repo) => repo.isFork && new Date(repo.pushedAt) < sixMonthsAgo).length ?? 0;
+	const abandonedForks =
+		userData.repositories.nodes?.filter((repo) => repo.isFork && new Date(repo.pushedAt) < sixMonthsAgo).length ?? 0;
 	const forkPenalty = abandonedForks * -2;
 
 	breakdown.forkPenalty = {
@@ -185,7 +181,7 @@ export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: G
 	score += forkPenalty;
 
 	// Sponsorships
-	const sponsorshipScore = userData.sponsorshipsAsSponsor?.totalCount * 25 ?? 0;
+	const sponsorshipScore = (userData.sponsorshipsAsSponsor?.totalCount ?? 0) * 25;
 	score += sponsorshipScore;
 
 	breakdown.sponsorships = {
@@ -225,7 +221,6 @@ export function calculateNiceScore(data: GitHubUserData | GitHubOrgData, type: G
 	else list = 'nice';
 
 	breakdown.list = list;
-
 
 	return breakdown;
 }
