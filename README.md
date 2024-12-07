@@ -2,6 +2,8 @@
   <h1 align="center">Open Source Santa</h1>
 </a>
 
+<img src="https://raw.githubusercontent.com/directus-labs/os-santa/main/nuxt/public/images/screenshot.png" alt="Open Source Santa screenshot" />
+
 <p align="center">A fun holiday project that uses AI to generate personalized roast letters from Salty Open Source Santa based on your GitHub open source contributions. Find out if you're on the naughty or nice list! 🎅</p>
 
 <p align="center"><em>Built with ❤️ by the <a href="https://github.com/directus/directus" target="_blank">Directus team</a></em></p>
