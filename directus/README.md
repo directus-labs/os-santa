@@ -28,7 +28,7 @@ To apply this template to your Directus instance, you will use the Directus Temp
 
 ### Prerequisites
 
-- A Directus instance, either on [Directus Cloud](https://directus.cloud) or self-hosted.
+- A Directus instance, either on [Directus Cloud](https://directus.cloud?ref=directus-labs%2Fos-santa) or self-hosted.
 - A Static Access Token for the admin user.
 - The Directus URL of your instance.
 

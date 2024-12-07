@@ -44,7 +44,7 @@ Open Source Santa is a playful web application that analyzes GitHub profiles and
 - [Vercel AI SDK](https://sdk.vercel.ai) - AI SDK
 
 ## Backend
-- [Directus](https://directus.io) - Headless CMS & Backend
+- [Directus](https://directus.io) - Backend + CMS (Admin)
 - [Anthropic Claude](https://anthropic.com) - AI Text Generation
 - [PostgreSQL](https://www.postgresql.org) - Database
 
@@ -80,8 +80,10 @@ ANTHROPIC_API_KEY=
 
 ## 1. Backend Setup (Directus)
 
+We recommend you checkout the [Directus documentation](https://docs.directus.io/getting-started/quickstart/) for more information on how to setup and run Directus.
+
 ### Option A: Directus Cloud (Recommended for Quick Start)
-1. Create an account at [Directus Cloud](https://directus.cloud)
+1. Create an account at [Directus Cloud](https://directus.cloud?ref=directus-labs%2Fos-santa)
 2. Create a new project
 3. Once created, note down your project URL
 4. Generate an API token with admin access from Settings > API Hooks
@@ -112,6 +114,20 @@ docker-compose up -d
    - Homepage URL: `http://localhost:3000` (development) or your production URL
    - Authorization callback URL: `http://localhost:3000/auth/github/callback`
 4. Save the Client ID and Client Secret for environment variables
+
+### Generating a GitHub Token for GraphQL API
+
+1. Go to [GitHub Personal Access Tokens](https://github.com/settings/tokens)
+2. Click "Generate new token"
+3. Fill in the token details:
+   - Note: "Open Source Santa GraphQL Access" (or your preferred note)
+   - Expiration: Choose an appropriate expiration time
+   - Repository access: Public Repositories (read-only)
+5. Add the token to your environment variables:
+
+```env
+GITHUB_TOKEN=your_github_token
+```
 
 ## 3. Anthropic API Setup
 
@@ -156,16 +172,18 @@ Note: PostHog analytics is optional and will be disabled in development mode. If
 1. Install dependencies:
 
 ```bash
-pnpm install
+pnpm i
 ```
 
 2. Generate Directus types:
+
+NOTE: Your Directus instance must be running for type generation to work.
 
 ```bash
 pnpm generate:types
 ```
 
-3. Start the development server:
+1. Start the development server:
 
 ```bash
 pnpm dev
@@ -177,6 +195,8 @@ pnpm dev
 
 ### CORS Issues
 If you're running into CORS issues with Directus, ensure your Directus instance has CORS properly configured. For development, you can add the following to your Directus environment:
+
+Learn more about CORS in Directus [here](https://docs.directus.io/self-hosted/config-options.html#cors).
 
 ```env
 CORS_ENABLED=true
@@ -237,12 +257,12 @@ pnpm dev
 
 The application can be deployed to any hosting platform that supports Nuxt 3. The backend requires a Directus instance with PostgreSQL.
 
-## Frontend Deployment
+## Frontend Deployment Options
 - Vercel
 - Netlify
 - CloudFlare Pages
 
-## Backend Deployment
+## Directus (Backend) Deployment Options
 - Self-hosted Directus
 - Directus Cloud
-- Docker (see docker-compose.yml for configuration)
+- Docker (see [docker-compose.yml](./directus/docker-compose.yml) for configuration)
