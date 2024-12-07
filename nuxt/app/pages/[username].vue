@@ -168,7 +168,7 @@ async function toggleVisibility() {
 								@click="loginWithGithub(`/?mode=friend&username=${username}&profileType=${data?.type}`)"
 							>
 								<Icon name="mdi:github" class="mr-2" />
-								Sign in with Github to Write Letter
+								Sign in with GitHub to Write Letter
 							</UButton>
 
 							<UButton
