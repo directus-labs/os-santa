@@ -124,11 +124,31 @@ function handleSearchTermUpdate(term: any) {
 
 // Copy for the form based on the mode (self or friend)
 const copy = {
+	help: `
+		<p class="font-bold text-red-600">Salty Open Source Santa is a fun way to see if you've been a good open source contributor this year.</p>
+		<ol>
+			<li>Login to your GitHub account and write your letter to Santa.</li>
+			<li>Santa will:
+			<ul>
+				<li>read your letter</li>
+			<li>analyze your public GitHub activity</li>
+				<li>decide if you've been naughty or nice</li>
+				<li>and send you a letter back.</li>
+			</ul>
+			<li>Prepare yourself for a snarkyletter back.</li>
+		</ol>
+		<p><em>If you'd like to roast a friend or organization, toggle Friend Mode and enter their GitHub username instead.</em></p>
+		<p class="font-bold">Concerned about privacy?</p>
+		<ul>
+			<li>Letters are publicly visible on your profile page by default, but you can opt out after generating your letter.</li>
+			<li>Santa doesn't look up or store any private Github data, only publicly available information.</li>
+		</ul>
+	`,
 	self: {
 		title: 'Write your letter to Open Source Santa! 📝',
 		description: `Are you on the open source naughty or nice list? Write your letter to Santa below to find out if you're on his good side.`,
 		formUsername: 'My GitHub username is',
-		formUsernamePlaceholder: 'Enter your Github username',
+		formUsernamePlaceholder: 'Enter your GitHub username',
 		formWishList: 'and I would love to receive',
 		formWishListPlaceholder: "Tell Santa what coding gifts you'd like...",
 	},
@@ -136,7 +156,7 @@ const copy = {
 		title: 'Write your letter to a friend! 📝',
 		description: `Is your friend on the open source naughty or nice list? Write Santa a letter to find out if they're on his good side.`,
 		formUsername: 'Their GitHub username is',
-		formUsernamePlaceholder: 'Enter their Github username',
+		formUsernamePlaceholder: 'Enter their GitHub username',
 		formWishList: 'and I want Santa to give them',
 		formWishListPlaceholder: "Tell Santa what coding gifts you'd like your friend to receive...",
 		formYourUsernamePlaceholder: 'Enter your name',
@@ -146,12 +166,20 @@ const copy = {
 
 <template>
 	<div class="">
-		<UContainer class="py-4 md:py-16">
+		<UContainer class="py-8 md:py-16">
 			<div class="text-center mb-8">
 				<BaseHeadline content="Salty Open Source Santa" size="xl" shadow />
 				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200 mt-4">
 					{{ copy[mode].description }}
 				</BaseText>
+				<UDrawer :overlay="false">
+					<UButton class="mt-4">How does this work?</UButton>
+					<template #content>
+						<UContainer>
+							<div v-html="copy.help" class="prose py-8 md:py-16"></div>
+						</UContainer>
+					</template>
+				</UDrawer>
 			</div>
 
 			<div class="relative max-w-2xl mx-auto">
