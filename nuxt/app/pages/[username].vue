@@ -4,6 +4,7 @@ import type { ProfileResponse } from '#shared/types/endpoints.js';
 
 const route = useRoute();
 const { url } = useSiteConfig();
+const toast = useToast();
 const redirect = useCookie('redirect_uri');
 
 const { loggedIn, user } = useUserSession();
@@ -39,7 +40,10 @@ const { copy } = useClipboard({ source: currentUrl.toString() });
 const copied = ref(false);
 function copyUrl() {
 	copy();
-	copied.value = true;
+	toast.add({
+		title: 'Copied!',
+		description: 'Link copied to clipboard!',
+	});
 	setTimeout(() => {
 		copied.value = false;
 	}, 2000);
@@ -72,8 +76,20 @@ async function toggleVisibility() {
 		});
 
 		isPublic.value = response.is_public ?? true;
+		toast.add({
+			title: 'Visibility Updated',
+			description: `Your letter is now ${isPublic.value ? 'public' : 'private'}`,
+			color: 'success',
+			icon: 'lucide:circle-check',
+		});
 	} catch (error) {
 		console.error('Error updating visibility:', error);
+		toast.add({
+			title: 'Error',
+			description: 'Something went wrong updating your visibility. Please try again.',
+			color: 'error',
+			icon: 'lucide:triangle-alert',
+		});
 	}
 }
 </script>
@@ -113,15 +129,6 @@ async function toggleVisibility() {
 							{{ username }}
 						</NuxtLink>
 					</div>
-					<Transition
-						enter-active-class="transition-all duration-300"
-						leave-active-class="transition-all duration-300"
-						mode="out-in"
-						enter-from-class="opacity-0"
-						leave-to-class="opacity-0"
-					>
-						<UAlert v-if="copied" title="Copied" description="Link copied to clipboard!" class="absolute -top-1/2" />
-					</Transition>
 				</div>
 				<UButtonGroup v-if="list !== null" size="xl" class="w-full mt-4 relative">
 					<UInput :value="currentUrl" readonly class="font-mono w-full" />
