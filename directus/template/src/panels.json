@@ -1,0 +1,187 @@
+[
+  {
+    "id": "07ee562c-9ccf-4685-8bfe-aaa24be6b1ad",
+    "dashboard": "fea88467-b57f-453b-a15c-91b8693ba6f8",
+    "name": "Last 10 Letters",
+    "icon": "article",
+    "color": null,
+    "show_header": true,
+    "note": null,
+    "type": "directus-panel-table",
+    "position_x": 1,
+    "position_y": 35,
+    "width": 36,
+    "height": 27,
+    "options": {
+      "collection": "profiles",
+      "limit": 10,
+      "linkToItem": true,
+      "displayTemplate": "{{username}} • {{list}} • {{created_at}}",
+      "fields": [
+        "username",
+        "list",
+        "created_at",
+        "score"
+      ],
+      "sort_field": "created_at"
+    },
+    "date_created": "2024-12-07T05:19:04.992Z",
+    "user_created": "537965cb-ecc0-4034-9cee-7c1b317ec962"
+  },
+  {
+    "id": "15974fe1-7b54-4759-969f-a72a2b5c167f",
+    "dashboard": "fea88467-b57f-453b-a15c-91b8693ba6f8",
+    "name": "Total Letters to Salty Santa",
+    "icon": null,
+    "color": "#18222F",
+    "show_header": true,
+    "note": null,
+    "type": "metric",
+    "position_x": 1,
+    "position_y": 3,
+    "width": 18,
+    "height": 8,
+    "options": {
+      "collection": "profiles",
+      "field": "username",
+      "function": "count",
+      "conditionalFormatting": [
+        {
+          "operator": ">=",
+          "value": 0,
+          "color": "#18222F"
+        }
+      ]
+    },
+    "date_created": "2024-12-07T05:17:53.843Z",
+    "user_created": "537965cb-ecc0-4034-9cee-7c1b317ec962"
+  },
+  {
+    "id": "2a78818f-bb07-4b81-84e6-c9d4fcc808a7",
+    "dashboard": "fea88467-b57f-453b-a15c-91b8693ba6f8",
+    "name": "Total Spice Level",
+    "icon": "local_fire_department",
+    "color": "#18222F",
+    "show_header": true,
+    "note": null,
+    "type": "metric",
+    "position_x": 19,
+    "position_y": 3,
+    "width": 18,
+    "height": 8,
+    "options": {
+      "collection": "likes",
+      "field": "count",
+      "function": "sum",
+      "conditionalFormatting": [
+        {
+          "operator": ">=",
+          "value": 0,
+          "color": "#18222F"
+        }
+      ],
+      "sortField": null
+    },
+    "date_created": "2024-12-07T05:17:53.865Z",
+    "user_created": "537965cb-ecc0-4034-9cee-7c1b317ec962"
+  },
+  {
+    "id": "571feb6c-8f4c-4655-82c4-bf22e2522f55",
+    "dashboard": "fea88467-b57f-453b-a15c-91b8693ba6f8",
+    "name": "Devs on Nice List",
+    "icon": "thumb_up",
+    "color": "#2ECDA7",
+    "show_header": true,
+    "note": null,
+    "type": "metric",
+    "position_x": 19,
+    "position_y": 27,
+    "width": 18,
+    "height": 8,
+    "options": {
+      "collection": "profiles",
+      "field": "username",
+      "function": "count",
+      "filter": {
+        "_and": [
+          {
+            "list": {
+              "_eq": "nice"
+            }
+          }
+        ]
+      },
+      "conditionalFormatting": [
+        {
+          "operator": ">=",
+          "value": 0,
+          "color": "#2ECDA7"
+        }
+      ]
+    },
+    "date_created": "2024-12-07T05:17:53.850Z",
+    "user_created": "537965cb-ecc0-4034-9cee-7c1b317ec962"
+  },
+  {
+    "id": "b15b4244-3732-4474-bdab-d5d61350dfa0",
+    "dashboard": "fea88467-b57f-453b-a15c-91b8693ba6f8",
+    "name": "Devs on Naughty List",
+    "icon": "local_fire_department",
+    "color": "#E35169",
+    "show_header": true,
+    "note": null,
+    "type": "metric",
+    "position_x": 1,
+    "position_y": 27,
+    "width": 18,
+    "height": 8,
+    "options": {
+      "collection": "profiles",
+      "field": "username",
+      "function": "count",
+      "filter": {
+        "_and": [
+          {
+            "list": {
+              "_eq": "naughty"
+            }
+          }
+        ]
+      },
+      "conditionalFormatting": [
+        {
+          "operator": ">=",
+          "value": 0,
+          "color": "#E35169"
+        }
+      ]
+    },
+    "date_created": "2024-12-07T05:17:53.857Z",
+    "user_created": "537965cb-ecc0-4034-9cee-7c1b317ec962"
+  },
+  {
+    "id": "d9719466-8cd7-4789-94c1-078bbf29e148",
+    "dashboard": "fea88467-b57f-453b-a15c-91b8693ba6f8",
+    "name": "Letters Over Time",
+    "icon": "edit_document",
+    "color": null,
+    "show_header": true,
+    "note": null,
+    "type": "time-series",
+    "position_x": 1,
+    "position_y": 11,
+    "width": 36,
+    "height": 16,
+    "options": {
+      "collection": "profiles",
+      "function": "count",
+      "precision": "day",
+      "dateField": "created_at",
+      "range": "auto",
+      "valueField": "username",
+      "color": "#18222F"
+    },
+    "date_created": "2024-12-07T05:17:53.835Z",
+    "user_created": "537965cb-ecc0-4034-9cee-7c1b317ec962"
+  }
+]

@@ -1,0 +1,154 @@
+[
+	{
+		"username": "bryantgillespie",
+		"created_by": "80ff3310-776a-4150-95fd-71dc340cd863",
+		"created_at": "2024-12-07T05:33:39.926Z",
+		"updated_by": "80ff3310-776a-4150-95fd-71dc340cd863",
+		"updated_at": "2024-12-07T06:58:26.753Z",
+		"type": "User",
+		"list": "nice",
+		"wishlist": "More time to build cool stuff",
+		"score": 870,
+		"letter": "\nDear Bryant,\n\nWell, well, well. If it isn't the self-proclaimed \"open source contributor\" who thinks starring repositories counts as actual work. I've been watching you, Bryant, and let me tell you, your GitHub profile is about as impressive as a melted snowman.\n\nYou've got a whopping 15 repositories to your name. Wow! I'm sure the open source community is just trembling with excitement over your groundbreaking \"test-template\" project. And don't even get me started on your fork of the Jamstack repo. I'm sure your contributions there were absolutely crucial to the future of web development.\n\nI see you're wishing for \"More time to build cool stuff.\" Here's a novel idea - maybe spend less time mindlessly clicking the \"Star\" button on other people's work (507 times, really?) and more time actually coding. Just a thought!\n\nP.S. Next time you decide to fork a project, try adding some actual commits. Your copy-paste skills are truly unparalleled.\n",
+		"metadata": {
+			"ai_usage": {
+				"promptTokens": 14347,
+				"completionTokens": 285,
+				"totalTokens": 14632
+			},
+			"ai_response": {
+				"letter": "\n# Ho Ho... Oh No!\n\nDear Bryant,\n\nWell, well, well. If it isn't the self-proclaimed \"open source contributor\" who thinks starring repositories counts as actual work. I've been watching you, Bryant, and let me tell you, your GitHub profile is about as impressive as a melted snowman.\n\nYou've got a whopping 15 repositories to your name. Wow! I'm sure the open source community is just trembling with excitement over your groundbreaking \"test-template\" project. And don't even get me started on your fork of the Jamstack repo. I'm sure your contributions there were absolutely crucial to the future of web development.\n\nI see you're wishing for \"More time to build cool stuff.\" Here's a novel idea - maybe spend less time mindlessly clicking the \"Star\" button on other people's work (507 times, really?) and more time actually coding. Just a thought!\n\nP.S. Next time you decide to fork a project, try adding some actual commits. Your copy-paste skills are truly unparalleled.\n",
+				"list": "naughty"
+			},
+			"score": {
+				"commits": {
+					"raw": 203,
+					"score": 203,
+					"explanation": "203 commits = 203 points (1 point per 1 commit)"
+				},
+				"pullRequests": {
+					"raw": 55,
+					"score": 110,
+					"explanation": "55 PRs = 110 points (2 points per PR)"
+				},
+				"reviews": {
+					"raw": 15,
+					"score": 45,
+					"explanation": "15 reviews = 45 points (3 points per review)"
+				},
+				"issues": {
+					"raw": 10,
+					"score": 5,
+					"explanation": "10 issues = 5 points (0.5 point per issue)"
+				},
+				"followers": {
+					"raw": 70,
+					"score": 140,
+					"explanation": "70 followers = 140 points (2 points per follower)"
+				},
+				"projectImpact": {
+					"raw": 149,
+					"score": 298,
+					"explanation": "149 total stars = 298 points (2 points per star)"
+				},
+				"forkPenalty": {
+					"raw": 5,
+					"score": -10,
+					"explanation": "5 abandoned forks = -10 points (-2 points per abandoned fork)"
+				},
+				"sponsorships": {
+					"raw": 0,
+					"score": 0,
+					"explanation": "0 sponsorships = 0 points (25 points per sponsorship)"
+				},
+				"multipliers": {
+					"value": 1.1,
+					"explanation": "10% bonus for organization membership"
+				},
+				"finalScore": 870,
+				"list": "nice"
+			},
+			"possible_roasts": [
+				{
+					"name": "Ben Haynes",
+					"login": "benhaynes",
+					"avatarUrl": "https://avatars.githubusercontent.com/u/522079?u=4649d31bc68a7e835e167a9e5c208db2b28df8a6&v=4"
+				},
+				{
+					"name": "Mike Elsmore",
+					"login": "ukmadlz",
+					"avatarUrl": "https://avatars.githubusercontent.com/u/804683?u=dbfd0a63256c910ec6807d38509d548b83e16b52&v=4"
+				},
+				{
+					"name": "Hannes Küttner",
+					"login": "hanneskuettner",
+					"avatarUrl": "https://avatars.githubusercontent.com/u/4376726?u=ddb888328e489052d8fa77772bd82afd05a0bba8&v=4"
+				},
+				{
+					"name": "Pascal Jufer",
+					"login": "paescuj",
+					"avatarUrl": "https://avatars.githubusercontent.com/u/5363448?u=2114d8f7e2b3c55070ec2de8e8a1728fe9fae5b5&v=4"
+				},
+				{
+					"name": "Hugo Torzuoli",
+					"login": "HZooly",
+					"avatarUrl": "https://avatars.githubusercontent.com/u/7328625?u=721f121546f78630570e12e0acf2178f1fbf6fd3&v=4"
+				},
+				{
+					"name": "Rijk van Zanten",
+					"login": "rijkvanzanten",
+					"avatarUrl": "https://avatars.githubusercontent.com/u/9141017?u=5fea32a8f95813aab23f7765c03d33717c389077&v=4"
+				},
+				{
+					"name": "Brainslug",
+					"login": "br41nslug",
+					"avatarUrl": "https://avatars.githubusercontent.com/u/9389634?u=4da07b71ead17a3787145e2c8f881dd59e6442ea&v=4"
+				},
+				{
+					"name": "Nicola Krumschmidt",
+					"login": "nickrum",
+					"avatarUrl": "https://avatars.githubusercontent.com/u/12128505?u=ba9fce91f580768a1eb971b17d9f9a19dba0f384&v=4"
+				},
+				{
+					"name": "Connor Winston",
+					"login": "connorwinston",
+					"avatarUrl": "https://avatars.githubusercontent.com/u/12714889?u=8c01e7323b7a9ebfc33e34214cd3f00ff7763694&v=4"
+				},
+				{
+					"name": "José Varela",
+					"login": "joselcvarela",
+					"avatarUrl": "https://avatars.githubusercontent.com/u/14039341?u=05347e2781578f736ac5c40f8c2eaedd4c1fda6c&v=4"
+				}
+			]
+		},
+		"roasted_by": null,
+		"mode": "self",
+		"is_public": true,
+		"likes": [
+			33,
+			34
+		]
+	},
+	{
+		"username": "directus",
+		"created_by": "80ff3310-776a-4150-95fd-71dc340cd863",
+		"created_at": "2024-12-06T15:15:10.824Z",
+		"updated_by": "537965cb-ecc0-4034-9cee-7c1b317ec962",
+		"updated_at": "2024-12-07T04:51:36.110Z",
+		"type": "Organization",
+		"list": "nice",
+		"wishlist": "",
+		"score": 69581,
+		"letter": "\n# Ho Ho... Oh No!\n\nDear Directus,\n\nWell, well, well, if it isn't the \"instant no-code App and dynamic API\" wizards! I've been watching your GitHub organization, and let me tell you, it's been quite the sleigh ride.\n\nFirst off, 28,335 stars on your main repo? Impressive! Almost as impressive as my ability to deliver presents to billions of children in one night. But let's be real, your 546 open issues are starting to look like my naughty list – long and in desperate need of attention.\n\nI see you've been busy creating a \"headless CMS\" and \"instant APIs\". That's cute. You know what else is instant? My ability to eat a plate of cookies in 0.2 seconds flat. But I digress. Your friend bryantgillespie seems to think you deserve some recognition. Well, consider this letter your Christmas miracle – I'm actually acknowledging your existence.\n\nP.S. Next time you're working on your \"flexible backend\", maybe consider adding a feature that helps deliver presents through chimneys. Just a thought from your old pal Santa.\n",
+		"metadata": {
+			"ai_response": {
+				"letter": "\n# Ho Ho... Oh No!\n\nDear Directus,\n\nWell, well, well, if it isn't the \"instant no-code App and dynamic API\" wizards! I've been watching your GitHub organization, and let me tell you, it's been quite the sleigh ride.\n\nFirst off, 28,335 stars on your main repo? Impressive! Almost as impressive as my ability to deliver presents to billions of children in one night. But let's be real, your 546 open issues are starting to look like my naughty list – long and in desperate need of attention.\n\nI see you've been busy creating a \"headless CMS\" and \"instant APIs\". That's cute. You know what else is instant? My ability to eat a plate of cookies in 0.2 seconds flat. But I digress. Your friend bryantgillespie seems to think you deserve some recognition. Well, consider this letter your Christmas miracle – I'm actually acknowledging your existence.\n\nP.S. Next time you're working on your \"flexible backend\", maybe consider adding a feature that helps deliver presents through chimneys. Just a thought from your old pal Santa.\n",
+				"list": "nice"
+			}
+		},
+		"roasted_by": "bryantgillespie",
+		"mode": "friend",
+		"is_public": true,
+		"likes": []
+	}
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "fea88467-b57f-453b-a15c-91b8693ba6f8",
+    "name": "Santa's Workshop",
+    "icon": "tools_power_drill",
+    "note": "Dashboard for tracking the naughty or nice list",
+    "date_created": "2024-12-07T05:11:49.299Z",
+    "user_created": "537965cb-ecc0-4034-9cee-7c1b317ec962",
+    "color": null,
+    "panels": null
+  }
+]

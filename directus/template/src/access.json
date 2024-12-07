@@ -1,0 +1,23 @@
+[
+  {
+    "id": "e4366ef1-1b23-441f-9ea1-c76fef1ea07a",
+    "role": null,
+    "user": null,
+    "policy": "abf8a154-5b1c-4a46-ac9c-7300570f4f17",
+    "sort": 1
+  },
+  {
+    "id": "68e6e339-bd94-48c2-b782-7a90688c7aa7",
+    "role": null,
+    "user": "80ff3310-776a-4150-95fd-71dc340cd863",
+    "policy": "b592dd17-0078-4729-a0c4-269d7a25fb60",
+    "sort": 1
+  },
+  {
+    "id": "3b7e799a-cd69-44f4-99ca-53ff05382989",
+    "role": "abf532ac-850b-451d-9078-72634a3e18f7",
+    "user": null,
+    "policy": "5f505be9-023d-4553-94d2-c33c1e370e3e",
+    "sort": null
+  }
+]

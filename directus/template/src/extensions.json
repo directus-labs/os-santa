@@ -1,0 +1,22 @@
+[
+  {
+    "id": "41ca762d-e56a-4377-87c2-73ca6f77cca2",
+    "bundle": null,
+    "meta": {
+      "enabled": true,
+      "id": "41ca762d-e56a-4377-87c2-73ca6f77cca2",
+      "folder": "a4cd622d-0861-4ae5-8b39-7fc67bfa48c1",
+      "source": "registry",
+      "bundle": null
+    },
+    "schema": {
+      "path": "/directus/node_modules/.directus/extensions/.registry/a4cd622d-0861-4ae5-8b39-7fc67bfa48c1",
+      "name": "@directus-labs/table-view-panel",
+      "version": "1.0.0",
+      "type": "panel",
+      "entrypoint": "dist/index.js",
+      "host": "^10.10.0",
+      "local": true
+    }
+  }
+]

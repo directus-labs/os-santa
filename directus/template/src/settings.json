@@ -1,0 +1,108 @@
+{
+  "id": 1,
+  "project_name": "Salty OS Santa",
+  "project_url": "https://salty-santa.vercel.app",
+  "project_color": "#E35169",
+  "project_logo": null,
+  "public_foreground": null,
+  "public_background": null,
+  "public_note": null,
+  "auth_login_attempts": 25,
+  "auth_password_policy": null,
+  "storage_asset_transform": "all",
+  "storage_asset_presets": null,
+  "custom_css": ".v-divider.inlineTitle.large.add-margin-top {\n    margin-top: 0 !important;\n}\n\n.module-nav-content {\n    font-size: 16px;\n    line-height: 24px;\n}\n\nbody {\n    font-size: 16px !important;\n}\n\n.drawer-item-content {\n   --theme--form--row-gap: 24px;\n   --theme--form--column-gap: 32px;\n}\n\n.v-workspace-tile {\n    background: #fff !important;\n}",
+  "storage_default_folder": null,
+  "basemaps": null,
+  "mapbox_key": null,
+  "module_bar": null,
+  "project_descriptor": "The open source naughty or nice list",
+  "default_language": "en-US",
+  "custom_aspect_ratios": null,
+  "public_favicon": null,
+  "default_appearance": "auto",
+  "default_theme_light": null,
+  "theme_light_overrides": {
+    "form": {
+      "rowGap": "24px",
+      "field": {
+        "input": {
+          "height": "52px",
+          "background": "#ffffff"
+        }
+      }
+    },
+    "borderWidth": "1px",
+    "navigation": {
+      "modules": {
+        "background": "color-mix(in srgb, #000000, var(--theme--primary) 80%)",
+        "button": {
+          "foreground": "color-mix(in srgb, #FFFFFF, var(--theme--primary) 20%)",
+          "foregroundActive": "var(--theme--primary)",
+          "backgroundActive": "#FFFFFF"
+        }
+      },
+      "background": "#fff",
+      "project": {
+        "background": "transparent"
+      },
+      "borderColor": "color-mix(in srgb, #000000, var(--theme--background) 95%)",
+      "borderWidth": "1px",
+      "list": {
+        "divider": {
+          "borderColor": "var(--theme--border-color-subdued)"
+        },
+        "backgroundHover": "color-mix(in srgb, #FFFFFF, var(--theme--primary) 10%)",
+        "backgroundActive": "color-mix(in srgb, #FFFFFF, var(--theme--primary) 15%)",
+        "fontFamily": "var(--theme--fonts--serif--font-family)",
+        "icon": {
+          "foreground": "#00c16a"
+        }
+      }
+    },
+    "fonts": {
+      "display": {
+        "fontFamily": "\"DM Sans\", system-ui",
+        "fontWeight": "600"
+      },
+      "serif": {
+        "fontFamily": "\"Playfair Display\", serif"
+      }
+    },
+    "borderRadius": "6px",
+    "sidebar": {
+      "background": "#FFFFFF",
+      "borderWidth": "1px",
+      "borderColor": "var(--theme--border-color-subdued)",
+      "section": {
+        "toggle": {
+          "borderColor": "var(--theme--border-color-subdued)",
+          "borderWidth": "1px",
+          "background": "#FFFFFF",
+          "foreground": "var(--theme--foreground)",
+          "foregroundHover": "var(--theme--foreground)",
+          "icon": {
+            "foreground": "var(--theme--foreground)",
+            "foregroundHover": "var(--theme--foreground)",
+            "foregroundActive": "var(--theme--foreground-accent)"
+          }
+        }
+      }
+    },
+    "backgroundAccent": "color-mix(in srgb, #FFFFFF, var(--theme--primary) 10%)",
+    "header": {
+      "title": {
+        "fontFamily": "var(--theme--fonts--serif--font-family)"
+      }
+    }
+  },
+  "default_theme_dark": null,
+  "theme_dark_overrides": null,
+  "report_error_url": null,
+  "report_bug_url": null,
+  "report_feature_url": null,
+  "public_registration": false,
+  "public_registration_verify_email": true,
+  "public_registration_role": null,
+  "public_registration_email_filter": null
+}

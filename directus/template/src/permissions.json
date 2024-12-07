@@ -1,0 +1,101 @@
+[
+  {
+    "collection": "likes",
+    "action": "read",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "b592dd17-0078-4729-a0c4-269d7a25fb60"
+  },
+  {
+    "collection": "likes",
+    "action": "create",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "b592dd17-0078-4729-a0c4-269d7a25fb60"
+  },
+  {
+    "collection": "likes",
+    "action": "update",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "b592dd17-0078-4729-a0c4-269d7a25fb60"
+  },
+  {
+    "collection": "profiles",
+    "action": "create",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "b592dd17-0078-4729-a0c4-269d7a25fb60"
+  },
+  {
+    "collection": "profiles",
+    "action": "read",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "b592dd17-0078-4729-a0c4-269d7a25fb60"
+  },
+  {
+    "collection": "profiles",
+    "action": "update",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "b592dd17-0078-4729-a0c4-269d7a25fb60"
+  },
+  {
+    "collection": "directus_fields",
+    "action": "read",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "b592dd17-0078-4729-a0c4-269d7a25fb60"
+  },
+  {
+    "collection": "directus_collections",
+    "action": "read",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "b592dd17-0078-4729-a0c4-269d7a25fb60"
+  },
+  {
+    "collection": "directus_relations",
+    "action": "read",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "b592dd17-0078-4729-a0c4-269d7a25fb60"
+  }
+]

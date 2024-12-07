@@ -1,0 +1,80 @@
+[
+  {
+    "collection": "profiles",
+    "field": "created_by",
+    "related_collection": "directus_users",
+    "schema": {
+      "constraint_name": "profiles_created_by_foreign",
+      "table": "profiles",
+      "column": "created_by",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "directus_users",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "NO ACTION"
+    },
+    "meta": {
+      "many_collection": "profiles",
+      "many_field": "created_by",
+      "one_collection": "directus_users",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "profiles",
+    "field": "updated_by",
+    "related_collection": "directus_users",
+    "schema": {
+      "constraint_name": "profiles_updated_by_foreign",
+      "table": "profiles",
+      "column": "updated_by",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "directus_users",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "NO ACTION"
+    },
+    "meta": {
+      "many_collection": "profiles",
+      "many_field": "updated_by",
+      "one_collection": "directus_users",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "likes",
+    "field": "profile",
+    "related_collection": "profiles",
+    "schema": {
+      "constraint_name": "likes_profile_foreign",
+      "table": "likes",
+      "column": "profile",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "profiles",
+      "foreign_key_column": "username",
+      "on_update": "NO ACTION",
+      "on_delete": "CASCADE"
+    },
+    "meta": {
+      "many_collection": "likes",
+      "many_field": "profile",
+      "one_collection": "profiles",
+      "one_field": "likes",
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "delete"
+    }
+  }
+]
