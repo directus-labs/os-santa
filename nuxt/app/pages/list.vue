@@ -1,27 +1,19 @@
 <script setup lang="ts">
 import type { ProfileWithLikes } from '#shared/types/endpoints';
 
-interface Profile {
-	username: string;
-	list: 'naughty' | 'nice';
-	letter: string;
-	type: 'user' | 'organization';
-	meta?: {
-		totalLikes: number;
-		userLikeCount: number;
-	};
-}
-
 const route = useRoute();
 
-
-const { data: profiles, status, refresh } = await useAsyncData<ProfileWithLikes[]>('profiles', () =>
+const {
+	data: profiles,
+	status,
+	refresh,
+} = await useAsyncData<ProfileWithLikes[]>('profiles', () =>
 	$fetch('/api/profiles', {
 		method: 'GET',
 		params: {
-			list: (route.query.list as string),
-			q: (route.query.q as string),
-			type: (route.query.type as string),
+			list: route.query.list as string,
+			q: route.query.q as string,
+			type: route.query.type as string,
 		},
 	}),
 );
@@ -61,7 +53,7 @@ const niceProfiles = computed(() => profiles.value?.filter((profile) => profile.
 				<div class="bg-[#f7e9d3] rounded-lg shadow-xl p-4 sm:p-8 relative border-8 border-double border-[#d4b995]">
 					<div class="space-y-4 text-center">
 						<BaseHeadline content="Open Source Santa's List" color="secondary" />
-						<BaseText class="">See who's been naughty or nice in the open source community this year.</BaseText>
+						<BaseText class="mt-2">See who's been naughty or nice in the open source community this year.</BaseText>
 					</div>
 
 					<!-- Search Bar -->
@@ -72,15 +64,13 @@ const niceProfiles = computed(() => profiles.value?.filter((profile) => profile.
 							:loading="status === 'pending'"
 							type="search"
 							placeholder="Search developers..."
-						icon="lucide:search"
+							icon="lucide:search"
 							variant="none"
-							class="rounded-full basis-1/2 border-2 border-[#d4b995] bg-[#f0e0c6]
-							focus-within:outline-none focus-within:border-red-800 focus-within:ring focus-within:ring-red-600 focus-within:ring-opacity-50 "
+							class="rounded-full basis-1/2 border-2 border-[#d4b995] bg-[#f0e0c6] focus-within:outline-none focus-within:border-red-800 focus-within:ring focus-within:ring-red-600 focus-within:ring-opacity-50"
 							:ui="{
 								base: 'placeholder:text-[#d4b995]',
 								leadingIcon: 'text-[#d4b995]',
 								trailingIcon: 'text-[#d4b995]',
-
 							}"
 						/>
 

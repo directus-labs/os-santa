@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="p-4 pb-24 lg:pb-12">
 		<p class="text-center text-white text-2xl flex justify-center items-center gap-2 font-bold">
 			Powered by
 			<NuxtLink to="https://directus.io?ref=os_santa_footer">

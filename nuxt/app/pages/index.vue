@@ -146,7 +146,7 @@ const copy = {
 
 <template>
 	<div class="">
-		<UContainer class="py-16">
+		<UContainer class="py-4 md:py-16">
 			<div class="text-center mb-8">
 				<BaseHeadline content="Salty Open Source Santa" size="xl" shadow />
 				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200 mt-4">
@@ -171,7 +171,7 @@ const copy = {
 								@update:modelValue="updateQuery('mode', $event ? 'friend' : undefined)"
 							/>
 						</UFormField>
-						<div class="text-3xl font-bold text-gray-900 mb-4 font-cursive">Dear Open Source Santa,</div>
+						<div class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 font-cursive">Dear Open Source Santa,</div>
 						<div class="gap-2" v-auto-animate>
 							<p class="text-gray-900 text-2xl font-bold font-cursive">{{ copy[mode].formUsername }}</p>
 							<UButton

@@ -41,7 +41,6 @@ defineOgImageComponent('Username', {
 	avatarUrl: avatarUrl.value,
 });
 
-
 function loginWithGithub(redirectUri: string) {
 	redirect.value = redirectUri;
 	return navigateTo(`${url}/auth/github`, {
@@ -115,12 +114,20 @@ function loginWithGithub(redirectUri: string) {
 
 				<div class="content">
 					<NotebookPaper v-if="data?.is_new" class="text-center space-y-6 bg-red-900/80 p-4 rounded-lg">
-						<BaseHeadline content="Letter Not Found" size="lg" color="secondary"/>
+						<BaseHeadline content="Letter Not Found" size="lg" color="secondary" />
 						<BaseText as="p" size="lg" class="mx-auto max-w-md mt-4">
-							It looks like Santa doesn't have a letter for <span class="font-bold font-mono">{{ username }}</span> yet. That's a shame! Would you like to write it?
+							It looks like Santa doesn't have a letter for
+							<span class="font-bold font-mono">{{ username }}</span>
+							yet. That's a shame! Would you like to write it?
 						</BaseText>
 						<div class="flex justify-center gap-4 mt-4 pb-8">
-							<UButton v-if="!loggedIn" variant="solid" color="neutral" size="xl" @click="loginWithGithub(`/?mode=friend&username=${username}`)">
+							<UButton
+								v-if="!loggedIn"
+								variant="solid"
+								color="neutral"
+								size="xl"
+								@click="loginWithGithub(`/?mode=friend&username=${username}`)"
+							>
 								<Icon name="mdi:github" class="mr-2" />
 								Sign in with Github to Write Letter
 							</UButton>
@@ -150,9 +157,10 @@ function loginWithGithub(redirectUri: string) {
 						<div v-else-if="error" class="text-center text-red-600 py-4">
 							Oops! Something went wrong loading the letter.
 						</div>
+						<!-- Letter Content -->
 						<div v-else-if="data" class="relative w-full">
-							<div class="relative z-10 prose prose-2xl text-gray-900 text-3xl font-cursive" v-html="letter" />
-							<p class="relative z-10 prose prose-2xl text-gray-900 text-3xl font-cursive mt-8">
+							<div class="relative z-10 prose text-2xl text-gray-900 md:text-3xl font-cursive" v-html="letter" />
+							<p class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8">
 								Sarcastically yours,
 								<br />
 								<span class="font-bold text-red-900">Salty Open Source Santa</span>
