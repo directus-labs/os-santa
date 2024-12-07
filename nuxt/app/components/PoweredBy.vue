@@ -12,5 +12,16 @@
 			This is just for fun and letters should not be taken seriously. All letters are AI generated and may be somewhat
 			inappropriate or inaccurate.
 		</p>
+		<p class="text-center text-white opacity-75 text-sm mt-6 gap-2 max-w-xl mx-auto">
+			And last but not least, if you like this project, please
+			<a
+				href="https://github.com/directus/directus"
+				target="_blank"
+				class="text-white font-bold hover:text-red-200 transition-colors duration-300"
+			>
+				give us a star on GitHub. 🙏
+			</a>
+			Our goal is to reach 30k stars as a Christmas present to our co-founder and CEO.
+		</p>
 	</div>
 </template>

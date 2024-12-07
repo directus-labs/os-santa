@@ -23,6 +23,7 @@ const list: Ref<ProfileResponse['list'] | null> = computed(() => data.value?.lis
 const username = computed(() => route.params.username as string);
 const avatarUrl = computed(() => `https://github.com/${username.value}.png`);
 const githubUrl = computed(() => `https://github.com/${username.value}`);
+const possibleRoasts = computed(() => data.value?.metadata?.possible_roasts || []);
 
 const currentUrl = useRequestURL();
 
@@ -123,7 +124,7 @@ async function toggleVisibility() {
 				<aside class="left" v-if="list !== null">
 					<div class="lg:sticky lg:top-20 lg:mt-12">
 						<!-- Roast a Friend -->
-						<template v-if="data?.metadata?.possible_roasts.length > 0">
+						<template v-if="possibleRoasts.length > 0">
 							<p class="text-red-200 text-2xl text-center font-cursive -rotate-2 mt-8">Roast a teammate</p>
 							<div class="flex flex-wrap md:flex-nowrap md:flex-col gap-4 mt-2">
 								<ULink

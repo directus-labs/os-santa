@@ -26,7 +26,7 @@ const sounds = {
 		playbackRate,
 		interrupt: true,
 	}),
-}
+};
 
 const MAX_LEVELS = 11;
 const MIN_LEVEL = 0;
@@ -44,15 +44,12 @@ const SPICE_COLORS = [
 	'#8B0000',
 ] as const;
 
-
 const props = defineProps<{
 	username: string;
 }>();
 
 // Fetch the initial likes data
-const { data: likesData, status, error } = useLazyFetch<LikesResponse>(`/api/profiles/${props.username}/likes`, {
-
-});
+const { data: likesData, status, error } = useLazyFetch<LikesResponse>(`/api/profiles/${props.username}/likes`, {});
 
 // Individual spice(like) level for the visitor
 const level = computed({
@@ -62,7 +59,7 @@ const level = computed({
 	set(value: number) {
 		likesData.value = { ...likesData.value, userLikeCount: value } as LikesResponse;
 	},
-})
+});
 
 // Total likes for the profile
 const totalLikes = computed({
@@ -108,16 +105,13 @@ const updateLikes = useDebounceFn(async (newLevel: number, previousLevel: number
 const showChange = ref(false);
 const lastChange = ref(0);
 
-
 /*
 	Update the spice level
 	@param {boolean} isIncrement - Whether to increment or decrement the level
 */
 function updateLevel(isIncrement: boolean) {
 	const currentLevel = Number(level.value);
-	const targetLevel = isIncrement
-		? Math.min(currentLevel + 1, MAX_LEVELS)
-		: Math.max(currentLevel - 1, MIN_LEVEL);
+	const targetLevel = isIncrement ? Math.min(currentLevel + 1, MAX_LEVELS) : Math.max(currentLevel - 1, MIN_LEVEL);
 
 	// Check bounds before proceeding
 	if ((isIncrement && currentLevel >= MAX_LEVELS) || (!isIncrement && currentLevel <= MIN_LEVEL)) {
@@ -132,7 +126,7 @@ function updateLevel(isIncrement: boolean) {
 		likesData.value = {
 			...likesData.value,
 			userLikeCount: targetLevel,
-			totalLikes: (likesData.value.totalLikes || 0) + difference
+			totalLikes: (likesData.value.totalLikes || 0) + difference,
 		};
 	}
 
