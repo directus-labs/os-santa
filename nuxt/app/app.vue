@@ -17,7 +17,7 @@ useSchemaOrg([
 		'@id': 'https://opensourcesanta.com/#organization',
 		name: 'Open Source Santa',
 		// @TODO: Swap for full logo
-		logo: '/favicon.ico',
+		logo: '/favicon.icon',
 		sameAs: [
 			'https://x.com/directus',
 			'https://www.youtube.com/@DirectusVideos',

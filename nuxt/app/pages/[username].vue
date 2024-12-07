@@ -14,6 +14,14 @@ const { data, status, error } = await useAsyncData<ProfileResponse>(`letter-${ro
 	}),
 );
 
+if (error.value) {
+	throw createError({
+		statusCode: 404,
+		statusMessage: 'Profile not found',
+		fatal: true,
+	});
+}
+
 const showLetter = ref(false);
 const letter = computed(() => markdownToHtml(data.value?.letter || ''));
 const shouldAnimate = computed(() => data.value?.list !== null && data.value?.is_new !== true);
