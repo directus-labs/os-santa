@@ -13,7 +13,7 @@ defineSlots<{
 			<div class="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-red-900/5 to-transparent">
 				<!-- North Pole Post seal -->
 				<div class="absolute top-4 right-4 w-16 sm:w-32">
-					<img src="/images/stamp.png" alt="North Pole Post" class="object-contain " width="128" />
+					<img src="/images/stamp.png" alt="North Pole Post" class="object-contain" width="128" />
 				</div>
 				<!-- Santa's Workshop letterhead -->
 				<div class="absolute top-6 left-1/2 -translate-x-1/2 text-center">
