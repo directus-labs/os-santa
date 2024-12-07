@@ -36,7 +36,7 @@ const userMenuItems = computed(() => [
 	<nav
 		class="z-50 bg-red-600/70 backdrop-blur-sm border-b border-white/10 py-1.5 md:sticky md:top-0 md:border-b md:border-t-0 fixed bottom-0 left-0 right-0 border-t md:py-0"
 	>
-		<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+		<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 			<div class="flex justify-between items-center h-16">
 				<!-- Logo -->
 				<NuxtLink to="/" class="text-white font-serif text-2xl font-bold hidden md:block">
@@ -44,7 +44,7 @@ const userMenuItems = computed(() => [
 				</NuxtLink>
 
 				<!-- Navigation Items -->
-				<div class="flex items-center justify-between gap-4">
+				<div class="flex items-center justify-around gap-4 w-full md:w-auto">
 					<template v-for="item in navigation" :key="item.path">
 						<UButton
 							:to="item.path"
