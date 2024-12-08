@@ -13,20 +13,19 @@ const soundOn: Ref<boolean> = useCookie('soundOn');
 
 const playbackRate = ref(0.8);
 
-const sounds = {
-	up: useSound(slideWhistleUp, {
-		playbackRate,
-		interrupt: true,
-	}),
-	steam: useSound(steamWhistle, {
-		playbackRate: 1,
-		interrupt: true,
-	}),
-	down: useSound(slideWhistleDown, {
-		playbackRate,
-		interrupt: true,
-	}),
-};
+// Initialize sounds directly
+const soundUp = useSound(slideWhistleUp, {
+	playbackRate,
+	interrupt: true,
+});
+const soundSteam = useSound(steamWhistle, {
+	playbackRate: 1,
+	interrupt: true,
+});
+const soundDown = useSound(slideWhistleDown, {
+	playbackRate,
+	interrupt: true,
+});
 
 const MAX_LEVELS = 11;
 const MIN_LEVEL = 0;
@@ -136,9 +135,11 @@ function updateLevel(isIncrement: boolean) {
 	// Play appropriate sound
 	if (soundOn.value) {
 		if (isIncrement && targetLevel === MAX_LEVELS) {
-			sounds.steam.play();
+			console.log('Playing steam sound');
+			soundSteam.play();
 		} else {
-			isIncrement ? sounds.up.play() : sounds.down.play();
+			console.log(`Playing ${isIncrement ? 'up' : 'down'} sound`);
+			isIncrement ? soundUp.play() : soundDown.play();
 		}
 	}
 

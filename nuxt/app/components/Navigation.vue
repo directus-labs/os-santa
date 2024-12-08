@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+// @ts-ignore Missing types
 import { useSound } from '@vueuse/sound';
+
 import popOn from '~/assets/audio/pop-on.mp3';
 
 interface NavigationItem {
@@ -15,7 +16,7 @@ const navigation: NavigationItem[] = [
 	{ name: 'Write A Letter', path: '/', icon: 'lucide:pen', isPrimary: true },
 ];
 
-const soundOn = ref(true);
+const soundOn: Ref<boolean> = useCookie('soundOn', { default: () => true });
 const { play: playOn } = useSound(popOn, { interrupt: true });
 
 function toggleSound() {
