@@ -86,7 +86,7 @@ export default defineNuxtConfig({
 	// Posthog Configuration - https://nuxt-posthog.cmitjans.dev/configuration
 	// @ts-ignore
 	posthog: {
-		disabled: process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test',
+		disabled: process.env.VERCEL_ENV === 'development' || process.env.NODE_ENV === 'development',
 	},
 
 	colorMode: {
