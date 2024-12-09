@@ -300,6 +300,13 @@ const copy = {
 								🎄
 							</span>
 						</UButton>
+						<UAlert
+							v-if="!loggedIn"
+							icon="lucide:info"
+							title="You have to log in with GitHub before you can send your letter to Santa."
+							variant="soft"
+							color="error"
+						/>
 					</UForm>
 					<p class="max-w-sm text-balance mt-4 text-gray-900 text-center text-sm mx-auto font-mono font-bold">
 						Note: Santa doesn't store any of your private Github data in his database. He just needs to verify your
