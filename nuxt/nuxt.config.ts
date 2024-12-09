@@ -52,13 +52,16 @@ export default defineNuxtConfig({
 				'script-src': [
 					"'self'",
 					"'unsafe-inline'",
+					"'unsafe-eval'",
 					'https://www.googletagmanager.com',
+					'https://tagmanager.google.com',
 					'https://us.i.posthog.com',
 					'https://us-assets.i.posthog.com',
 				],
 				'connect-src': [
 					"'self'",
 					'https://www.google-analytics.com',
+					'https://www.googletagmanager.com',
 					'https://us.i.posthog.com',
 					'https://us-assets.i.posthog.com',
 				],
