@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from '#imports';
-
 const props = withDefaults(
 	defineProps<{
 		username?: string;
