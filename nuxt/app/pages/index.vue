@@ -172,14 +172,24 @@ const copy = {
 				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200 mt-4">
 					{{ copy[mode].description }}
 				</BaseText>
-				<UDrawer :overlay="false">
-					<UButton class="mt-4">How does this work?</UButton>
-					<template #content>
-						<UContainer>
-							<div v-html="copy.help" class="prose py-8 md:py-16 flex flex-col max-h-[400px] overflow-y-auto"></div>
-						</UContainer>
-					</template>
-				</UDrawer>
+				<div class="flex flex-col gap-4 md:flex-row justify-center items-center mt-4">
+					<UDrawer :overlay="false">
+						<UButton variant="soft" color="neutral">How does this work?</UButton>
+						<template #content>
+							<UContainer>
+								<div v-html="copy.help" class="prose py-8 max-h-[400px] md:max-h-[80vh] overflow-y-auto"></div>
+							</UContainer>
+						</template>
+					</UDrawer>
+					<UButton
+						to="https://docs.directus.io/blog/ai-santa-roast-app-with-directus-nuxt"
+						target="_blank"
+						variant="soft"
+						color="neutral"
+					>
+						How's it built?
+					</UButton>
+				</div>
 			</div>
 
 			<div class="relative max-w-2xl mx-auto">
