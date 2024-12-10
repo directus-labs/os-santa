@@ -16,7 +16,7 @@ export default function useQueryParams(options: { callback?: Function } = {}) {
 		});
 	}
 
-	const debouncedUpdateQuery = useDebounceFn(updateQuery, 500);
+	const debouncedUpdateQuery = useDebounceFn(updateQuery, 300);
 
 	function removeQuery(key: string) {
 		const newQuery = {
