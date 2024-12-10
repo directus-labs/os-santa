@@ -90,7 +90,7 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 			We've determined the ${profileType}'s score based on their contributions. Whether they're on the nice list
 			or the naughty list, roast them accordingly. Write a short, funny letter in a snarky sarcastic tone.
 			Include a couple lines from the wish list in the letter if it's provided.
-			If the mode provided is "friend", then make a short mention of the roasted_by user ONLY in the PS.
+			If the mode provided is "friend", then make a short mention of the roasted_by user and the wishlist item ONLY in the PS section.
 
 			STRUCTURE:
 			- Intro
