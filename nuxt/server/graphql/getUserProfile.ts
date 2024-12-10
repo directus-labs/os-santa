@@ -54,11 +54,6 @@ export default `query getUserProfile($username: String!) {
         issues(states: OPEN) {
           totalCount
         }
-        readme: object(expression: "HEAD:README.md") {
-          ... on Blob {
-            text
-          }
-        }
         pushedAt
         commitComments {
           totalCount
