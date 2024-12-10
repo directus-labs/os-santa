@@ -120,7 +120,7 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 		const possibleRoasts: any[] = [];
 		if (profileType === 'User' && (profileData as GitHubUserData).organizations?.nodes) {
 			for (const org of (profileData as GitHubUserData).organizations.nodes ?? []) {
-				if (org?.membersWithRole?.nodes) {
+				if (org?.membersWithRole?.nodes && possibleRoasts.length < 10) {
 					possibleRoasts.push(...org.membersWithRole.nodes);
 				}
 			}
