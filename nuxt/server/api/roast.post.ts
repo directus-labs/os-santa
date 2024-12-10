@@ -90,7 +90,7 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 			We've determined the ${profileType}'s score based on their contributions. Whether they're on the nice list
 			or the naughty list, roast them accordingly. Write a short, funny letter in a snarky sarcastic tone.
 			Include a couple lines from the wish list in the letter if it's provided.
-			If the mode provided is "friend", then make a short mention of the roasted_by user in the PS.
+			If the mode provided is "friend", then make a short mention of the roasted_by user ONLY in the PS.
 
 			STRUCTURE:
 			- Intro
@@ -117,21 +117,25 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 		});
 
 		// If the user has organizations and membersWithRoles exist, loop through the organizations and add the members to the metadata as possible_roasts
-		const possibleRoasts: any[] = [];
+		const possibleRoasts = new Map<string, any>();
 		if (profileType === 'User' && (profileData as GitHubUserData).organizations?.nodes) {
 			for (const org of (profileData as GitHubUserData).organizations.nodes ?? []) {
-				if (org?.membersWithRole?.nodes && possibleRoasts.length < 10) {
-					possibleRoasts.push(...org.membersWithRole.nodes);
+				if (org?.membersWithRole?.nodes && possibleRoasts.size < 10) {
+					const filteredMembers = org.membersWithRole.nodes.filter(
+						(member) => member?.login && member.login !== profileData.login,
+					);
+					filteredMembers.forEach((member) => possibleRoasts.set(member.login, member));
 				}
 			}
 		}
+		const uniquePossibleRoasts = Array.from(possibleRoasts.values());
 
 		// Generate metadata to store with the profile
 		const metadata = {
 			ai_usage: aiResponse.usage,
 			ai_response: aiResponse.object,
 			score: score,
-			possible_roasts: possibleRoasts,
+			possible_roasts: uniquePossibleRoasts,
 		};
 
 		// Store the profile in Directus
