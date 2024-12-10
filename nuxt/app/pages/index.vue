@@ -124,26 +124,6 @@ function handleSearchTermUpdate(term: any) {
 
 // Copy for the form based on the mode (self or friend)
 const copy = {
-	help: `
-		<p class="font-bold text-red-600">Salty Open Source Santa is a fun way to see if you've been a good open source contributor this year.</p>
-		<ol>
-			<li>Login to your GitHub account and write your letter to Santa.</li>
-			<li>Santa will:
-			<ul>
-				<li>read your letter</li>
-			<li>analyze your public GitHub activity</li>
-				<li>decide if you've been naughty or nice</li>
-				<li>and send you a letter back.</li>
-			</ul>
-			<li>Prepare yourself for a snarkyletter back.</li>
-		</ol>
-		<p><em>If you'd like to roast a friend or organization, toggle Friend Mode and enter their GitHub username instead.</em></p>
-		<p class="font-bold">Concerned about privacy?</p>
-		<ul>
-			<li>Letters are publicly visible on your profile page by default, but you can opt out after generating your letter.</li>
-			<li>Santa doesn't look up or store any private Github data, only publicly available information.</li>
-		</ul>
-	`,
 	self: {
 		title: 'Write your letter to Open Source Santa! 📝',
 		description: `Are you on the open source naughty or nice list? Write your letter to Santa below to find out if you're on his good side.`,
@@ -173,21 +153,8 @@ const copy = {
 					{{ copy[mode].description }}
 				</BaseText>
 				<div class="flex flex-col gap-4 md:flex-row justify-center items-center mt-4">
-					<UDrawer :overlay="false">
-						<UButton variant="soft" color="neutral">How does this work?</UButton>
-						<template #content>
-							<UContainer>
-								<div v-html="copy.help" class="prose py-8 max-h-[400px] md:max-h-[80vh] overflow-y-auto"></div>
-							</UContainer>
-						</template>
-					</UDrawer>
-					<UButton
-						to="https://docs.directus.io/blog/ai-santa-roast-app-with-directus-nuxt"
-						target="_blank"
-						variant="soft"
-						color="neutral"
-					>
-						How's it built?
+					<UButton to="https://directus.is/santa" target="_blank" size="xl" trailing-icon="i-lucide-arrow-up-right">
+						Learn How The Elves 🧝 Built This
 					</UButton>
 				</div>
 			</div>

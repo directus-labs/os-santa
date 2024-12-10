@@ -19,6 +19,8 @@ const navigation: NavigationItem[] = [
 const soundOn: Ref<boolean> = useCookie('soundOn', { default: () => true });
 const { play: playOn } = useSound(popOn, { interrupt: true });
 
+const showHelpModal = useState('showHelpModal', () => false);
+
 function toggleSound() {
 	soundOn.value = !soundOn.value;
 	if (soundOn.value) playOn();
@@ -65,6 +67,15 @@ const userMenuItems = computed(() => [
 							<span class="text-xs mt-1">{{ item.name }}</span>
 						</NuxtLink>
 					</template>
+
+					<!-- Help Toggle -->
+					<button
+						@click="showHelpModal = true"
+						class="flex flex-col items-center text-white/80 hover:text-white px-3 py-1 transition-colors"
+					>
+						<UIcon :name="showHelpModal ? 'lucide:circle-x' : 'lucide:circle-help'" class="h-5 md:h-6 w-5 md:w-6" />
+						<span class="text-xs mt-1">Help</span>
+					</button>
 
 					<!-- Sound Toggle -->
 					<button
