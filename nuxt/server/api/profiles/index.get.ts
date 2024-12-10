@@ -21,8 +21,6 @@ export default defineCachedEventHandler(
 		const query = getQuery(event);
 		const { q, type } = query as { q?: string; list?: string; type?: string };
 
-		console.log('Query', query);
-
 		const filter = buildProfileFilter({ type, q });
 
 		try {
