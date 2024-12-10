@@ -33,33 +33,30 @@ export default defineCachedEventHandler(
 					filter,
 				}),
 			);
+
 			// Create an array of usernames
 			const usernames = profiles.map((profile) => profile.username);
 
-			let likes: any[] = [];
-
 			// Get likes for all profiles
-			if (usernames.length > 0) {
-				likes = await directusServer.request(
-					readItems('likes', {
-						filter: { profile: { _in: usernames } },
-						aggregate: { sum: ['count'] },
-						group: ['profile'],
-					}),
-				);
-			}
+			const likes = await directusServer.request(
+				readItems('likes', {
+					filter: { profile: { _in: usernames } },
+					aggregate: { sum: ['count'] },
+					groupBy: ['profile'],
+				}),
+			);
 
-			// Add likes to profiles
-			const profilesWithLikes = profiles.map((profile) => {
-				// Find the like for the profile
-				const like = likes?.find((like) => like.profile === profile.username) || { sum: { count: 0 } };
-				return {
-					...profile,
-					meta: {
-						totalLikes: like?.sum?.count || 0,
-					},
-				};
-			});
+			const profilesWithLikes = profiles
+				.map((profile) => {
+					const like = likes.find((like) => like.profile === profile.username);
+					return {
+						...profile,
+						meta: {
+							totalLikes: Number(like?.sum?.count) || 0,
+						},
+					};
+				})
+				.sort((a, b) => b.meta.totalLikes - a.meta.totalLikes);
 
 			return profilesWithLikes;
 		} catch (error) {
