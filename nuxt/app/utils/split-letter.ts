@@ -2,7 +2,7 @@
  * Splits a letter into main content and postscript
  */
 export function splitLetterContent(content: string) {
-	const psMatch = content.match(/(\n[P]\.?[S]\.?\s+[\s\S]*?)$/i);
+	const psMatch = content.match(/(\n[P]\.?[S]\.?:?\s+[\s\S]*?)$/i);
 
 	if (!psMatch) {
 		return {
