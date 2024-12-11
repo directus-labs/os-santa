@@ -50,6 +50,7 @@ export default defineCachedEventHandler(
 					return {
 						...profile,
 						meta: {
+							// @ts-expect-error Types not coming through
 							totalLikes: Number(like?.sum?.count) || 0,
 						},
 					};
