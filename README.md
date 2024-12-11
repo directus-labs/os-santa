@@ -48,19 +48,30 @@ Open Source Santa is a playful web application that analyzes GitHub profiles and
 
 # Setup Guide
 
+## 0. Prerequisites
+
+- [Node.js](https://nodejs.org) - v18.17.0 or higher
+- [pnpm](https://pnpm.io) - v9.0.0 or higher
+- [Docker](https://docker.com) - v25.0.0 or higher
+
+Clone the repository and navigate to the root directory.
+
+```bash
+git clone https://github.com/directus-labs/os-santa.git
+cd os-santa
+```
 
 ## 1. Backend Setup (Directus)
 
 <img src="https://directus.io/images/logo-dark.svg" alt="Directus Logo" width="200" />
-
 
 We recommend you checkout the [Directus documentation](https://docs.directus.io/getting-started/quickstart/) for more information on how to setup and run Directus.
 
 ### Option A: Directus Cloud (Recommended for Quick Start)
 1. Create an account at [Directus Cloud](https://directus.cloud?ref=directus-labs%2Fos-santa)
 2. Create a new trial project - choose the build from scratch option
-3. Once created, note down your project URL and login credentials.
-4. Run the directus-template-cli tool to apply the template to your project. Replace the values with your own.
+3. Once created, note your project URL and login credentials.
+4. Run the `directus-template-cli` tool to apply the template to your project. Replace the values with your specific project URL and login credentials.
 
 ```bash
 cd directus
@@ -72,26 +83,29 @@ npx directus-template-cli@latest apply --directusUrl="your_directus_url" --userE
 5. Login to Directus and generate a static access token for the "Santa's Helper" user. Add to DIRECTUS_SERVER_TOKEN in .env file.
 
 ### Option B: Self-Hosted Setup
-1. Navigate to the directus directory:
+1. Ensure you have docker installed and running on your machine. [Install Docker](https://docs.docker.com/get-docker/)
+
+2. Start the Directus instance using Docker:
 
 ```bash
 cd directus
 ```
 
-2. Start the Directus instance using Docker:
-
 ```bash
 docker-compose up -d
 ```
 
-3. Access Directus admin panel at `http://localhost:8055`
-4. Run the directus-template-cli tool to apply the template to your project. Replace the values with your own if you changed the credentials in the standard docker compose file.
+3. Run the `directus-template-cli` tool to apply the template to your project. Replace the values with your specific project details.
 
 ```bash
 npx directus-template-cli@latest apply --directusUrl="http://localhost:8055" --userEmail="admin@example.com" --userPassword="d1r3ctus" --templateLocation="./template" --templateType="local"
 ```
 
-5. Login to Directus and generate a static access token for the "Santa's Helper" user. Add to DIRECTUS_SERVER_TOKEN in .env file.
+4. Login to Directus and generate a static access token for the "Santa's Helper" user. Save the token for the environment variables.
+
+```env
+DIRECTUS_SERVER_TOKEN=your_directus_token
+```
 
 
 ## 2. GitHub OAuth Setup
