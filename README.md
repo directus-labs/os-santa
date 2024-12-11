@@ -21,6 +21,8 @@
 
 Open Source Santa is a playful web application that analyzes GitHub profiles and generates AI-powered "naughty or nice" letters from Santa. Whether you want to check your own open source karma or roast a friend, Santa's got opinions about everyone's commits!
 
+Learn how the project was built on the [Directus Developer Blog](https://docs.directus.io/blog/ai-santa-roast-app-with-directus-nuxt).
+
 # Features
 
 - 🎅 Generate AI-powered roast letters from Santa based on GitHub public profile data
@@ -235,14 +237,11 @@ CORS_ORIGIN=http://localhost:3000
 - Verify your Directus token has admin access
 - Check that all environment variables are properly set
 
-
 # 🛟 Community Help
 For community help or support with Directus itself, please see the Directus Discord server.
 
 - **[Directus Discord](https://discord.com/invite/directus)** – Join over 10k+ developers and community members to ask
   questions and live discussion around Directus.
-
-<br />
 
 # ❤️ Contributing
 
