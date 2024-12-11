@@ -142,6 +142,13 @@ const copy = {
 		formYourUsernamePlaceholder: 'Enter your name',
 	},
 };
+
+useSeoMeta({
+	titleTemplate: 'Write a Letter to Open Source Santa',
+	description: `Santa knows who's been naughty and who's been nice in the open source community. Write your letter to Santa to find out if you're on his good side.`,
+});
+
+defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Salty Open Source Santa' });
 </script>
 
 <template>

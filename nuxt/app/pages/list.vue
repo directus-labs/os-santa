@@ -42,6 +42,13 @@ const filterTypes = [
 const naughtyProfiles = computed(() => profiles.value?.filter((profile) => profile.list === 'naughty') || []);
 
 const niceProfiles = computed(() => profiles.value?.filter((profile) => profile.list === 'nice') || []);
+
+useSeoMeta({
+	title: "Open Source Santa's List",
+	description: `Santa knows who's been naughty and who's been nice in the open source community. See if you made the naughty or nice list.`,
+});
+
+defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Salty Open Source Santa' });
 </script>
 
 <template>

@@ -8,16 +8,17 @@ useHead({
 });
 
 useSeoMeta({
-	titleTemplate: '%s / Open Source Santa',
-	ogSiteName: 'Open Source Santa',
+	titleTemplate: '%s / Salty Open Source Santa',
+	description:
+		"Santa knows who's been naughty and who's been nice in the open source community. Write your letter to Santa to find out if you're on his good side.",
+	ogSiteName: 'Salty Open Source Santa',
 });
 
 useSchemaOrg([
 	defineOrganization({
 		'@id': 'https://opensourcesanta.com/#organization',
-		name: 'Open Source Santa',
-		// @TODO: Swap for full logo
-		logo: '/favicon.icon',
+		name: 'Salty Open Source Santa',
+		logo: '/favicon.ico',
 		sameAs: [
 			'https://x.com/directus',
 			'https://www.youtube.com/@DirectusVideos',

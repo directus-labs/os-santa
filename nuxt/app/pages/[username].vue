@@ -57,6 +57,11 @@ function copyUrl() {
 	}, 2000);
 }
 
+useSeoMeta({
+	title: `${username.value}`,
+	description: `Is ${username.value} on the Open Source Santa's naughty or nice list?`,
+});
+
 defineOgImageComponent('Username', {
 	username: username.value,
 	avatarUrl: avatarUrl.value,
