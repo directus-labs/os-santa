@@ -24,12 +24,11 @@ Open Source Santa is a playful web application that analyzes GitHub profiles and
 
 # Features
 
-- 🎅 Generate AI-powered letters from Santa based on GitHub profiles
+- 🎅 Generate AI-powered roast letters from Santa based on GitHub public profile data
 - 🎄 Check if you're on the naughty or nice list
 - 🎁 Write letters for yourself or roast your friends
 - 🌟 Beautiful particle snow effects and holiday theming
-- 🔊 Festive sound effects
-- 📱 Fully responsive design
+- 🔊 Fun sound effects
 - 🔒 GitHub OAuth authentication
 - 🖼️ Dynamic OG image generation
 
@@ -87,46 +86,16 @@ docker-compose up -d
 
 ```bash
 npx directus-template-cli@latest apply --directusUrl="http://localhost:8055" --userEmail="admin@example.com" --userPassword="d1r3ctus" --templateLocation="./template" --templateType="local"
+```
 
 5. Login to Directus and generate a static access token for the "Santa's Helper" user. Add to DIRECTUS_SERVER_TOKEN in .env file.
-```
 
-## 2. GitHub OAuth Setup
-
-1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
-2. Click "New OAuth App"
-3. Fill in the application details:
-   - Application name: "Open Source Santa" (or your preferred name)
-   - Homepage URL: `http://localhost:3000` (development) or your production URL
-   - Authorization callback URL: `http://localhost:3000/auth/github`
-4. Save the Client ID and Client Secret for environment variables
-
-### Generating a GitHub Token for GraphQL API
-
-1. Go to [GitHub Personal Access Tokens](https://github.com/settings/tokens)
-2. Click "Generate new token"
-3. Fill in the token details:
-   - Note: "Open Source Santa GraphQL Access" (or your preferred note)
-   - Expiration: Choose an appropriate expiration time
-   - Repository access: Public Repositories (read-only)
-5. Add the token to your environment variables:
-
-```env
-GITHUB_TOKEN=your_github_token
-```
-
-## 3. Anthropic API Setup
-
-1. Create an account at [Anthropic](https://anthropic.com)
-2. Generate an API key from your dashboard
-3. Save the API key for environment variables
-
-## 4. Environment Configuration
+## 2. Environment Configuration
 
 1. Copy the example environment file:
 
 ```bash
-cp .env.example .env
+cd nuxt && cp .env.example .env
 ```
 
 2. Fill in your environment variables:
@@ -155,6 +124,46 @@ POSTHOG_API_HOST=your_posthog_host
 ```
 
 Note: PostHog analytics is optional and will be disabled in development mode. If you don't need product analytics, you can skip these environment variables.
+
+## 3. GitHub OAuth Setup
+
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Click "New OAuth App"
+3. Fill in the application details:
+   - Application name: "Open Source Santa" (or your preferred name)
+   - Homepage URL: `http://localhost:3000` (development) or your production URL
+   - Authorization callback URL: `http://localhost:3000/auth/github`
+4. Save the Client ID and Client Secret for environment variables
+
+```env
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+```
+
+### Generating a GitHub Token for GraphQL API
+
+1. Go to [GitHub Personal Access Tokens](https://github.com/settings/tokens)
+2. Click "Generate new token"
+3. Fill in the token details:
+   - Note: "Open Source Santa GraphQL Access" (or your preferred note)
+   - Expiration: Choose an appropriate expiration time
+   - Repository access: Public Repositories (read-only)
+5. Add the token to your environment variables:
+
+```env
+GITHUB_TOKEN=your_github_token
+```
+
+## 4. Anthropic API Setup
+
+1. Create an account at [Anthropic](https://anthropic.com)
+2. Generate an API key from your dashboard
+3. Save the API key for environment variables
+
+```env
+ANTHROPIC_API_KEY=your_anthropic_api_key
+```
+
 
 ## 5. Frontend (Nuxt) Setup
 
@@ -189,7 +198,7 @@ pnpm dev
 ### CORS Issues
 If you're running into CORS issues with Directus, ensure your Directus instance has CORS properly configured. For development, you can add the following to your Directus environment:
 
-Learn more about CORS in Directus [here](https://docs.directus.io/self-hosted/config-options.html#cors).
+Learn more about [CORS in Directus](https://docs.directus.io/self-hosted/config-options.html#cors).
 
 ```env
 CORS_ENABLED=true
@@ -200,25 +209,3 @@ CORS_ORIGIN=http://localhost:3000
 - Ensure your GitHub OAuth callback URL exactly matches your application setup
 - Verify your Directus token has admin access
 - Check that all environment variables are properly set
-
-### Type Generation Issues
-If you encounter issues with type generation:
-1. Ensure Directus is running and accessible
-2. Verify your DIRECTUS_URL and DIRECTUS_SERVER_TOKEN are correct
-3. Try running type generation with verbose logging:
-
-```bash
-DEBUG=1 pnpm generate:types
-```
-
-## Production Deployment Checklist
-
-Before deploying to production:
-
-1. Update environment variables for production URLs
-2. Update GitHub OAuth callback URLs for production
-3. Configure proper CORS settings in Directus
-4. Set up proper SSL certificates
-5. Configure proper security headers
-6. Set up proper database backups for Directus
-7. Configure rate limiting for the API endpoints
