@@ -12,8 +12,7 @@
   <a href="#introduction"><strong>Introduction</strong></a> ·
   <a href="#features"><strong>Features</strong></a> ·
   <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
-  <a href="#getting-started"><strong>Getting Started</strong></a> ·
-  <a href="#development"><strong>Development</strong></a>
+  <a href="#setup-guide"><strong>Setup Guide</strong></a> ·
 </p>
 
 <br/>
@@ -48,6 +47,8 @@ Open Source Santa is a playful web application that analyzes GitHub profiles and
 - [PostgreSQL](https://www.postgresql.org) - Database
 
 # Setup Guide
+
+<img src="https://directus.io/images/logo-dark.svg" alt="Directus Logo" width="200" />
 
 ## 1. Backend Setup (Directus)
 
@@ -125,6 +126,8 @@ POSTHOG_API_HOST=your_posthog_host
 
 Note: PostHog analytics is optional and will be disabled in development mode. If you don't need product analytics, you can skip these environment variables.
 
+<img src="https://github.githubassets.com/assets/GitHub-Logo-ee398b662d42.png" alt="GitHub Logo" width="200" />
+
 ## 3. GitHub OAuth Setup
 
 1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
@@ -154,16 +157,19 @@ GITHUB_CLIENT_SECRET=your_github_client_secret
 GITHUB_TOKEN=your_github_token
 ```
 
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Anthropic_logo.svg/1600px-Anthropic_logo.svg.png" alt="Anthropic Logo" width="200" />
+
 ## 4. Anthropic API Setup
 
 1. Create an account at [Anthropic](https://anthropic.com)
-2. Generate an API key from your dashboard
+2. Generate an API key from [your dashboard](https://console.anthropic.com/settings/keys)
 3. Save the API key for environment variables
 
 ```env
 ANTHROPIC_API_KEY=your_anthropic_api_key
 ```
 
+<img src="https://nuxt.com/assets/design-kit/logo-green-black.svg" alt="Nuxt Logo" width="200" />
 
 ## 5. Frontend (Nuxt) Setup
 
