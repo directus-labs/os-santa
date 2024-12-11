@@ -234,3 +234,29 @@ CORS_ORIGIN=http://localhost:3000
 - Ensure your GitHub OAuth callback URL exactly matches your application setup
 - Verify your Directus token has admin access
 - Check that all environment variables are properly set
+
+
+# 🛟 Community Help
+For community help or support with Directus itself, please see the Directus Discord server.
+
+- **[Directus Discord](https://discord.com/invite/directus)** – Join over 10k+ developers and community members to ask
+  questions and live discussion around Directus.
+
+<br />
+
+# ❤️ Contributing
+
+Here's how you can contribute:
+
+- [Open an issue](https://github.com/directus-labs/os-santa/issues) if you believe you've encountered a bug.
+- Please open an issue before submitting any PRs for new features or improvements.
+
+## 🙏 Thanks To
+
+- Our other awesome core team members at [Directus](https://directus.io) who helped test and provide feedback.
+- [joshwcomeau](https://github.com/joshwcomeau) for the idea and logic behind the spice-meter / like button.
+- [codenoid/github-roast](https://github.com/codenoid/github-roast) for additional inspiration of the GitHub roast idea.
+
+# License
+
+This project is open source and available under the MIT License. See the [LICENSE](LICENSE) file for more details.
