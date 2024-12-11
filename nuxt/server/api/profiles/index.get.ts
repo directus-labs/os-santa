@@ -19,7 +19,7 @@ function buildProfileFilter(query: { type?: string; q?: string }) {
 export default defineCachedEventHandler(
 	async (event): Promise<ProfileWithLikes[] | H3Error> => {
 		const query = getQuery(event);
-		const { q, type } = query as { q?: string; list?: string; type?: string };
+		const { q, type } = query as { q?: string; type?: string };
 
 		const filter = buildProfileFilter({ type, q });
 

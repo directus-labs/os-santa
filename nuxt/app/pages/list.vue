@@ -11,7 +11,6 @@ const {
 	$fetch<ProfileWithLikes[]>('/api/profiles', {
 		method: 'GET',
 		params: {
-			list: route.query.list as string,
 			q: route.query.q as string,
 			type: route.query.type as string,
 		},
