@@ -48,9 +48,11 @@ Open Source Santa is a playful web application that analyzes GitHub profiles and
 
 # Setup Guide
 
-<img src="https://directus.io/images/logo-dark.svg" alt="Directus Logo" width="200" />
 
 ## 1. Backend Setup (Directus)
+
+<img src="https://directus.io/images/logo-dark.svg" alt="Directus Logo" width="200" />
+
 
 We recommend you checkout the [Directus documentation](https://docs.directus.io/getting-started/quickstart/) for more information on how to setup and run Directus.
 
@@ -91,44 +93,10 @@ npx directus-template-cli@latest apply --directusUrl="http://localhost:8055" --u
 
 5. Login to Directus and generate a static access token for the "Santa's Helper" user. Add to DIRECTUS_SERVER_TOKEN in .env file.
 
-## 2. Environment Configuration
 
-1. Copy the example environment file:
-
-```bash
-cd nuxt && cp .env.example .env
-```
-
-2. Fill in your environment variables:
-
-```env
-# Directus Configuration
-DIRECTUS_URL=your_directus_url
-DIRECTUS_SERVER_TOKEN=your_directus_token
-
-# AI Generation
-ANTHROPIC_API_KEY=your_anthropic_api_key
-
-# Site Configuration
-NUXT_PUBLIC_SITE_URL=http://localhost:3000
-NUXT_SESSION_PASSWORD="password-with-at-least-32-characters"
-SALT="some-random-salt-string"
-
-# Authentication
-GITHUB_TOKEN=your_github_token_for_graphql_api
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
-
-# Analytics (Optional)
-POSTHOG_API_KEY=your_posthog_api_key
-POSTHOG_API_HOST=your_posthog_host
-```
-
-Note: PostHog analytics is optional and will be disabled in development mode. If you don't need product analytics, you can skip these environment variables.
+## 2. GitHub OAuth Setup
 
 <img src="https://github.githubassets.com/assets/GitHub-Logo-ee398b662d42.png" alt="GitHub Logo" width="200" />
-
-## 3. GitHub OAuth Setup
 
 1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
 2. Click "New OAuth App"
@@ -157,9 +125,9 @@ GITHUB_CLIENT_SECRET=your_github_client_secret
 GITHUB_TOKEN=your_github_token
 ```
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Anthropic_logo.svg/1600px-Anthropic_logo.svg.png" alt="Anthropic Logo" width="200" />
+## 3. Anthropic API Setup
 
-## 4. Anthropic API Setup
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Anthropic_logo.svg/1600px-Anthropic_logo.svg.png" alt="Anthropic Logo" width="200" />
 
 1. Create an account at [Anthropic](https://anthropic.com)
 2. Generate an API key from [your dashboard](https://console.anthropic.com/settings/keys)
@@ -169,9 +137,9 @@ GITHUB_TOKEN=your_github_token
 ANTHROPIC_API_KEY=your_anthropic_api_key
 ```
 
-<img src="https://nuxt.com/assets/design-kit/logo-green-black.svg" alt="Nuxt Logo" width="200" />
+## 4. Frontend (Nuxt) Setup
 
-## 5. Frontend (Nuxt) Setup
+<img src="https://nuxt.com/assets/design-kit/logo-green-black.svg" alt="Nuxt Logo" width="200" />
 
 1. Install dependencies:
 
@@ -183,7 +151,40 @@ cd nuxt
 pnpm i
 ```
 
-2. Generate Directus types:
+2. Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+3. Fill in your environment variables:
+
+```env
+# Directus Configuration
+DIRECTUS_URL=your_directus_url
+DIRECTUS_SERVER_TOKEN=your_directus_token
+
+# AI Generation
+ANTHROPIC_API_KEY=your_anthropic_api_key
+
+# Site Configuration
+NUXT_PUBLIC_SITE_URL=http://localhost:3000
+NUXT_SESSION_PASSWORD="password-with-at-least-32-characters"
+SALT="some-random-salt-string"
+
+# Authentication
+GITHUB_TOKEN=your_github_token_for_graphql_api
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+
+# Analytics (Optional)
+POSTHOG_API_KEY=your_posthog_api_key
+POSTHOG_API_HOST=your_posthog_host
+```
+
+Note: PostHog analytics is optional and will be disabled in development mode. If you don't need product analytics, you can skip these environment variables.
+
+4. Generate Directus types:
 
 NOTE: Your Directus instance must be running for type generation to work.
 
@@ -191,13 +192,13 @@ NOTE: Your Directus instance must be running for type generation to work.
 pnpm generate:types
 ```
 
-3. Start the development server:
+5. Start the development server:
 
 ```bash
 pnpm dev
 ```
 
-4. Visit `http://localhost:3000` in your browser
+6. Visit `http://localhost:3000` in your browser
 
 ## Common Issues and Troubleshooting
 
