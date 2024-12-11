@@ -1,6 +1,6 @@
 # OS Santa Directus Template
 
-The `.directus` directory holds a sample Docker Compose file that you can use to quickly spin up a local version of Directus along with the Salty Open Source Santa template in JSON format.
+The `directus` directory holds a sample Docker Compose file that you can use to quickly spin up a local version of Directus along with the Salty Open Source Santa template in JSON format.
 
 We 100% recommend using Docker if you want to run Directus locally or self-host on your own infrastructure. It easiest way to get up and running and it prevents a lot of environment specific issues inside Node.
 
@@ -10,7 +10,7 @@ To set up Directus using Docker, follow these steps:
 
 1. **Install Docker**: Ensure Docker is installed on your machine. You can download it from [Docker's official website](https://www.docker.com/products/docker-desktop).
 
-2. **Navigate to the `.directus` Directory**: Open your terminal and navigate to the `.directus` directory where the Docker Compose file is located.
+2. **Navigate to the `directus` Directory**: Open your terminal and navigate to the `directus` directory where the Docker Compose file is located.
 
 3. **Start the Docker Containers**: Run the following command to start the Directus instance:
 
