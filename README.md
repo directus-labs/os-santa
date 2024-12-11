@@ -48,35 +48,7 @@ Open Source Santa is a playful web application that analyzes GitHub profiles and
 - [Anthropic Claude](https://anthropic.com) - AI Text Generation
 - [PostgreSQL](https://www.postgresql.org) - Database
 
-# Getting Started
-
-## Prerequisites
-- Node.js >= 18
-- PNPM >= 8.6.0
-- PostgreSQL Database
-- Directus Instance
-- GitHub OAuth App
-- Anthropic API Key
-
-## Environment Variables
-
-```bash
-# Directus Configuration
-DIRECTUS_URL=
-DIRECTUS_SERVER_TOKEN=
-
-# Site Configuration
-NUXT_PUBLIC_SITE_URL=
-
-# Authentication
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-
-# AI Generation
-ANTHROPIC_API_KEY=
-```
-
-# Detailed Setup Guide
+# Setup Guide
 
 ## 1. Backend Setup (Directus)
 
@@ -84,10 +56,18 @@ We recommend you checkout the [Directus documentation](https://docs.directus.io/
 
 ### Option A: Directus Cloud (Recommended for Quick Start)
 1. Create an account at [Directus Cloud](https://directus.cloud?ref=directus-labs%2Fos-santa)
-2. Create a new project
-3. Once created, note down your project URL
-4. Generate an API token with admin access from Settings > API Hooks
-5. Save both the URL and token for environment variables
+2. Create a new trial project - choose the build from scratch option
+3. Once created, note down your project URL and login credentials.
+4. Run the directus-template-cli tool to apply the template to your project. Replace the values with your own.
+
+```bash
+cd directus
+```
+```bash
+npx directus-template-cli@latest apply --directusUrl="your_directus_url" --userEmail="your_email" --userPassword="your_password" --templateLocation="./template" --templateType="local"
+```
+
+5. Login to Directus and generate a static access token for the "Santa's Helper" user. Add to DIRECTUS_SERVER_TOKEN in .env file.
 
 ### Option B: Self-Hosted Setup
 1. Navigate to the directus directory:
@@ -103,7 +83,13 @@ docker-compose up -d
 ```
 
 3. Access Directus admin panel at `http://localhost:8055`
-4. Create an admin user and generate an API token
+4. Run the directus-template-cli tool to apply the template to your project. Replace the values with your own if you changed the credentials in the standard docker compose file.
+
+```bash
+npx directus-template-cli@latest apply --directusUrl="http://localhost:8055" --userEmail="admin@example.com" --userPassword="d1r3ctus" --templateLocation="./template" --templateType="local"
+
+5. Login to Directus and generate a static access token for the "Santa's Helper" user. Add to DIRECTUS_SERVER_TOKEN in .env file.
+```
 
 ## 2. GitHub OAuth Setup
 
@@ -112,7 +98,7 @@ docker-compose up -d
 3. Fill in the application details:
    - Application name: "Open Source Santa" (or your preferred name)
    - Homepage URL: `http://localhost:3000` (development) or your production URL
-   - Authorization callback URL: `http://localhost:3000/auth/github/callback`
+   - Authorization callback URL: `http://localhost:3000/auth/github`
 4. Save the Client ID and Client Secret for environment variables
 
 ### Generating a GitHub Token for GraphQL API
@@ -150,26 +136,33 @@ cp .env.example .env
 DIRECTUS_URL=your_directus_url
 DIRECTUS_SERVER_TOKEN=your_directus_token
 
-# Site Configuration
-NUXT_PUBLIC_SITE_URL=http://localhost:3000
-
-# Authentication
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
-
 # AI Generation
 ANTHROPIC_API_KEY=your_anthropic_api_key
 
+# Site Configuration
+NUXT_PUBLIC_SITE_URL=http://localhost:3000
+NUXT_SESSION_PASSWORD="password-with-at-least-32-characters"
+SALT="some-random-salt-string"
+
+# Authentication
+GITHUB_TOKEN=your_github_token_for_graphql_api
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+
 # Analytics (Optional)
 POSTHOG_API_KEY=your_posthog_api_key
-POSTHOG_API_HOST=your_posthog_host # defaults to https://app.posthog.com
+POSTHOG_API_HOST=your_posthog_host
 ```
 
 Note: PostHog analytics is optional and will be disabled in development mode. If you don't need product analytics, you can skip these environment variables.
 
-## 5. Application Setup
+## 5. Frontend (Nuxt) Setup
 
 1. Install dependencies:
+
+```bash
+cd nuxt
+```
 
 ```bash
 pnpm i
@@ -183,7 +176,7 @@ NOTE: Your Directus instance must be running for type generation to work.
 pnpm generate:types
 ```
 
-1. Start the development server:
+3. Start the development server:
 
 ```bash
 pnpm dev
@@ -229,40 +222,3 @@ Before deploying to production:
 5. Configure proper security headers
 6. Set up proper database backups for Directus
 7. Configure rate limiting for the API endpoints
-
-# Development
-
-1. Clone the repository
-
-```bash
-git clone https://github.com/directus-labs/os-santa.git
-cd os-santa
-```
-
-2. Install dependencies
-
-```bash
-pnpm install
-```
-
-3. Start the development server
-
-```bash
-pnpm dev
-```
-
-4. Visit http://localhost:3000
-
-# Deployment
-
-The application can be deployed to any hosting platform that supports Nuxt 3. The backend requires a Directus instance with PostgreSQL.
-
-## Frontend Deployment Options
-- Vercel
-- Netlify
-- CloudFlare Pages
-
-## Directus (Backend) Deployment Options
-- Self-hosted Directus
-- Directus Cloud
-- Docker (see [docker-compose.yml](./directus/docker-compose.yml) for configuration)
