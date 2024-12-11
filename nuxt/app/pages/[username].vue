@@ -24,7 +24,15 @@ if (error.value) {
 }
 
 const showLetter = ref(false);
-const letter = computed(() => markdownToHtml(data.value?.letter || ''));
+
+const letterContent = computed(() => {
+	const { mainContent, postScript } = splitLetterContent(data.value?.letter || '');
+	return {
+		main: markdownToHtml(mainContent),
+		ps: postScript ? markdownToHtml(postScript) : null,
+	};
+});
+
 const shouldAnimate = computed(() => data.value?.list !== null && data.value?.is_new !== true);
 
 const list: Ref<ProfileResponse['list'] | null> = computed(() => data.value?.list || null);
@@ -223,16 +231,21 @@ async function toggleVisibility() {
 							Oops! Something went wrong loading the letter.
 						</div>
 						<!-- Letter Content -->
-						<div v-else-if="data" class="relative w-full">
+						<div v-else-if="data" class="relative w-full md:mb-36">
 							<div
 								class="relative z-10 mt-8 md:mt-0 prose text-2xl text-gray-900 md:text-3xl font-cursive"
-								v-html="letter"
+								v-html="letterContent.main"
 							/>
 							<p class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8">
 								Sarcastically yours,
 								<br />
 								<span class="font-bold text-red-900">Salty Open Source Santa</span>
 							</p>
+							<div
+								v-if="letterContent.ps"
+								class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8"
+								v-html="letterContent.ps"
+							/>
 						</div>
 					</SantaLetterPaper>
 				</div>
