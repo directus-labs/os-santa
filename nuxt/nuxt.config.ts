@@ -19,20 +19,9 @@ export default defineNuxtConfig({
 		'nuxt-posthog',
 	],
 
-	$production: {
-		scripts: {
-			registry: {
-				googleTagManager: true,
-			},
-		},
-	},
-
 	runtimeConfig: {
 		public: {
 			siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
-			scripts: {
-				googleTagManagerId: process.env.GOOGLE_TAG_MANAGER_ID!,
-			},
 		},
 		directusUrl: process.env.DIRECTUS_URL,
 		directusServerToken: process.env.DIRECTUS_SERVER_TOKEN,
@@ -49,22 +38,8 @@ export default defineNuxtConfig({
 		headers: {
 			contentSecurityPolicy: {
 				'img-src': ["'self'", 'data:', 'https://github.com', 'https://*.githubusercontent.com'],
-				'script-src': [
-					"'self'",
-					"'unsafe-inline'",
-					"'unsafe-eval'",
-					'https://www.googletagmanager.com',
-					'https://tagmanager.google.com',
-					'https://us.i.posthog.com',
-					'https://us-assets.i.posthog.com',
-				],
-				'connect-src': [
-					"'self'",
-					'https://www.google-analytics.com',
-					'https://www.googletagmanager.com',
-					'https://us.i.posthog.com',
-					'https://us-assets.i.posthog.com',
-				],
+				'script-src': ["'self'", "'unsafe-inline'", 'https://us.i.posthog.com', 'https://us-assets.i.posthog.com'],
+				'connect-src': ["'self'", 'https://us.i.posthog.com', 'https://us-assets.i.posthog.com'],
 			},
 		},
 	},
