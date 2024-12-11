@@ -73,40 +73,44 @@ We recommend you checkout the [Directus documentation](https://docs.directus.io/
 3. Once created, note your project URL and login credentials.
 4. Run the `directus-template-cli` tool to apply the template to your project. Replace the values with your specific project URL and login credentials.
 
-```bash
-cd directus
-```
-```bash
-npx directus-template-cli@latest apply --directusUrl="your_directus_url" --userEmail="your_email" --userPassword="your_password" --templateLocation="./template" --templateType="local"
-```
+	```bash
+	cd directus
+	```
+	```bash
+	npx directus-template-cli@latest apply --directusUrl="your_directus_url" --userEmail="your_email" --userPassword="your_password" --templateLocation="./template" --templateType="local"
+	```
 
-5. Login to Directus and generate a static access token for the "Santa's Helper" user. Add to DIRECTUS_SERVER_TOKEN in .env file.
+5. Login to Directus and generate a static access token for the "Santa's Helper" user. Save the token for the environment variables.
+
+	```env
+	DIRECTUS_SERVER_TOKEN=your_directus_token
+	```
+
 
 ### Option B: Self-Hosted Setup
 1. Ensure you have docker installed and running on your machine. [Install Docker](https://docs.docker.com/get-docker/)
 
 2. Start the Directus instance using Docker:
 
-```bash
-cd directus
-```
+	```bash
+	cd directus
+	```
 
-```bash
-docker-compose up -d
-```
+	```bash
+	docker-compose up -d
+	```
 
 3. Run the `directus-template-cli` tool to apply the template to your project. Replace the values with your specific project details.
 
-```bash
-npx directus-template-cli@latest apply --directusUrl="http://localhost:8055" --userEmail="admin@example.com" --userPassword="d1r3ctus" --templateLocation="./template" --templateType="local"
-```
+	```bash
+	npx directus-template-cli@latest apply --directusUrl="http://localhost:8055" --userEmail="admin@example.com" --userPassword="d1r3ctus" --templateLocation="./template" --templateType="local"
+	```
 
 4. Login to Directus and generate a static access token for the "Santa's Helper" user. Save the token for the environment variables.
 
-```env
-DIRECTUS_SERVER_TOKEN=your_directus_token
-```
-
+	```env
+	DIRECTUS_SERVER_TOKEN=your_directus_token
+	```
 
 ## 2. GitHub OAuth Setup
 
@@ -120,10 +124,10 @@ DIRECTUS_SERVER_TOKEN=your_directus_token
    - Authorization callback URL: `http://localhost:3000/auth/github`
 4. Save the Client ID and Client Secret for environment variables
 
-```env
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
-```
+	```env
+	GITHUB_CLIENT_ID=your_github_client_id
+	GITHUB_CLIENT_SECRET=your_github_client_secret
+	```
 
 ### Generating a GitHub Token for GraphQL API
 
@@ -135,9 +139,9 @@ GITHUB_CLIENT_SECRET=your_github_client_secret
    - Repository access: Public Repositories (read-only)
 5. Add the token to your environment variables:
 
-```env
-GITHUB_TOKEN=your_github_token
-```
+	```env
+	GITHUB_TOKEN=your_github_token
+	```
 
 ## 3. Anthropic API Setup
 
@@ -147,9 +151,9 @@ GITHUB_TOKEN=your_github_token
 2. Generate an API key from [your dashboard](https://console.anthropic.com/settings/keys)
 3. Save the API key for environment variables
 
-```env
-ANTHROPIC_API_KEY=your_anthropic_api_key
-```
+	```env
+	ANTHROPIC_API_KEY=your_anthropic_api_key
+	```
 
 ## 4. Frontend (Nuxt) Setup
 
@@ -157,60 +161,60 @@ ANTHROPIC_API_KEY=your_anthropic_api_key
 
 1. Install dependencies:
 
-```bash
-cd nuxt
-```
+	```bash
+	cd nuxt
+	```
 
-```bash
-pnpm i
-```
+	```bash
+	pnpm i
+	```
 
 2. Copy the example environment file:
 
-```bash
-cp .env.example .env
-```
+	```bash
+	cp .env.example .env
+	```
 
 3. Fill in your environment variables:
 
-```env
-# Directus Configuration
-DIRECTUS_URL=your_directus_url
-DIRECTUS_SERVER_TOKEN=your_directus_token
+	```env
+	# Directus Configuration
+	DIRECTUS_URL=your_directus_url
+	DIRECTUS_SERVER_TOKEN=your_directus_token
 
-# AI Generation
-ANTHROPIC_API_KEY=your_anthropic_api_key
+	# AI Generation
+	ANTHROPIC_API_KEY=your_anthropic_api_key
 
-# Site Configuration
-NUXT_PUBLIC_SITE_URL=http://localhost:3000
-NUXT_SESSION_PASSWORD="password-with-at-least-32-characters"
-SALT="some-random-salt-string"
+	# Site Configuration
+	NUXT_PUBLIC_SITE_URL=http://localhost:3000
+	NUXT_SESSION_PASSWORD="password-with-at-least-32-characters"
+	SALT="some-random-salt-string"
 
-# Authentication
-GITHUB_TOKEN=your_github_token_for_graphql_api
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
+	# Authentication
+	GITHUB_TOKEN=your_github_token_for_graphql_api
+	GITHUB_CLIENT_ID=your_github_client_id
+	GITHUB_CLIENT_SECRET=your_github_client_secret
 
-# Analytics (Optional)
-POSTHOG_API_KEY=your_posthog_api_key
-POSTHOG_API_HOST=your_posthog_host
-```
+	# Analytics (Optional)
+	POSTHOG_API_KEY=your_posthog_api_key
+	POSTHOG_API_HOST=your_posthog_host
+	```
 
-Note: PostHog analytics is optional and will be disabled in development mode. If you don't need product analytics, you can skip these environment variables.
+	Note: PostHog analytics is optional and will be disabled in development mode. If you don't need product analytics, you can skip these environment variables.
 
 4. Generate Directus types:
 
-NOTE: Your Directus instance must be running for type generation to work.
+	NOTE: Your Directus instance must be running for type generation to work.
 
-```bash
-pnpm generate:types
-```
+	```bash
+	pnpm generate:types
+	```
 
 5. Start the development server:
 
-```bash
-pnpm dev
-```
+	```bash
+	pnpm dev
+	```
 
 6. Visit `http://localhost:3000` in your browser
 
