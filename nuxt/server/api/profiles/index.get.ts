@@ -9,7 +9,7 @@ function buildProfileFilter(query: { type?: string; q?: string }) {
 	};
 
 	const typeFilter = query.type ? { type: { _eq: query.type } } : null;
-	const searchFilter = query.q ? { username: { _contains: query.q } } : null;
+	const searchFilter = query.q ? { username: { _icontains: query.q } } : null;
 
 	const filters = [baseFilter, typeFilter, searchFilter].filter(Boolean) as Record<string, unknown>[];
 
