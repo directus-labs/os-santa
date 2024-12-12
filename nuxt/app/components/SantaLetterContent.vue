@@ -145,8 +145,8 @@ function preprocessText() {
 			}
 			result.push({
 				text: char,
-				start,
-				end,
+				start: start ?? 0,
+				end: end ?? 0,
 				isWhitespace: true,
 			});
 		} else if (/[.,!?"]/.test(char)) {
@@ -161,16 +161,16 @@ function preprocessText() {
 			}
 			result.push({
 				text: char,
-				start,
-				end,
+				start: start ?? 0,
+				end: end ?? 0,
 				isWhitespace: false,
 			});
 		} else {
 			if (!currentWord) {
-				wordStart = start;
+				wordStart = start ?? 0;
 			}
 			currentWord += char;
-			lastEnd = end;
+			lastEnd = end ?? 0;
 		}
 	});
 
@@ -178,7 +178,7 @@ function preprocessText() {
 		result.push({
 			text: currentWord,
 			start: wordStart,
-			end: alignment.character_end_times_seconds[alignment.characters.length - 1],
+			end: alignment.character_end_times_seconds[alignment.characters.length - 1] ?? 0,
 			isWhitespace: false,
 		});
 	}

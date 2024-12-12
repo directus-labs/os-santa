@@ -14,7 +14,7 @@ const props = defineProps<{ profiles: Partial<Profile>[] }>();
 				class="ml-8 text-white"
 			>
 				<User
-					:username="profile.username"
+					:username="profile.username ?? ''"
 					:avatar="`https://github.com/${profile.username}.png`"
 					class="opacity-50 hover:opacity-100 transition duration-150"
 				/>

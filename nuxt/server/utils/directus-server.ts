@@ -4,12 +4,10 @@ import {
 	createDirectus,
 	readItem,
 	readItems,
-	readSingleton,
 	rest,
 	createItem,
 	updateItem,
 	staticToken,
-	withToken,
 	uploadFiles,
 } from '@directus/sdk';
 
