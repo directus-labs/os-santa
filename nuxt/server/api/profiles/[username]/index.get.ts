@@ -16,7 +16,18 @@ export default defineEventHandler(async (event): Promise<ProfileResponse> => {
 		const profile = await directusServer
 			.request(
 				readItem('profiles', username, {
-					fields: ['created_at', 'list', 'username', 'wishlist', 'letter', 'type', 'is_public', 'metadata'],
+					fields: [
+						'created_at',
+						'list',
+						'username',
+						'wishlist',
+						'letter',
+						'type',
+						'is_public',
+						'metadata',
+						'letter_voiceover',
+						'letter_voiceover_metadata',
+					],
 				}),
 			)
 			.catch(() => null);

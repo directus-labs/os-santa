@@ -4,12 +4,16 @@ import type { ProfileResponse } from '#shared/types/endpoints.js';
 
 const route = useRoute();
 const { url } = useSiteConfig();
+const {
+	public: { directusUrl },
+} = useRuntimeConfig();
+
 const toast = useToast();
 const redirect = useCookie('redirect_uri');
 
 const { loggedIn, user } = useUserSession();
 
-const { data, status, error } = await useAsyncData<ProfileResponse>(`letter-${route.params.username}`, () =>
+const { data, status, error, refresh } = await useAsyncData<ProfileResponse>(`letter-${route.params.username}`, () =>
 	$fetch<ProfileResponse>(`/api/profiles/${route.params.username as string}`, {
 		method: 'GET',
 	}),
@@ -103,6 +107,31 @@ async function toggleVisibility() {
 			color: 'error',
 			icon: 'lucide:triangle-alert',
 		});
+	}
+}
+
+const loadingVoiceover = ref(false);
+
+async function createVoiceover() {
+	loadingVoiceover.value = true;
+	toast.add({
+		title: 'Asking Santa to read your letter...',
+		description: 'Hold tight while Santa warms up his sweet, Scottish pipes...',
+		color: 'info',
+		icon: 'lucide:loader',
+	});
+	try {
+		const response = await $fetch(`/api/profiles/${username.value}/voiceover`, {
+			method: 'POST',
+			body: {
+				text: data.value?.letter,
+			},
+		});
+		refresh();
+		loadingVoiceover.value = false;
+	} catch (error) {
+		console.error('Error creating voiceover:', error);
+		loadingVoiceover.value = false;
 	}
 }
 </script>
@@ -220,12 +249,11 @@ async function toggleVisibility() {
 					<SantaLetterPaper v-show="showLetter" class="max-w-3xl mx-auto letter-unfold mt-4 p-4">
 						<img src="/images/os-santa.svg" class="absolute bottom-0 right-0 w-32 md:w-64 -mb-16 md:-mb-32 z-10" />
 						<!-- Visiblity Switch for privacy minded folks -->
-
 						<UFormField
 							v-if="isOwner"
 							label="Show Publicly"
 							size="xl"
-							class="absolute z-20 top-32 right-4 flex items-center gap-4"
+							class="absolute z-20 top-4 left-4 flex items-center gap-4"
 						>
 							<USwitch :model-value="isPublic" @update:model-value="toggleVisibility" name="visibility" />
 						</UFormField>
@@ -237,20 +265,47 @@ async function toggleVisibility() {
 						</div>
 						<!-- Letter Content -->
 						<div v-else-if="data" class="relative w-full md:mb-36">
-							<div
-								class="relative z-10 mt-8 md:mt-0 prose text-2xl text-gray-900 md:text-3xl font-cursive"
-								v-html="letterContent.main"
-							/>
+							<template v-if="data?.letter_voiceover">
+								<SantaLetterContent
+									:letter-content="letterContent.main"
+									:letter-voiceover-metadata="data?.letter_voiceover_metadata"
+									:audio-url="`${directusUrl}/assets/${data?.letter_voiceover}.mp3`"
+								/>
+							</template>
+
+							<template v-else>
+								<div class="relative p-4 border-2 border-red-900/20 border-dashed rounded-lg my-8">
+									<p class="font-mono">Want Santa to read your letter to you?</p>
+									<UButton
+										variant="solid"
+										color="primary"
+										size="xl"
+										@click="createVoiceover"
+										class="mt-4"
+										:loading="loadingVoiceover"
+									>
+										Please Santa Read My Letter 🙏
+									</UButton>
+									<div class="absolute bottom-4 right-4 gap-4">
+										<span class="font-mono">Powered by</span>
+										<img src="/images/elevenlabs-logo-black.png" class="h-4" />
+									</div>
+								</div>
+								<div
+									class="relative z-10 mt-8 md:mt-0 prose text-2xl text-gray-900 md:text-3xl font-cursive"
+									v-html="letterContent.main"
+								/>
+								<div
+									v-if="letterContent.ps"
+									class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8"
+									v-html="letterContent.ps"
+								/>
+							</template>
 							<p class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8">
 								Sarcastically yours,
 								<br />
 								<span class="font-bold text-red-900">Salty Open Source Santa</span>
 							</p>
-							<div
-								v-if="letterContent.ps"
-								class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8"
-								v-html="letterContent.ps"
-							/>
 						</div>
 					</SantaLetterPaper>
 				</div>

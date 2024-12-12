@@ -22,10 +22,14 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+			directusUrl: process.env.DIRECTUS_URL,
 		},
-		directusUrl: process.env.DIRECTUS_URL,
 		directusServerToken: process.env.DIRECTUS_SERVER_TOKEN,
 		anthropicApiKey: process.env.ANTHROPIC_API_KEY,
+		elevenLabs: {
+			apiKey: process.env.ELEVENLABS_API_KEY,
+			voiceId: process.env.ELEVENLABS_VOICE_ID,
+		},
 		oauth: {
 			github: {
 				clientId: process.env.GITHUB_CLIENT_ID,

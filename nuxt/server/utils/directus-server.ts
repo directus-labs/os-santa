@@ -10,10 +10,26 @@ import {
 	updateItem,
 	staticToken,
 	withToken,
+	uploadFiles,
 } from '@directus/sdk';
 
-const { directusUrl, directusServerToken } = useRuntimeConfig();
+const {
+	public: { directusUrl },
+	directusServerToken,
+} = useRuntimeConfig();
 
-const directusServer = createDirectus<Schema>(directusUrl).with(rest()).with(staticToken(directusServerToken));
+const directusServer = createDirectus<Schema>(directusUrl as string)
+	.with(rest())
+	.with(staticToken(directusServerToken as string));
 
-export { directusServer, readItem, readItems, readSingleton, createItem, updateItem, withToken, aggregate };
+export {
+	directusServer,
+	readItem,
+	readItems,
+	readSingleton,
+	createItem,
+	updateItem,
+	withToken,
+	aggregate,
+	uploadFiles,
+};
