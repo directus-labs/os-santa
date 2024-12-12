@@ -12,6 +12,8 @@ const username: Ref<string> = ref((route.query.username as string) ?? '');
 const profileType = ref<GithubProfileType>((route.query.profileType as GithubProfileType) ?? 'User');
 const wishlist = ref('');
 
+const { data: profileCount, status } = await useLazyFetch('/api/profiles/count');
+
 const avatarUrl = computed(() => {
 	return `https://github.com/${username.value}.png`;
 });
@@ -155,10 +157,19 @@ defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Sal
 	<div class="">
 		<UContainer class="py-8 md:py-16">
 			<div class="text-center mb-8">
-				<BaseHeadline content="Salty Open Source Santa" size="xl" shadow />
+				<p class="text-white text-2xl font-cursive mt-2">
+					Over
+					<span class="text-3xl font-bold">{{ profileCount?.count.count }} letters</span>
+					served and counting...
+				</p>
+				<ClientOnly>
+					<ProfileMarquee :profiles="profileCount?.profiles ?? []" class="mt-4" />
+				</ClientOnly>
+				<BaseHeadline content="Salty Open Source Santa" size="xl" shadow class="mt-4" />
 				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200 mt-4">
 					{{ copy[mode].description }}
 				</BaseText>
+
 				<div class="flex flex-col gap-4 md:flex-row justify-center items-center mt-4">
 					<UButton to="https://directus.is/santa" target="_blank" size="xl" trailing-icon="i-lucide-arrow-up-right">
 						Learn How The Elves 🧝 Built This

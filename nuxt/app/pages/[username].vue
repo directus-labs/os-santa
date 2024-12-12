@@ -246,7 +246,7 @@ async function createVoiceover() {
 							</UButton>
 						</div>
 					</NotebookPaper>
-					<SantaLetterPaper v-show="showLetter" class="max-w-3xl mx-auto letter-unfold mt-4 p-4">
+					<SantaLetterPaper v-show="showLetter" class="max-w-3xl mx-auto letter-unfold mt-4">
 						<img src="/images/os-santa.svg" class="absolute bottom-0 right-0 w-32 md:w-64 -mb-16 md:-mb-32 z-10" />
 						<!-- Visiblity Switch for privacy minded folks -->
 						<UFormField
@@ -264,7 +264,8 @@ async function createVoiceover() {
 							Oops! Something went wrong loading the letter.
 						</div>
 						<!-- Letter Content -->
-						<div v-else-if="data" class="relative w-full md:mb-36">
+						<div v-else-if="data" class="relative w-full md:mb-36" v-auto-animate>
+							<!-- Voiceover Player -->
 							<template v-if="data?.letter_voiceover">
 								<SantaLetterContent
 									:letter-content="letterContent.main"
@@ -274,34 +275,62 @@ async function createVoiceover() {
 							</template>
 
 							<template v-else>
-								<div class="relative p-4 border-2 border-red-900/20 border-dashed rounded-lg my-8">
-									<p class="font-mono">Want Santa to read your letter to you?</p>
-									<UButton
-										variant="solid"
-										color="primary"
-										size="xl"
-										@click="createVoiceover"
-										class="mt-4"
-										:loading="loadingVoiceover"
+								<!-- Audio Controls -->
+								<div class="sticky top-0 md:top-20 z-50">
+									<div v-if="hasError" class="text-red-500 mb-2 px-4">
+										{{ errorMessage }}
+									</div>
+
+									<div
+										class="relative p-4 border-b-4 border-red-900/10 flex flex-col md:flex-row md:justify-between md:items-end gap-4"
 									>
-										Please Santa Read My Letter 🙏
-									</UButton>
-									<div class="absolute bottom-4 right-4 gap-4">
-										<span class="font-mono">Powered by</span>
-										<img src="/images/elevenlabs-logo-black.png" class="h-4" />
+										<div class="relative flex-shrink-0">
+											<img src="/images/bunny.svg" class="h-32 w-auto" />
+											<p
+												class="absolute w-80 top-0 left-16 border-2 border-gray-800 px-4 py-2 rounded-full bg-white after:content-[''] after:absolute after:border-[10px] after:border-transparent after:border-t-gray-800 after:-bottom-[20px] after:left-4 after:-translate-x-[50%] after:border-l-gray-800 after:rotate-12"
+											>
+												Want Santa to read your letter to you?
+											</p>
+										</div>
+
+										<div class="w-full md:w-auto">
+											<div class="flex w-full items-center gap-4">
+												<UButton
+													:loading="loadingVoiceover"
+													@click="createVoiceover"
+													variant="solid"
+													class="rounded-full px-6 py-3"
+													size="xl"
+												>
+													Please Santa Read My Letter 🙏
+												</UButton>
+											</div>
+										</div>
+
+										<div class="flex justify-end md:block">
+											<span class="font-mono text-xs md:text-sm text-gray-700">Powered by</span>
+											<a
+												href="https://elevenlabs.io?ref=os-santa"
+												target="_blank"
+												class="opacity-75 hover:opacity-100 transition duration-150 ml-2"
+											>
+												<img src="/images/elevenlabs-logo-black.png" class="h-3 md:h-4 mt-1" />
+											</a>
+										</div>
 									</div>
 								</div>
+
 								<div
-									class="relative z-10 mt-8 md:mt-0 prose text-2xl text-gray-900 md:text-3xl font-cursive"
+									class="relative z-10 mt-8 prose md:px-4 text-2xl text-gray-900 md:text-3xl font-cursive"
 									v-html="letterContent.main"
 								/>
 								<div
 									v-if="letterContent.ps"
-									class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8"
+									class="relative z-10 prose text-gray-900 md:px-4 text-2xl md:text-3xl font-cursive mt-8"
 									v-html="letterContent.ps"
 								/>
 							</template>
-							<p class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8">
+							<p class="relative z-10 prose text-gray-900 text-2xl md:px-4 md:text-3xl font-cursive mt-8">
 								Sarcastically yours,
 								<br />
 								<span class="font-bold text-red-900">Salty Open Source Santa</span>

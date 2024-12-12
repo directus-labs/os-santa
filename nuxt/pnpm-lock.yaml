@@ -74,6 +74,9 @@ importers:
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
+      vue3-marquee:
+        specifier: ^4.2.2
+        version: 4.2.2(vue@3.5.13(typescript@5.6.3))
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -6466,6 +6469,12 @@ packages:
     hasBin: true
     peerDependencies:
       typescript: '>=5.0.0'
+
+  vue3-marquee@4.2.2:
+    resolution: {integrity: sha512-FeFvGUVInKfFilXFcnl8sDRBJBZCZSNLlQDquJErB9db6W2xICRVqbRV/jtdzsEP0rftarLQhx9MeEAU0+TPuQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      vue: ^3.2
 
   vue@3.5.13:
     resolution: {integrity: sha512-wmeiSMxkZCSc+PM2w2VRsOYAZC8GdipNFRTsLSfodVqI9mbejKeXEGr8SckuLnrQPGe3oJN5c3K0vpoU9q/wCQ==}
@@ -14430,6 +14439,10 @@ snapshots:
       '@vue/language-core': 2.1.10(typescript@5.6.3)
       semver: 7.6.3
       typescript: 5.6.3
+
+  vue3-marquee@4.2.2(vue@3.5.13(typescript@5.6.3)):
+    dependencies:
+      vue: 3.5.13(typescript@5.6.3)
 
   vue@3.5.13(typescript@5.6.3):
     dependencies:
