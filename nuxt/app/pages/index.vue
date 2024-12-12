@@ -165,7 +165,7 @@ defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Sal
 				<ClientOnly>
 					<ProfileMarquee :profiles="profileCount?.profiles ?? []" class="mt-4" />
 				</ClientOnly>
-				<BaseHeadline content="Salty Open Source Santa" size="xl" shadow class="mt-4" />
+				<BaseHeadline content="Salty Open Source Santa" size="xl" shadow class="mt-8" />
 				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200 mt-4">
 					{{ copy[mode].description }}
 				</BaseText>
