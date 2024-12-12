@@ -43,7 +43,12 @@ export default defineNuxtConfig({
 			contentSecurityPolicy: {
 				'img-src': ["'self'", 'data:', 'https://github.com', 'https://*.githubusercontent.com'],
 				'script-src': ["'self'", "'unsafe-inline'", 'https://us.i.posthog.com', 'https://us-assets.i.posthog.com'],
-				'connect-src': ["'self'", 'https://us.i.posthog.com', 'https://us-assets.i.posthog.com'],
+				'connect-src': [
+					"'self'",
+					'https://us.i.posthog.com',
+					'https://us-assets.i.posthog.com',
+					process.env.DIRECTUS_URL!,
+				],
 			},
 		},
 	},
