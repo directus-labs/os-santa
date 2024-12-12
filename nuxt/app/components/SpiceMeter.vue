@@ -80,6 +80,7 @@ watchEffect(() => {
 	@param {number} previousLevel - The previous level of likes
 */
 const updateLikes = useDebounceFn(async (newLevel: number, previousLevel: number) => {
+	const originalTotalLikes = totalLikes.value; // Store original total likes
 	try {
 		const data = await $fetch(`/api/profiles/${props.username}/likes`, {
 			method: 'POST',
@@ -93,9 +94,9 @@ const updateLikes = useDebounceFn(async (newLevel: number, previousLevel: number
 		likesData.value = data as LikesResponse;
 	} catch (error) {
 		console.error('Failed to update spice level:', error);
-		// Revert both level and totalLikes on error
+		// Revert both level and totalLikes to their previous states
 		level.value = previousLevel;
-		totalLikes.value -= newLevel - previousLevel;
+		totalLikes.value = originalTotalLikes;
 		playbackRate.value = 1 + previousLevel * 0.1;
 		throw error;
 	}
@@ -120,14 +121,9 @@ function updateLevel(isIncrement: boolean) {
 
 	const difference = targetLevel - currentLevel;
 
-	// Optimistically update likesData
-	if (likesData.value) {
-		likesData.value = {
-			...likesData.value,
-			userLikeCount: targetLevel,
-			totalLikes: (likesData.value.totalLikes || 0) + difference,
-		};
-	}
+	// Optimistically update both level and totalLikes
+	level.value = targetLevel;
+	totalLikes.value += difference;
 
 	playbackRate.value = 1 + targetLevel * 0.1;
 	showChangeIndicator(difference);

@@ -29,7 +29,7 @@ export default defineEventHandler(async (event): Promise<LikesResponse> => {
 		}
 
 		// Get user's specific like record
-		const userLike = existingProfile.likes?.find(like => like.visitor_hash === visitorHash);
+		const userLike = existingProfile.likes?.find((like) => like.visitor_hash === visitorHash);
 
 		const body = await readBody(event);
 		const newCount = Math.min(Math.max(body.count || 0, 0), 11);
@@ -47,26 +47,33 @@ export default defineEventHandler(async (event): Promise<LikesResponse> => {
 		} else {
 			// Create new like record
 			like = await directusServer.request(
-					createItem('likes', {
-						profile: existingProfile.username,
-						visitor_hash: visitorHash,
-						count: newCount,
-					}),
+				createItem('likes', {
+					profile: existingProfile.username,
+					visitor_hash: visitorHash,
+					count: newCount,
+				}),
 			);
 		}
 
-		// Calculate total likes by summing all likes
-		const totalLikes = existingProfile.likes?.reduce((sum, like) => {
-			// If this is the user's like, use the new count
-			if (like.visitor_hash === visitorHash) {
-				return sum + newCount;
+		// Calculate total likes
+		let totalLikes = newCount;
+		if (existingProfile.likes?.length) {
+			totalLikes = existingProfile.likes.reduce((sum, like) => {
+				return sum + (like.count || 0);
+			}, 0);
+
+			// If we're updating an existing like, use the new count instead of the old one
+			if (userLike) {
+				totalLikes = totalLikes - (userLike.count || 0) + newCount;
+			} else {
+				// If it's a new like for an existing profile, add the new count
+				totalLikes = totalLikes + newCount;
 			}
-			return sum + (like.count || 0);
-		}, 0);
+		}
 
 		const response: LikesResponse = {
 			username: existingProfile.username,
-			totalLikes: totalLikes || 0,
+			totalLikes,
 			userLikeCount: newCount,
 		};
 

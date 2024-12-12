@@ -4,12 +4,16 @@ import type { ProfileResponse } from '#shared/types/endpoints.js';
 
 const route = useRoute();
 const { url } = useSiteConfig();
+const {
+	public: { directusUrl },
+} = useRuntimeConfig();
+
 const toast = useToast();
 const redirect = useCookie('redirect_uri');
 
 const { loggedIn, user } = useUserSession();
 
-const { data, status, error } = await useAsyncData<ProfileResponse>(`letter-${route.params.username}`, () =>
+const { data, status, error, refresh } = await useAsyncData<ProfileResponse>(`letter-${route.params.username}`, () =>
 	$fetch<ProfileResponse>(`/api/profiles/${route.params.username as string}`, {
 		method: 'GET',
 	}),
@@ -103,6 +107,31 @@ async function toggleVisibility() {
 			color: 'error',
 			icon: 'lucide:triangle-alert',
 		});
+	}
+}
+
+const loadingVoiceover = ref(false);
+
+async function createVoiceover() {
+	loadingVoiceover.value = true;
+	toast.add({
+		title: 'Asking Santa to read your letter...',
+		description: 'Hold tight while Santa warms up his sweet, Scottish pipes...',
+		color: 'info',
+		icon: 'lucide:loader',
+	});
+	try {
+		const response = await $fetch(`/api/profiles/${username.value}/voiceover`, {
+			method: 'POST',
+			body: {
+				text: data.value?.letter,
+			},
+		});
+		refresh();
+		loadingVoiceover.value = false;
+	} catch (error) {
+		console.error('Error creating voiceover:', error);
+		loadingVoiceover.value = false;
 	}
 }
 </script>
@@ -217,15 +246,14 @@ async function toggleVisibility() {
 							</UButton>
 						</div>
 					</NotebookPaper>
-					<SantaLetterPaper v-show="showLetter" class="max-w-3xl mx-auto letter-unfold mt-4 p-4">
+					<SantaLetterPaper v-show="showLetter" class="max-w-3xl mx-auto letter-unfold mt-4">
 						<img src="/images/os-santa.svg" class="absolute bottom-0 right-0 w-32 md:w-64 -mb-16 md:-mb-32 z-10" />
 						<!-- Visiblity Switch for privacy minded folks -->
-
 						<UFormField
 							v-if="isOwner"
 							label="Show Publicly"
 							size="xl"
-							class="absolute z-20 top-32 right-4 flex items-center gap-4"
+							class="absolute z-20 top-4 left-4 flex items-center gap-4"
 						>
 							<USwitch :model-value="isPublic" @update:model-value="toggleVisibility" name="visibility" />
 						</UFormField>
@@ -236,21 +264,77 @@ async function toggleVisibility() {
 							Oops! Something went wrong loading the letter.
 						</div>
 						<!-- Letter Content -->
-						<div v-else-if="data" class="relative w-full md:mb-36">
-							<div
-								class="relative z-10 mt-8 md:mt-0 prose text-2xl text-gray-900 md:text-3xl font-cursive"
-								v-html="letterContent.main"
-							/>
-							<p class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8">
+						<div v-else-if="data" class="relative w-full md:mb-36" v-auto-animate>
+							<!-- Voiceover Player -->
+							<template v-if="data?.letter_voiceover">
+								<SantaLetterContent
+									:letter-content="letterContent.main"
+									:letter-voiceover-metadata="data?.letter_voiceover_metadata"
+									:audio-url="`${directusUrl}/assets/${data?.letter_voiceover}.mp3`"
+								/>
+							</template>
+
+							<template v-else>
+								<!-- Audio Controls -->
+								<div class="sticky top-0 md:top-20 z-50">
+									<div v-if="hasError" class="text-red-500 mb-2 px-4">
+										{{ errorMessage }}
+									</div>
+
+									<div
+										class="relative p-4 border-b-4 border-red-900/10 flex flex-col md:flex-row md:justify-between md:items-end gap-4"
+									>
+										<div class="relative flex-shrink-0">
+											<img src="/images/bunny.svg" class="h-32 w-auto" />
+											<p
+												class="absolute w-80 top-0 left-16 border-2 border-gray-800 px-4 py-2 rounded-full bg-white after:content-[''] after:absolute after:border-[10px] after:border-transparent after:border-t-gray-800 after:-bottom-[20px] after:left-4 after:-translate-x-[50%] after:border-l-gray-800 after:rotate-12"
+											>
+												Want Santa to read your letter to you?
+											</p>
+										</div>
+
+										<div class="w-full md:w-auto">
+											<div class="flex w-full items-center gap-4">
+												<UButton
+													:loading="loadingVoiceover"
+													@click="createVoiceover"
+													variant="solid"
+													class="rounded-full px-6 py-3"
+													size="xl"
+												>
+													Please Santa Read My Letter 🙏
+												</UButton>
+											</div>
+										</div>
+
+										<div class="flex justify-end md:block">
+											<span class="font-mono text-xs md:text-sm text-gray-700">Powered by</span>
+											<a
+												href="https://try.elevenlabs.io/gvla6ucwspc9?ref=os-santa"
+												target="_blank"
+												class="opacity-75 hover:opacity-100 transition duration-150 ml-2"
+											>
+												<img src="/images/elevenlabs-logo-black.png" class="h-3 md:h-4 mt-1" />
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<div
+									class="relative z-10 mt-8 prose md:px-4 text-2xl text-gray-900 md:text-3xl font-cursive"
+									v-html="letterContent.main"
+								/>
+								<div
+									v-if="letterContent.ps"
+									class="relative z-10 prose text-gray-900 md:px-4 text-2xl md:text-3xl font-cursive mt-8"
+									v-html="letterContent.ps"
+								/>
+							</template>
+							<p class="relative z-10 prose text-gray-900 text-2xl md:px-4 md:text-3xl font-cursive mt-8">
 								Sarcastically yours,
 								<br />
 								<span class="font-bold text-red-900">Salty Open Source Santa</span>
 							</p>
-							<div
-								v-if="letterContent.ps"
-								class="relative z-10 prose text-gray-900 text-2xl md:text-3xl font-cursive mt-8"
-								v-html="letterContent.ps"
-							/>
 						</div>
 					</SantaLetterPaper>
 				</div>
