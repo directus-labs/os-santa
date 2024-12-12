@@ -310,7 +310,7 @@ async function createVoiceover() {
 										<div class="flex justify-end md:block">
 											<span class="font-mono text-xs md:text-sm text-gray-700">Powered by</span>
 											<a
-												href="https://elevenlabs.io?ref=os-santa"
+												href="https://try.elevenlabs.io/gvla6ucwspc9?ref=os-santa"
 												target="_blank"
 												class="opacity-75 hover:opacity-100 transition duration-150 ml-2"
 											>
