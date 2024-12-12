@@ -202,7 +202,9 @@ watch(playbackSpeed, () => {
 				</button>
 				<div class="absolute bottom-4 right-4 gap-4">
 					<span class="font-mono">Powered by</span>
-					<img src="/images/elevenlabs-logo-black.png" class="h-4" />
+					<a href="https://elevenlabs.io?ref=os-santa" target="_blank">
+						<img src="/images/elevenlabs-logo-black.png" class="h-4" />
+					</a>
 				</div>
 			</div>
 
