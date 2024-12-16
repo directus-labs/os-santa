@@ -29,6 +29,7 @@ export default defineCachedEventHandler(
 				readItems('profiles', {
 					fields: ['username', 'list', 'letter', 'type', 'is_public'],
 					filter,
+					limit: -1,
 				}),
 			);
 
@@ -41,6 +42,7 @@ export default defineCachedEventHandler(
 					filter: { profile: { _in: usernames } },
 					aggregate: { sum: ['count'] },
 					groupBy: ['profile'],
+					limit: -1,
 				}),
 			);
 
