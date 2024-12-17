@@ -253,7 +253,7 @@ async function createVoiceover() {
 							v-if="isOwner"
 							label="Show Publicly"
 							size="xl"
-							class="absolute z-20 top-8 left-8 flex items-center gap-4"
+							class="md:absolute z-20 md:top-8 left-8 flex items-center gap-4"
 						>
 							<USwitch :model-value="isPublic" @update:model-value="toggleVisibility" name="visibility" />
 						</UFormField>
