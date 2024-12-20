@@ -100,6 +100,7 @@ export default defineEventHandler(async (event): Promise<RoastResponse | H3Error
 			RULES:
 			- Do NOT include a signature and like 'Yours, From Santa' in the letter.
 			- The letter should be in Markdown format.
+			- Don't include any heading or H tags in the letter.
 			- If someone uses profanity or asks for something inappropriate, do not roast them. Set the flagged field to true and provide a reason.
 
 			Wish List: ${wishlist} ${mode === 'friend' ? `Note: Wishlist provided by ${roasted_by}` : ''}

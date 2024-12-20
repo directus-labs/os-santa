@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
 import type { ProfileResponse } from '#shared/types/endpoints.js';
-
+import { H3Error } from 'h3';
 const route = useRoute();
 const { url } = useSiteConfig();
 const {
@@ -71,7 +71,7 @@ defineOgImageComponent('Username', {
 	avatarUrl: avatarUrl.value,
 });
 
-function loginWithGithub(redirectUri: string) {
+function loginWithGithub(redirectUri?: string) {
 	redirect.value = redirectUri;
 	return navigateTo(`${url}/auth/github`, {
 		external: true,
@@ -114,11 +114,15 @@ const loadingVoiceover = ref(false);
 
 async function createVoiceover() {
 	loadingVoiceover.value = true;
+
+	// Add loading message
 	toast.add({
+		id: 'voiceover-loading',
 		title: 'Asking Santa to read your letter...',
 		description: 'Hold tight while Santa warms up his sweet, Scottish pipes...',
 		color: 'info',
 		icon: 'lucide:loader',
+		duration: 5000,
 	});
 	try {
 		const response = await $fetch(`/api/profiles/${username.value}/voiceover`, {
@@ -128,9 +132,37 @@ async function createVoiceover() {
 			},
 		});
 		refresh();
-		loadingVoiceover.value = false;
 	} catch (error) {
-		console.error('Error creating voiceover:', error);
+		if (error instanceof Error && (error as any).data.statusCode === 401) {
+			toast.add({
+				id: 'voiceover-error',
+				title: 'Error creating voiceover.',
+				description: (error as any).data?.message ?? 'Authentication error',
+				color: 'error',
+				icon: 'lucide:triangle-alert',
+				actions: [
+					{
+						label: 'Login to GitHub',
+						icon: 'lucide:github',
+						color: 'neutral',
+						size: 'lg',
+						onClick: (e) => {
+							loginWithGithub(`/${username.value}`);
+						},
+					},
+				],
+			});
+		} else {
+			toast.add({
+				id: 'voiceover-error',
+				title: 'Error creating voiceover.',
+				description: 'Please try again later.',
+				color: 'error',
+				icon: 'lucide:triangle-alert',
+			});
+		}
+	} finally {
+		toast.remove('voiceover-loading');
 		loadingVoiceover.value = false;
 	}
 }
@@ -277,8 +309,8 @@ async function createVoiceover() {
 							<template v-else>
 								<!-- Audio Controls -->
 								<div class="sticky top-0 md:top-20 z-50">
-									<div v-if="hasError" class="text-red-500 mb-2 px-4">
-										{{ errorMessage }}
+									<div v-if="error" class="text-red-500 mb-2 px-4">
+										{{ error }}
 									</div>
 
 									<div
