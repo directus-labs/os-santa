@@ -22,7 +22,7 @@ const client = new ElevenLabsClient({
 
 export default defineEventHandler(async (event) => {
 	const username = getRouterParam(event, 'username');
-	const session = await requireUserSession(event);
+	const session = await getUserSession(event);
 
 	if (!username) {
 		throw createError({
@@ -31,19 +31,12 @@ export default defineEventHandler(async (event) => {
 		});
 	}
 
-	if (!session) {
+	if (!session || !session.user) {
 		throw createError({
 			statusCode: 401,
 			message: 'Unauthorized. Please login to generate voiceovers.',
 		});
 	}
-
-	// Only allow users to generate voiceovers for their own profile: @TODO: disabled to allow friends to generate voiceovers for each other
-	// 	throw createError({
-	// 		statusCode: 403,
-	// 		message: 'You can only generate voiceovers for your own profile',
-	// 	});
-	// }
 
 	try {
 		const body = await readValidatedBody(event, (body) => voiceoverSchema.parse(body));
