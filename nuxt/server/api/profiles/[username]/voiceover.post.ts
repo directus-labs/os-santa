@@ -22,26 +22,23 @@ const client = new ElevenLabsClient({
 
 export default defineEventHandler(async (event) => {
 	const username = getRouterParam(event, 'username');
-	// const session = await requireUserSession(event);
+	const session = await requireUserSession(event);
 
-	// console.log('Voiceover request initiated for user:', username);
+	if (!username) {
+		throw createError({
+			statusCode: 400,
+			message: 'Username is required',
+		});
+	}
 
-	// if (!username) {
-	// 	throw createError({
-	// 		statusCode: 400,
-	// 		message: 'Username is required',
-	// 	});
-	// }
+	if (!session) {
+		throw createError({
+			statusCode: 401,
+			message: 'Unauthorized. Please login to generate voiceovers.',
+		});
+	}
 
-	// if (!session) {
-	// 	throw createError({
-	// 		statusCode: 401,
-	// 		message: 'Unauthorized. Please login to generate voiceovers.',
-	// 	});
-	// }
-
-	// Only allow users to generate voiceovers for their own profile
-	// if (session.user?.login !== username) {
+	// Only allow users to generate voiceovers for their own profile: @TODO: disabled to allow friends to generate voiceovers for each other
 	// 	throw createError({
 	// 		statusCode: 403,
 	// 		message: 'You can only generate voiceovers for your own profile',
