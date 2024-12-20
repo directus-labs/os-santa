@@ -133,11 +133,11 @@ async function createVoiceover() {
 		});
 		refresh();
 	} catch (error) {
-		if (error instanceof H3Error && error.statusCode === 401) {
+		if (error instanceof Error && (error as any).data.statusCode === 401) {
 			toast.add({
 				id: 'voiceover-error',
 				title: 'Error creating voiceover.',
-				description: error.data.message,
+				description: (error as any).data?.message ?? 'Authentication error',
 				color: 'error',
 				icon: 'lucide:triangle-alert',
 				actions: [
