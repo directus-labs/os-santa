@@ -35,6 +35,8 @@ export interface Profile {
 	mode?: 'self' | 'friend' | null;
 	is_public?: boolean | null;
 	likes?: Like[] | string[];
+	letter_voiceover?: DirectusFile | string | null;
+	letter_voiceover_metadata?: Record<string, any> | null;
 }
 
 export interface DirectusAccess {
