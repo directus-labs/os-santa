@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
-import type { CarolResponse } from '#shared/types/endpoints.js';
+import type { CarolResponse, UnfurlResponse } from '#shared/types/endpoints.js';
 
 const route = useRoute();
 const {
@@ -22,6 +22,25 @@ if (error.value) {
 		fatal: true,
 	});
 }
+
+// Fetch LinkedIn profile metadata for profile image (non-blocking)
+const { data: unfurlData } = useLazyFetch<UnfurlResponse>('/api/unfurl', {
+	query: { url: data.value?.linkedin_profile_url },
+	immediate: !!data.value?.linkedin_profile_url,
+});
+
+const profileImage = computed(() => unfurlData.value?.image);
+
+const initials = computed(() => {
+	const name = data.value?.profile_name ?? '';
+	const parts = name.split(' ').filter(Boolean);
+	if (parts.length >= 2) {
+		const first = parts[0]?.[0] ?? '';
+		const last = parts[parts.length - 1]?.[0] ?? '';
+		return (first + last).toUpperCase() || '?';
+	}
+	return name.slice(0, 2).toUpperCase() || '?';
+});
 
 const currentUrl = useRequestURL();
 
@@ -67,6 +86,51 @@ const audioUrl = computed(() => {
 	return null;
 });
 
+// Custom audio player state
+const audioRef = ref<HTMLAudioElement | null>(null);
+const isPlaying = ref(false);
+const currentTime = ref(0);
+const duration = ref(0);
+
+function togglePlay() {
+	if (!audioRef.value) return;
+	if (isPlaying.value) {
+		audioRef.value.pause();
+	} else {
+		audioRef.value.play();
+	}
+}
+
+function onTimeUpdate() {
+	if (audioRef.value) {
+		currentTime.value = audioRef.value.currentTime;
+	}
+}
+
+function onLoadedMetadata() {
+	if (audioRef.value) {
+		duration.value = audioRef.value.duration;
+	}
+}
+
+function onSeek(event: Event) {
+	const target = event.target as HTMLInputElement;
+	if (audioRef.value) {
+		audioRef.value.currentTime = parseFloat(target.value);
+	}
+}
+
+function formatTime(seconds: number): string {
+	const mins = Math.floor(seconds / 60);
+	const secs = Math.floor(seconds % 60);
+	return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+const progress = computed(() => {
+	if (duration.value === 0) return 0;
+	return (currentTime.value / duration.value) * 100;
+});
+
 useSeoMeta({
 	title: `${data.value?.profile_name}'s Christmas Carol`,
 	description: `Listen to a personalized Christmas carol created for ${data.value?.profile_name}!`,
@@ -82,16 +146,58 @@ defineOgImageComponent('Carol', {
 	<div class="relative">
 		<UContainer class="pt-12 relative">
 			<!-- Header -->
-			<div class="text-center mb-8">
-				<BaseHeadline content="LinkedIn Carolling" size="lg" shadow />
-				<BaseText as="p" size="lg" class="mx-auto max-w-md text-red-200 mt-4">A personalized Christmas carol</BaseText>
+			<div class="mb-8">
+				<div class="flex items-center justify-center gap-4">
+					<!-- Profile Avatar - only show when completed -->
+					<div v-if="data?.status === 'completed'" class="shrink-0">
+						<img
+							v-if="profileImage"
+							:src="profileImage"
+							:alt="data?.profile_name ?? 'Profile'"
+							class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg ring-2 ring-primary/30"
+						/>
+						<div
+							v-else
+							class="w-24 h-24 rounded-full bg-red-600 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-lg ring-2 ring-primary/30"
+						>
+							{{ initials }}
+						</div>
+					</div>
+					<!-- Title and Copy Link -->
+					<div class="text-center">
+						<BaseHeadline :content="data?.title ?? 'LinkedIn Carolling'" size="lg" shadow />
+						<!-- Copy Link - only show when completed -->
+						<div v-if="data?.status === 'completed'" class="mt-4 flex justify-center">
+							<UFieldGroup size="lg" class="w-full max-w-md">
+								<UInput :model-value="currentUrl.toString()" readonly class="font-mono text-sm w-full" />
+								<UButton icon="i-heroicons-clipboard" color="primary" @click="copyUrl" />
+							</UFieldGroup>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div class="relative max-w-3xl mx-auto">
+				<img src="/images/carolers.png" alt="Carolers" class="w-full" />
 				<!-- Processing State -->
-				<NotebookPaper v-if="data?.is_processing" class="text-center py-12">
+				<FeltPaper v-if="data?.is_processing" class="text-center py-12">
 					<div class="flex flex-col items-center gap-6 px-8">
-						<div class="text-6xl animate-bounce">🎵</div>
+						<!-- Profile Avatar -->
+						<div class="relative">
+							<img
+								v-if="profileImage"
+								:src="profileImage"
+								:alt="data?.profile_name ?? 'Profile'"
+								class="w-24 h-24 rounded-full object-cover border-4 border-red-200 shadow-lg"
+							/>
+							<div
+								v-else
+								class="w-24 h-24 rounded-full bg-red-600 text-white flex items-center justify-center text-3xl font-bold border-4 border-red-200 shadow-lg"
+							>
+								{{ initials }}
+							</div>
+							<div class="absolute -bottom-2 -right-2 text-4xl animate-bounce">🎵</div>
+						</div>
 						<h2 class="text-2xl md:text-3xl font-bold text-gray-900 font-cursive">Creating your carol...</h2>
 						<p class="text-gray-700 text-lg font-cursive max-w-md">
 							Our musical elves are composing a special carol for
@@ -101,10 +207,10 @@ defineOgImageComponent('Carol', {
 						<UProgress animation="carousel" class="w-64" />
 						<p class="text-gray-600 text-sm font-mono">Status: {{ data?.status }}</p>
 					</div>
-				</NotebookPaper>
+				</FeltPaper>
 
 				<!-- Error State -->
-				<NotebookPaper v-else-if="data?.status === 'error'" class="text-center py-12">
+				<FeltPaper v-else-if="data?.status === 'error'" class="text-center py-12">
 					<div class="flex flex-col items-center gap-6 px-8">
 						<div class="text-6xl">😢</div>
 						<h2 class="text-2xl md:text-3xl font-bold text-gray-900 font-cursive">Something went wrong</h2>
@@ -116,72 +222,147 @@ defineOgImageComponent('Carol', {
 						</p>
 						<UButton to="/" variant="solid" size="xl" class="bg-green-600 hover:bg-green-700">Try Again</UButton>
 					</div>
-				</NotebookPaper>
+				</FeltPaper>
 
 				<!-- Completed Carol -->
-				<NotebookPaper v-else-if="data?.status === 'completed'" class="py-8">
-					<div class="flex flex-col gap-6 px-8">
-						<!-- Title Section -->
-						<div class="text-center">
-							<p class="text-gray-600 text-lg font-cursive">A Christmas Carol for</p>
-							<h1 class="text-3xl md:text-4xl font-bold text-gray-900 font-cursive mt-2">
-								{{ data?.profile_name }}
-							</h1>
-							<p v-if="data?.title" class="text-2xl text-red-900 font-cursive italic mt-4">"{{ data.title }}"</p>
-						</div>
+				<div v-else-if="data?.status === 'completed'" class="relative -mt-32">
+					<!-- Carolers standing on top of felt paper -->
 
-						<!-- Audio Player -->
-						<div v-if="audioUrl" class="bg-red-50 rounded-xl p-6 border-2 border-red-200">
-							<audio :src="audioUrl" controls class="w-full" controlsList="nodownload" />
-						</div>
+					<!-- Social Share Sidebar -->
+					<div class="absolute -right-16 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-3">
+						<SocialShare class="flex flex-col gap-3">
+							<SocialShareTwitter class="text-2xl text-white hover:text-primary-200 transition-colors" />
+							<SocialShareLinkedIn class="text-2xl text-white hover:text-primary-200 transition-colors" />
+						</SocialShare>
+					</div>
 
-						<!-- Lyrics -->
-						<div v-if="data?.lyrics" class="mt-4">
-							<h3 class="text-xl font-bold text-gray-900 font-cursive mb-4 text-center">Lyrics</h3>
-							<div
-								class="prose prose-lg text-gray-800 font-cursive whitespace-pre-wrap text-center"
-								v-html="data.lyrics"
+					<!-- <FeltPaper color="cream"> -->
+					<div class="relative flex flex-col gap-6 px-8">
+						<img src="/images/player-bg.png" alt="Carolers" class="absolute inset-0" />
+						<!-- Custom Felt Audio Player -->
+						<div v-if="audioUrl" class="mt-12 relative z-10">
+							<!-- Hidden audio element -->
+							<audio
+								ref="audioRef"
+								:src="audioUrl"
+								@timeupdate="onTimeUpdate"
+								@loadedmetadata="onLoadedMetadata"
+								@play="isPlaying = true"
+								@pause="isPlaying = false"
+								@ended="isPlaying = false"
 							/>
+
+							<div class="flex items-center gap-4 mt-8 px-8">
+								<!-- Play/Pause Button -->
+								<button
+									class="w-24 h-24 rounded-full bg-primary-600 border-4 border-white border-dashed flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+									@click="togglePlay"
+								>
+									<UIcon
+										:name="isPlaying ? 'i-heroicons-pause-solid' : 'i-heroicons-play-solid'"
+										class="w-7 h-7 text-white"
+										:class="{ 'ml-1': !isPlaying }"
+									/>
+								</button>
+
+								<!-- Progress & Time -->
+								<div class="flex-1 mt-16">
+									<!-- Progress Bar -->
+									<div class="relative h-4 bg-primary-600/30 border-2 border-gray-500/20 rounded-full overflow-hidden">
+										<div
+											class="absolute inset-y-0 left-0 bg-primary-600 rounded-full transition-all"
+											:style="{ width: `${progress}%` }"
+										/>
+										<input
+											type="range"
+											min="0"
+											:max="duration"
+											:value="currentTime"
+											class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+											@input="onSeek"
+										/>
+									</div>
+									<!-- Time Display -->
+									<div class="flex justify-between mt-2 text-sm text-primary-800 font-mono">
+										<span>{{ formatTime(currentTime) }}</span>
+										<span>{{ formatTime(duration) }}</span>
+									</div>
+								</div>
+							</div>
 						</div>
 
-						<!-- Share Section -->
-						<div class="border-t-2 border-red-200 pt-6 mt-4">
-							<p class="text-gray-700 font-cursive text-center mb-4">Share this carol with friends!</p>
-							<div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-								<UFieldGroup size="xl" class="w-full max-w-md">
-									<UInput :value="currentUrl" readonly class="font-mono" />
-									<UButton icon="uil:copy" variant="solid" color="primary" @click="copyUrl" />
-								</UFieldGroup>
-							</div>
-							<div class="flex justify-center gap-4 mt-4">
-								<SocialShare class="text-3xl flex items-center space-x-3 text-gray-700">
-									<SocialShareTwitter class="hover:text-green-600" />
-									<SocialShareLinkedIn class="hover:text-green-600" />
-								</SocialShare>
-							</div>
-						</div>
-
-						<!-- Create Another -->
-						<div class="text-center mt-4">
-							<UButton to="/" variant="outline" size="lg">Create Another Carol</UButton>
+						<!-- Mobile Social Share -->
+						<div class="flex justify-center gap-4 lg:hidden pt-4">
+							<SocialShare class="flex gap-4">
+								<SocialShareTwitter class="text-2xl text-gray-500 hover:text-green-600 transition-colors" />
+								<SocialShareLinkedIn class="text-2xl text-gray-500 hover:text-green-600 transition-colors" />
+							</SocialShare>
 						</div>
 					</div>
-				</NotebookPaper>
+					<!-- </FeltPaper> -->
+					<!-- See Lyrics Button -->
+					<UCollapsible v-if="data?.lyrics" class="w-full mt-12">
+						<div class="flex justify-center">
+							<UButton icon="i-heroicons-musical-note" variant="solid" color="primary" label="Toggle Lyrics" />
+						</div>
+						<template #content>
+							<div class="mt-4 max-h-[300px] overflow-y-auto w-full mx-auto lyrics-scroll bg-sky-900/50 p-4 rounded-lg">
+								<div class="prose prose-lg text-white text-center text-balance" v-html="markdownToHtml(data.lyrics)" />
+							</div>
+						</template>
+					</UCollapsible>
+				</div>
 
 				<!-- Loading State -->
-				<NotebookPaper v-else-if="status === 'pending'" class="text-center py-12">
+				<FeltPaper v-else-if="status === 'pending'" class="text-center py-12">
 					<div class="flex flex-col items-center gap-4">
 						<UProgress animation="carousel" class="w-64" />
 						<p class="text-gray-600">Loading carol...</p>
 					</div>
-				</NotebookPaper>
+				</FeltPaper>
 			</div>
 		</UContainer>
 	</div>
 </template>
 
 <style scoped>
-audio::-webkit-media-controls-panel {
-	background-color: #fef2f2;
+.felt-player {
+	box-shadow:
+		inset 0 2px 4px rgba(0, 0, 0, 0.1),
+		0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.felt-player::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+	opacity: 0.03;
+	pointer-events: none;
+	border-radius: inherit;
+}
+
+/* Custom scrollbar for lyrics */
+.lyrics-scroll {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.1);
+}
+
+.lyrics-scroll::-webkit-scrollbar {
+	width: 8px;
+}
+
+.lyrics-scroll::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 4px;
+}
+
+.lyrics-scroll::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, #ffffff, #e0e0e0);
+	border-radius: 4px;
+}
+
+.lyrics-scroll::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(180deg, #ffffff, #e0e0e0);
 }
 </style>

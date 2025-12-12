@@ -28,3 +28,10 @@ export interface CarolResponse extends ProfileCarol {
 export interface CarolCountResponse {
 	count: number;
 }
+
+export interface UnfurlResponse {
+	title?: string;
+	description?: string;
+	image?: string;
+	siteName?: string;
+}

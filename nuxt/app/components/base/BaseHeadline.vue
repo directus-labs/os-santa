@@ -32,7 +32,7 @@ withDefaults(defineProps<HeadlineProps>(), {
 			{
 				'text-': color === 'subdued',
 				'text-white': color === 'foreground',
-				'text-[var(--ui-primary)]': color === 'primary',
+				'text-primary': color === 'primary',
 				'text-red-800': color === 'secondary',
 			},
 			'color-em font-serif font-bold leading-none tracking-tight',
@@ -45,7 +45,8 @@ withDefaults(defineProps<HeadlineProps>(), {
 <style>
 .color-em {
 	em {
-		@apply text-[var(--ui-primary)] not-italic;
+		color: var(--color-primary);
+		font-style: normal;
 	}
 }
 

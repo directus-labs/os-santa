@@ -2,7 +2,7 @@
 const showHelpModal = useState('showHelpModal', () => false);
 const copy = {
 	help: `
-		<p class="font-bold text-red-600">LinkedIn Carolling creates personalized Christmas carols for anyone on LinkedIn!</p>
+		<p class="font-bold text-sky-600">Carolling Carrots creates personalized Christmas carols for anyone on LinkedIn!</p>
 		<ol>
 			<li>Enter a LinkedIn profile URL</li>
 			<li>Add your name and email</li>
@@ -25,10 +25,10 @@ const copy = {
 </script>
 <template>
 	<div
-		class="relative antialiased transition duration-150 text-gray-900 min-h-screen bg-gradient-to-b from-red-500 to-red-950"
+		class="relative antialiased transition duration-150 text-gray-900 min-h-screen bg-linear-to-b from-sky-400 to-sky-800 flex flex-col"
 	>
 		<Navigation />
-		<div class="relative">
+		<div class="relative z-10 grow">
 			<slot />
 			<!-- Help Modal -->
 			<UDrawer :overlay="false" v-model:open="showHelpModal">
@@ -39,7 +39,7 @@ const copy = {
 				</template>
 			</UDrawer>
 		</div>
-		<PoweredBy class="mt-8 pb-8" />
+		<PoweredBy class="mt-auto pb-8" />
 		<ClientOnly>
 			<Snow />
 		</ClientOnly>

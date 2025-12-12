@@ -78,53 +78,56 @@ async function handleSubmit() {
 }
 
 useSeoMeta({
-	titleTemplate: 'LinkedIn Carolling - Create a Christmas Carol for Anyone',
+	titleTemplate: 'Carolling Carrots - Create a Christmas Carol for Anyone',
 	description:
 		'Generate a personalized Christmas carol for any LinkedIn profile. Spread holiday cheer with AI-generated festive music!',
 });
 
-defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'LinkedIn Carolling' });
+defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Carolling Carrots' });
 </script>
 
 <template>
-	<div class="">
-		<UContainer class="relative py-8 md:py-16">
-			<img src="/images/santa-bunny.png" alt="Santa Bunny" class="w-full h-48 object-contain" />
-
-			<div class="text-center mb-8">
-				<p class="text-white text-2xl font-cursive mt-2">
-					Over
-					<span class="text-3xl font-bold">{{ carolCount?.count ?? 0 }} carols</span>
-					created and counting...
-				</p>
-				<BaseHeadline content="LinkedIn Carolling" size="xl" shadow class="mt-8" />
-				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200 mt-4">
-					Create a personalized Christmas carol for any LinkedIn profile. Spread some holiday cheer!
-				</BaseText>
+	<div>
+		<UContainer class="relative py-8 md:py-16 md:grid grid-cols-2 gap-8">
+			<div>
+				<img src="/images/carolling-carrots-logo.png" alt="Santa Bunny" class="w-full h-72 object-contain" />
+				<div class="text-center mb-8">
+					<BaseText as="p" size="md" class="mx-auto max-w-md text-sky-200 mt-4">
+						Create a personalized Christmas carol for any LinkedIn profile. Spread some holiday cheer!
+					</BaseText>
+					<p class="text-white text-2xl font-cursive mt-2">
+						Over
+						<span class="text-3xl font-bold">{{ carolCount?.count ?? 0 }} carols</span>
+						created and counting...
+					</p>
+				</div>
 			</div>
 
-			<div class="relative max-w-2xl mx-auto">
-				<NotebookPaper>
+			<div class="relative max-w-xl mx-auto w-full">
+				<FeltPaper color="cream">
 					<UForm
 						:state="{
 							linkedinUrl,
 							name,
 							email,
 						}"
-						class="relative flex flex-col gap-6 border-4 rounded-2xl border-transparent px-8 py-12"
+						class="relative flex flex-col gap-5"
 						@submit="handleSubmit"
 					>
-						<div class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 font-cursive">Create a Christmas Carol</div>
+						<div class="text-2xl md:text-3xl font-bold text-primary-900 font-cursive text-center">
+							Create a Christmas Carol
+						</div>
 
-						<div class="space-y-2">
-							<p class="text-gray-900 text-xl font-bold font-cursive">LinkedIn Profile URL</p>
-							<UFormField block size="xl">
+						<div class="space-y-1">
+							<p class="text-primary-800 text-lg font-bold">LinkedIn Profile URL</p>
+							<UFormField block size="lg" help="This can your profile URL or a friend's profile URL.">
 								<UInput
 									v-model="linkedinUrl"
 									type="url"
 									placeholder="https://linkedin.com/in/username"
-									variant="soft"
+									variant="outline"
 									class="w-full"
+									leading-icon="mdi:linkedin"
 									:color="!isValidLinkedInUrl ? 'error' : undefined"
 								/>
 							</UFormField>
@@ -133,27 +136,27 @@ defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Lin
 							</p>
 						</div>
 
-						<div class="space-y-2">
-							<p class="text-gray-900 text-xl font-bold font-cursive">Your Name</p>
-							<UFormField block size="xl">
-								<UInput v-model="name" type="text" placeholder="Enter your name" variant="soft" class="w-full" />
+						<div class="space-y-1">
+							<p class="text-primary-800 text-lg font-bold">Your Name</p>
+							<UFormField block size="lg">
+								<UInput v-model="name" type="text" placeholder="Enter your name" variant="outline" class="w-full" />
 							</UFormField>
 						</div>
 
-						<div class="space-y-2">
-							<p class="text-gray-900 text-xl font-bold font-cursive">Your Email</p>
-							<UFormField block size="xl">
+						<div class="space-y-1">
+							<p class="text-primary-800 text-lg font-bold">Your Email</p>
+							<UFormField block size="lg">
 								<UInput
 									v-model="email"
 									type="email"
 									placeholder="you@example.com"
-									variant="soft"
+									variant="outline"
 									class="w-full"
 									:color="!isValidEmail ? 'error' : undefined"
 								/>
 							</UFormField>
 							<p v-if="!isValidEmail" class="text-red-600 text-sm font-mono">Please enter a valid email address</p>
-							<p class="text-gray-600 text-sm font-mono">We'll email you when your carol is ready!</p>
+							<p class="text-primary-700 text-sm">We'll email you when your carol is ready!</p>
 						</div>
 
 						<UAlert
@@ -169,7 +172,7 @@ defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Lin
 							type="submit"
 							:disabled="!canSubmit || !isValidLinkedInUrl || !isValidEmail"
 							:loading="loading"
-							class="w-full bg-green-600 hover:bg-green-700 text-white"
+							class="w-full bg-green-700 hover:bg-green-800 text-white"
 							size="xl"
 						>
 							<span class="flex w-full items-center justify-center gap-2">
@@ -179,10 +182,10 @@ defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Lin
 							</span>
 						</UButton>
 					</UForm>
-					<p class="max-w-sm text-balance mt-4 text-gray-900 text-center text-sm mx-auto font-mono font-bold">
+					<p class="max-w-sm text-balance mt-4 text-primary-700 text-center text-sm mx-auto">
 						Note: We only use publicly available LinkedIn profile information to create your carol.
 					</p>
-				</NotebookPaper>
+				</FeltPaper>
 			</div>
 		</UContainer>
 	</div>

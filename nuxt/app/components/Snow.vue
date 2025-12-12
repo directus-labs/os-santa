@@ -1,5 +1,5 @@
 <template>
-	<vue-particles id="particles" :options="options" @particles-loaded="particlesLoaded" />
+	<vue-particles id="particles" class="snow-particles" :options="options" @particles-loaded="particlesLoaded" />
 </template>
 
 <script setup lang="ts">
@@ -47,4 +47,11 @@ const options = {
 const particlesLoaded = (container?: any) => {};
 </script>
 
-<style scoped></style>
+<style scoped>
+.snow-particles {
+	position: fixed !important;
+	inset: 0;
+	z-index: 0 !important;
+	pointer-events: none;
+}
+</style>

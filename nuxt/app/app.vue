@@ -8,16 +8,16 @@ useHead({
 });
 
 useSeoMeta({
-	titleTemplate: '%s / LinkedIn Carolling',
+	titleTemplate: '%s / Carolling Carrots',
 	description:
 		'Create personalized Christmas carols for any LinkedIn profile. Spread holiday cheer with AI-generated festive music!',
-	ogSiteName: 'LinkedIn Carolling',
+	ogSiteName: 'Carolling Carrots',
 });
 
 useSchemaOrg([
 	defineOrganization({
 		'@id': 'https://linkedincarolling.com/#organization',
-		name: 'LinkedIn Carolling',
+		name: 'Carolling Carrots',
 		logo: '/favicon.ico',
 		sameAs: [
 			'https://x.com/directus',
