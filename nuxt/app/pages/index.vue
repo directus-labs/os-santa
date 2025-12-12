@@ -78,19 +78,19 @@ async function handleSubmit() {
 }
 
 useSeoMeta({
-	titleTemplate: 'Carolling Carrots - Create a Christmas Carol for Anyone',
+	titleTemplate: 'The Merry Carol Machine - Create a Christmas Carol for Anyone',
 	description:
 		'Generate a personalized Christmas carol for any LinkedIn profile. Spread holiday cheer with AI-generated festive music!',
 });
 
-defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Carolling Carrots' });
+defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'The Merry Carol Machine' });
 </script>
 
 <template>
 	<div>
 		<UContainer class="relative py-8 md:py-16 md:grid grid-cols-2 gap-8">
 			<div>
-				<img src="/images/carolling-carrots-logo.png" alt="Santa Bunny" class="w-full h-72 object-contain" />
+				<img src="/images/logo.png" alt="Santa Bunny" class="w-full h-72 object-contain" />
 				<div class="text-center mb-8">
 					<BaseText as="p" size="md" class="mx-auto max-w-md text-sky-200 mt-4">
 						Create a personalized Christmas carol for any LinkedIn profile. Spread some holiday cheer!
@@ -104,7 +104,7 @@ defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Car
 			</div>
 
 			<div class="relative max-w-xl mx-auto w-full">
-				<FeltPaper color="cream">
+				<FeltPaper>
 					<UForm
 						:state="{
 							linkedinUrl,

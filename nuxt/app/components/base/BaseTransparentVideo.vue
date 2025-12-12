@@ -50,7 +50,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
 	alt: 'Transparent video',
-	autoplay: true,
+	autoplay: false,
 	loop: true,
 	muted: true,
 	controls: false,
@@ -65,7 +65,7 @@ const emit = defineEmits<{
 	error: [error: Event];
 }>();
 // Construct video paths
-const hevcPath = `/videos/${props.src}.mov`;
+// const hevcPath = `/videos/${props.src}.mov`;
 const webmPath = `/videos/${props.src}.webm`;
 
 // Video element ref
@@ -108,8 +108,8 @@ defineExpose({
 		@error="handleError"
 	>
 		<!-- HEVC must come first for Safari (it supports VP9 but not VP9 with alpha) -->
-		<source :src="hevcPath" type="video/mp4; codecs=&quot;hvc1&quot;">
-		<source :src="webmPath" type="video/webm">
+		<!-- <source :src="hevcPath" type="video/mp4; codecs=&quot;hvc1&quot;"> -->
+		<source :src="webmPath" type="video/webm" />
 
 		<!-- Fallback message -->
 		<p>{{ alt }}</p>

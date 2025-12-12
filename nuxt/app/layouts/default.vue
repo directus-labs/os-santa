@@ -2,7 +2,7 @@
 const showHelpModal = useState('showHelpModal', () => false);
 const copy = {
 	help: `
-		<p class="font-bold text-sky-600">Carolling Carrots creates personalized Christmas carols for anyone on LinkedIn!</p>
+		<p class="font-bold text-sky-600">The Merry Carol Machine creates personalized Christmas carols for anyone on LinkedIn!</p>
 		<ol>
 			<li>Enter a LinkedIn profile URL</li>
 			<li>Add your name and email</li>

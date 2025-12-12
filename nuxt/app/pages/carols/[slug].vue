@@ -88,9 +88,19 @@ const audioUrl = computed(() => {
 
 // Custom audio player state
 const audioRef = ref<HTMLAudioElement | null>(null);
+const videoRef = ref<{ play: () => void; pause: () => void; seek: (time: number) => void } | null>(null);
 const isPlaying = ref(false);
 const currentTime = ref(0);
 const duration = ref(0);
+
+// Sync video playback with audio
+watch(isPlaying, (playing) => {
+	if (playing) {
+		videoRef.value?.play();
+	} else {
+		videoRef.value?.pause();
+	}
+});
 
 function togglePlay() {
 	if (!audioRef.value) return;
@@ -178,7 +188,15 @@ defineOgImageComponent('Carol', {
 			</div>
 
 			<div class="relative max-w-3xl mx-auto">
-				<img src="/images/carolers.png" alt="Carolers" class="w-full" />
+				<!-- <img src="/images/carolers.png" alt="Carolers" class="w-full" /> -->
+				<LazyBaseTransparentVideo
+					ref="videoRef"
+					src="carols"
+					loop
+					muted
+					no-controls
+					class="w-full h-full pointer-events-none"
+				/>
 				<!-- Processing State -->
 				<FeltPaper v-if="data?.is_processing" class="text-center py-12">
 					<div class="flex flex-col items-center gap-6 px-8">
@@ -225,7 +243,7 @@ defineOgImageComponent('Carol', {
 				</FeltPaper>
 
 				<!-- Completed Carol -->
-				<div v-else-if="data?.status === 'completed'" class="relative -mt-16">
+				<div v-else-if="data?.status === 'completed'" class="relative -mt-12">
 					<!-- Carolers standing on top of felt paper -->
 
 					<!-- Social Share Sidebar -->
@@ -236,7 +254,7 @@ defineOgImageComponent('Carol', {
 						</SocialShare>
 					</div>
 
-					<FeltPaper color="cream">
+					<FeltPaper>
 						<div class="flex flex-col gap-6 px-8">
 							<!-- Custom Felt Audio Player -->
 							<div v-if="audioUrl" class="">

@@ -32,7 +32,9 @@ function toggleSound() {
 		<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 			<div class="flex justify-between items-center h-16">
 				<!-- Logo -->
-				<NuxtLink to="/" class="text-white font-serif text-2xl font-bold hidden md:block">Carolling Carrots</NuxtLink>
+				<NuxtLink to="/" class="text-white font-serif text-2xl font-bold hidden md:block">
+					The Merry Carol Machine
+				</NuxtLink>
 
 				<!-- Navigation Items -->
 				<div class="flex items-center justify-around gap-4 w-full md:w-auto">

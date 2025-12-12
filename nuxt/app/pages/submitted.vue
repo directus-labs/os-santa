@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useSeoMeta({
-	title: 'Carol Submitted! - Carolling Carrots',
+	title: 'Carol Submitted! - The Merry Carol Machine',
 	description: 'Your Christmas carol request has been submitted. Check your email soon!',
 });
 </script>
@@ -13,8 +13,8 @@ useSeoMeta({
 			</div>
 
 			<div class="relative max-w-2xl mx-auto">
-				<FeltPaper color="cream">
-					<img src="/images/elf.gif" alt="Carolling Carrots" class="w-full h-72 object-contain" />
+				<FeltPaper>
+					<img src="/images/elf.gif" alt="The Merry Carol Machine" class="w-full h-72 object-contain" />
 					<div class="flex flex-col items-center gap-6 text-center">
 						<h2 class="text-2xl md:text-3xl font-bold text-emerald-900 font-cursive">Your carol is being created!</h2>
 						<p class="text-emerald-800 text-lg max-w-md">

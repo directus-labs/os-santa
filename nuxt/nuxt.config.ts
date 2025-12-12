@@ -89,7 +89,7 @@ export default defineNuxtConfig({
 
 	site: {
 		url: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
-		name: 'Carolling Carrots',
+		name: 'The Merry Carol Machine',
 	},
 
 	compatibilityDate: '2024-11-14',
