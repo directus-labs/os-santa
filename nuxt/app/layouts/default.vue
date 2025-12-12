@@ -2,23 +2,23 @@
 const showHelpModal = useState('showHelpModal', () => false);
 const copy = {
 	help: `
-		<p class="font-bold text-red-600">Salty Open Source Santa is a fun way to see if you've been a good open source contributor this year.</p>
+		<p class="font-bold text-red-600">LinkedIn Carolling creates personalized Christmas carols for anyone on LinkedIn!</p>
 		<ol>
-			<li>Login to your GitHub account and write your letter to Santa.</li>
-			<li>Santa will:
-			<ul>
-				<li>read your letter</li>
-			<li>analyze your public GitHub activity</li>
-				<li>decide if you've been naughty or nice</li>
-				<li>and send you a letter back.</li>
-			</ul>
-			<li>Prepare yourself for a snarkyletter back.</li>
+			<li>Enter a LinkedIn profile URL</li>
+			<li>Add your name and email</li>
+			<li>Our AI elves will compose a unique Christmas carol</li>
+			<li>You'll receive an email when your carol is ready to share!</li>
 		</ol>
-		<p><em>If you'd like to roast a friend or organization, toggle Friend Mode and enter their GitHub username instead.</em></p>
-		<p class="font-bold">Concerned about privacy?</p>
+		<p class="font-bold">How does it work?</p>
 		<ul>
-			<li>Letters are publicly visible on your profile page by default, but you can opt out after generating your letter.</li>
-			<li>Santa doesn't look up or store any private Github data, only publicly available information.</li>
+			<li>We use publicly available LinkedIn profile information to create personalized lyrics</li>
+			<li>AI generates a unique Christmas carol based on the profile</li>
+			<li>The carol is ready to share within a few minutes</li>
+		</ul>
+		<p class="font-bold">Privacy</p>
+		<ul>
+			<li>We only use publicly available LinkedIn information</li>
+			<li>Your email is only used to notify you when your carol is ready</li>
 		</ul>
 	`,
 };

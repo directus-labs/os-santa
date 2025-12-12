@@ -14,7 +14,6 @@ export default defineNuxtConfig({
 		'@nuxt/scripts',
 		'@vueuse/nuxt',
 		'@formkit/auto-animate/nuxt',
-		'nuxt-auth-utils',
 		'nuxt-security',
 		'nuxt-posthog',
 	],
@@ -25,23 +24,16 @@ export default defineNuxtConfig({
 			directusUrl: process.env.DIRECTUS_URL,
 		},
 		directusServerToken: process.env.DIRECTUS_SERVER_TOKEN,
-		anthropicApiKey: process.env.ANTHROPIC_API_KEY,
-		elevenLabs: {
-			apiKey: process.env.ELEVENLABS_API_KEY,
-			voiceId: process.env.ELEVENLABS_VOICE_ID,
-		},
-		oauth: {
-			github: {
-				clientId: process.env.GITHUB_CLIENT_ID,
-				clientSecret: process.env.GITHUB_CLIENT_SECRET,
-			},
+		clay: {
+			webhookUrl: process.env.CLAY_WEBHOOK_URL,
+			webhookAuth: process.env.CLAY_WEBHOOK_AUTH,
 		},
 	},
 
 	security: {
 		headers: {
 			contentSecurityPolicy: {
-				'img-src': ["'self'", 'data:', 'https://github.com', 'https://*.githubusercontent.com'],
+				'img-src': ["'self'", 'data:', 'https://media.licdn.com', 'https://*.licdn.com'],
 				'script-src': ["'self'", "'unsafe-inline'", 'https://us.i.posthog.com', 'https://us-assets.i.posthog.com'],
 				'connect-src': [
 					"'self'",
@@ -97,7 +89,7 @@ export default defineNuxtConfig({
 
 	site: {
 		url: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
-		name: 'Open Source Santa Claus',
+		name: 'LinkedIn Carolling',
 	},
 
 	compatibilityDate: '2024-11-14',

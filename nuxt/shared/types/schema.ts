@@ -39,6 +39,30 @@ export interface Profile {
 	letter_voiceover_metadata?: Record<string, any> | null;
 }
 
+export type ProfileCarolStatus = 'pending' | 'processing' | 'completed' | 'error';
+
+export interface ProfileCarol {
+	/** @required */
+	id: string;
+	status?: ProfileCarolStatus | null;
+	sort?: number | null;
+	created_by?: DirectusUser | string | null;
+	created_at?: string | null;
+	updated_by?: DirectusUser | string | null;
+	updated_at?: string | null;
+	title?: string | null;
+	lyrics?: string | null;
+	linkedin_profile_url?: string | null;
+	profile_name?: string | null;
+	submitted_by_email?: string | null;
+	submitted_by_name?: string | null;
+	carol_file?: DirectusFile | string | null;
+	carol_file_url?: string | null;
+	ai_task_id?: string | null;
+	error_details?: string | null;
+	slug?: string | null;
+}
+
 export interface DirectusAccess {
 	/** @required */
 	id: string;
@@ -495,6 +519,7 @@ export interface Schema {
 	likes: Like[];
 	metrics: Metric[];
 	profiles: Profile[];
+	profiles_carols: ProfileCarol[];
 	directus_access: DirectusAccess[];
 	directus_activity: DirectusActivity[];
 	directus_collections: DirectusCollection[];

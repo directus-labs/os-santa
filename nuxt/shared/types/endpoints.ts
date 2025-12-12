@@ -1,27 +1,30 @@
-import type { Profile } from '#shared/types/schema.js';
-import type { GithubUser } from '#shared/types/github.js';
+import type { ProfileCarol } from '#shared/types/schema.js';
 
-export interface LikesResponse {
-	username: string;
-	totalLikes: number;
-	userLikeCount: number;
+export interface SubmitCarolRequest {
+	linkedin_profile_url: string;
+	submitted_by_email: string;
+	submitted_by_name: string;
 }
 
-export interface ProfileResponse extends Profile {
-	is_new?: boolean;
+export interface SubmitCarolResponse {
+	success: boolean;
+	message: string;
+	redirect?: string;
 }
 
-export interface RoastResponse extends Partial<Profile> {
-	redirect: string;
+export interface ValidateLinkedInRequest {
+	url: string;
 }
 
-export interface SearchResponse {
-	status: 'SUCCESS' | 'ERROR';
-	users: Partial<GithubUser>[] | [];
+export interface ValidateLinkedInResponse {
+	valid: boolean;
+	message?: string;
 }
 
-export interface ProfileWithLikes extends Profile {
-	meta: {
-		totalLikes: number;
-	};
+export interface CarolResponse extends ProfileCarol {
+	is_processing?: boolean;
+}
+
+export interface CarolCountResponse {
+	count: number;
 }

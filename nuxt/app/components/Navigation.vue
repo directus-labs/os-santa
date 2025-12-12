@@ -11,10 +11,7 @@ interface NavigationItem {
 	isPrimary?: boolean;
 }
 
-const navigation: NavigationItem[] = [
-	{ name: "Santa's List", path: '/list', icon: 'lucide:list' },
-	{ name: 'Write A Letter', path: '/', icon: 'lucide:pen', isPrimary: true },
-];
+const navigation: NavigationItem[] = [{ name: 'Create a Carol', path: '/', icon: 'lucide:music', isPrimary: true }];
 
 const soundOn: Ref<boolean> = useCookie('soundOn', { default: () => true });
 const { play: playOn } = useSound(popOn, { interrupt: true });
@@ -25,13 +22,6 @@ function toggleSound() {
 	soundOn.value = !soundOn.value;
 	if (soundOn.value) playOn();
 }
-
-const { loggedIn, user, clear } = useUserSession();
-
-const userMenuItems = computed(() => [
-	{ label: 'My Letter', icon: 'mdi:account', to: `/${user?.value?.login}` },
-	{ label: 'Logout', icon: 'mdi:logout', onSelect: clear },
-]);
 </script>
 
 <template>
@@ -42,9 +32,7 @@ const userMenuItems = computed(() => [
 		<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 			<div class="flex justify-between items-center h-16">
 				<!-- Logo -->
-				<NuxtLink to="/" class="text-white font-serif text-2xl font-bold hidden md:block">
-					Salty Open Source Santa
-				</NuxtLink>
+				<NuxtLink to="/" class="text-white font-serif text-2xl font-bold hidden md:block">LinkedIn Carolling</NuxtLink>
 
 				<!-- Navigation Items -->
 				<div class="flex items-center justify-around gap-4 w-full md:w-auto">
@@ -85,13 +73,6 @@ const userMenuItems = computed(() => [
 						<UIcon :name="soundOn ? 'lucide:volume-2' : 'lucide:volume-x'" class="h-5 md:h-6 w-5 md:w-6" />
 						<span class="text-xs mt-1">Sound</span>
 					</button>
-
-					<!-- User Menu -->
-					<UDropdownMenu v-if="loggedIn" :items="userMenuItems">
-						<button type="button" class="flex flex-col items-center gap-2 ring-2 ring-white rounded-full bg-white">
-							<UAvatar :src="user?.avatar_url" size="lg" />
-						</button>
-					</UDropdownMenu>
 				</div>
 			</div>
 		</div>

@@ -1,301 +1,186 @@
 <script setup lang="ts">
-import type { GithubProfileType, GithubUser } from '~~/shared/types/github';
-import type { RoastResponse, SearchResponse } from '#shared/types/endpoints.js';
-type Mode = 'self' | 'friend';
-
-const route = useRoute();
-const { loggedIn, user } = useUserSession();
-const { url } = useSiteConfig();
+import type { SubmitCarolResponse, CarolCountResponse } from '#shared/types/endpoints.js';
 
 const loading = ref(false);
-const username: Ref<string> = ref((route.query.username as string) ?? '');
-const profileType = ref<GithubProfileType>((route.query.profileType as GithubProfileType) ?? 'User');
-const wishlist = ref('');
+const linkedinUrl = ref('');
+const name = ref('');
+const email = ref('');
+const errorMessage = ref('');
+const toast = useToast();
 
-const { data: profileCount, status } = await useLazyFetch('/api/profiles/count');
-
-const avatarUrl = computed(() => {
-	return `https://github.com/${username.value}.png`;
-});
-const isFriendMode = computed(() => route.query.mode === 'friend');
-const mode: Ref<Mode> = computed(() => (isFriendMode.value ? 'friend' : 'self'));
-
-const { updateQuery } = useQueryParams();
+const { data: carolCount } = await useLazyFetch<CarolCountResponse>('/api/carols/count');
 
 const canSubmit = computed(() => {
-	if (!loggedIn.value) return false;
-	if (isFriendMode.value && username.value.length === 0) return false;
-	return true;
+	return linkedinUrl.value.length > 0 && name.value.length > 0 && email.value.length > 0;
 });
 
-/**
- * Handles the submission of the roast form
- * @returns {Promise<RoastResponse>} The response from the roast endpoint
- */
+const linkedInPattern = /^https?:\/\/(www\.)?linkedin\.com\/in\/[\w-]+\/?$/i;
+
+const isValidLinkedInUrl = computed(() => {
+	if (!linkedinUrl.value) return true;
+	return linkedInPattern.test(linkedinUrl.value);
+});
+
+const isValidEmail = computed(() => {
+	if (!email.value) return true;
+	const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailPattern.test(email.value);
+});
+
 async function handleSubmit() {
+	if (!canSubmit.value) return;
+
+	// Validate LinkedIn URL format
+	if (!isValidLinkedInUrl.value) {
+		errorMessage.value = 'Please enter a valid LinkedIn profile URL (e.g., https://linkedin.com/in/username)';
+		return;
+	}
+
+	// Validate email format
+	if (!isValidEmail.value) {
+		errorMessage.value = 'Please enter a valid email address';
+		return;
+	}
+
 	loading.value = true;
+	errorMessage.value = '';
 
 	try {
-		const response = await $fetch<RoastResponse>('/api/roast', {
+		const response = await $fetch<SubmitCarolResponse>('/api/submit-carol', {
 			method: 'POST',
 			body: {
-				wishlist: wishlist.value,
-				profileType: profileType.value,
-				username: isFriendMode.value ? username.value : user.value?.login,
-				mode: mode.value,
-				roasted_by: isFriendMode.value ? user.value?.login : undefined,
-				type: () => {
-					if (isFriendMode.value) return profileType.value;
-					else return (user.value?.type.toLowerCase() as 'user' | 'organization') ?? undefined;
-				},
+				linkedin_profile_url: linkedinUrl.value,
+				submitted_by_email: email.value,
+				submitted_by_name: name.value,
 			},
 		});
-		if (response.redirect) {
+
+		if (response.success && response.redirect) {
 			navigateTo(response.redirect);
+		} else {
+			toast.add({
+				title: 'Success!',
+				description: response.message,
+				color: 'success',
+			});
 		}
-	} catch (error) {
+	} catch (error: any) {
 		console.error(error);
+		errorMessage.value = error?.data?.message || 'Something went wrong. Please try again.';
+		toast.add({
+			title: 'Error',
+			description: errorMessage.value,
+			color: 'error',
+		});
 	} finally {
 		loading.value = false;
 	}
 }
 
-/**
- * Composable for searching Github users
- * @returns {Object} The search composable object
- * @returns {Ref<GithubUser[]>} users - Array of Github users
- * @returns {Ref<boolean>} isLoading - Loading state indicator
- * @returns {Ref<string>} searchQuery - Current search query
- * @returns {(query: string) => void} search - Function to perform the search
- */
-function useGithubSearch() {
-	const users = ref<Partial<GithubUser>[]>([]);
-	const isLoading = ref(false);
-	const searchQuery = ref('');
-
-	const debouncedSearch = useDebounceFn(async (query: string) => {
-		if (!query || query.length === 0) {
-			users.value = [];
-			return;
-		}
-
-		isLoading.value = true;
-		try {
-			const response = await $fetch<SearchResponse>(`/api/search?q=${query}`);
-			users.value = response.users.map((user) => ({
-				label: user.login,
-				avatar: {
-					src: user.avatar_url,
-				},
-				...user,
-			}));
-		} finally {
-			isLoading.value = false;
-		}
-	}, 250);
-
-	return {
-		users,
-		isLoading,
-		searchQuery,
-		search: debouncedSearch,
-	};
-}
-
-const { users, isLoading, searchQuery, search } = useGithubSearch();
-
-/**
- * Handles the selection of a user from the select menu
- */
-function handleUserSelection(item: Partial<GithubUser> | null) {
-	username.value = typeof item === 'string' ? item : (item?.login ?? '');
-
-	if (item && typeof item === 'object') {
-		profileType.value = item.type as GithubProfileType;
-	}
-}
-
-/**
- * Handles the search term updates
- */
-function handleSearchTermUpdate(term: any) {
-	if (term !== username.value) {
-		search(term);
-	}
-}
-
-// Copy for the form based on the mode (self or friend)
-const copy = {
-	self: {
-		title: 'Write your letter to Open Source Santa! 📝',
-		description: `Are you on the open source naughty or nice list? Write your letter to Santa below to find out if you're on his good side.`,
-		formUsername: 'My GitHub username is',
-		formUsernamePlaceholder: 'Enter your GitHub username',
-		formWishList: 'and I would love to receive',
-		formWishListPlaceholder: "Tell Santa what coding gifts you'd like...",
-	},
-	friend: {
-		title: 'Write your letter to a friend! 📝',
-		description: `Is your friend on the open source naughty or nice list? Write Santa a letter to find out if they're on his good side.`,
-		formUsername: 'Their GitHub username is',
-		formUsernamePlaceholder: 'Enter their GitHub username',
-		formWishList: 'and I want Santa to give them',
-		formWishListPlaceholder: "Tell Santa what coding gifts you'd like your friend to receive...",
-		formYourUsernamePlaceholder: 'Enter your name',
-	},
-};
-
 useSeoMeta({
-	titleTemplate: 'Write a Letter to Open Source Santa',
-	description: `Santa knows who's been naughty and who's been nice in the open source community. Write your letter to Santa to find out if you're on his good side.`,
+	titleTemplate: 'LinkedIn Carolling - Create a Christmas Carol for Anyone',
+	description:
+		'Generate a personalized Christmas carol for any LinkedIn profile. Spread holiday cheer with AI-generated festive music!',
 });
 
-defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'Salty Open Source Santa' });
+defineOgImage({ url: '/images/og-image.png', width: 1200, height: 600, alt: 'LinkedIn Carolling' });
 </script>
 
 <template>
 	<div class="">
-		<UContainer class="py-8 md:py-16">
+		<UContainer class="relative py-8 md:py-16">
+			<img src="/images/santa-bunny.png" alt="Santa Bunny" class="w-full h-48 object-contain" />
+
 			<div class="text-center mb-8">
 				<p class="text-white text-2xl font-cursive mt-2">
 					Over
-					<span class="text-3xl font-bold">{{ profileCount?.count.count }} letters</span>
-					served and counting...
+					<span class="text-3xl font-bold">{{ carolCount?.count ?? 0 }} carols</span>
+					created and counting...
 				</p>
-				<ClientOnly>
-					<ProfileMarquee :profiles="profileCount?.profiles ?? []" class="mt-4" />
-				</ClientOnly>
-				<BaseHeadline content="Salty Open Source Santa" size="xl" shadow class="mt-8" />
+				<BaseHeadline content="LinkedIn Carolling" size="xl" shadow class="mt-8" />
 				<BaseText as="p" size="md" class="mx-auto max-w-md text-red-200 mt-4">
-					{{ copy[mode].description }}
+					Create a personalized Christmas carol for any LinkedIn profile. Spread some holiday cheer!
 				</BaseText>
-
-				<div class="flex flex-col gap-4 md:flex-row justify-center items-center mt-4">
-					<UButton to="https://directus.is/santa" target="_blank" size="xl" trailing-icon="i-lucide-arrow-up-right">
-						Learn How The Elves 🧝 Built This
-					</UButton>
-				</div>
 			</div>
 
 			<div class="relative max-w-2xl mx-auto">
 				<NotebookPaper>
 					<UForm
 						:state="{
-							username,
-							wishlist,
-							profileType,
+							linkedinUrl,
+							name,
+							email,
 						}"
-						class="relative flex flex-col gap-4 border-4 rounded-2xl border-transparent px-8 py-12"
+						class="relative flex flex-col gap-6 border-4 rounded-2xl border-transparent px-8 py-12"
 						@submit="handleSubmit"
 					>
-						<UFormField label="Friend Mode" size="xl" class="absolute top-0 right-0 flex items-center gap-4">
-							<USwitch
-								:modelValue="isFriendMode"
-								@update:modelValue="updateQuery('mode', $event ? 'friend' : undefined)"
-							/>
-						</UFormField>
-						<div class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 font-cursive">Dear Open Source Santa,</div>
-						<div class="gap-2" v-auto-animate>
-							<p class="text-gray-900 text-2xl font-bold font-cursive">{{ copy[mode].formUsername }}</p>
-							<UButton
-								v-if="!isFriendMode && !loggedIn"
-								color="neutral"
-								leading-icon="i-mdi-github"
-								size="xl"
-								block
-								class="mt-2"
-								:to="`${url}/auth/github`"
-							>
-								Sign in with Github
-							</UButton>
-							<User
-								class="mt-2"
-								v-else-if="loggedIn && !isFriendMode"
-								:avatar="user?.avatar_url ?? ''"
-								:username="user?.login ?? ''"
-							/>
-							<UFormField v-else block size="xl" class="flex-1 mt-2">
-								<!-- @ts-ignore // TODO: Weirdness going on with USelectMenu and types-->
-								<USelectMenu
-									:model-value="username as any"
-									@update:model-value="handleUserSelection"
-									@update:search-term="handleSearchTermUpdate"
-									:items="users || []"
-									class="border-red-200 focus:border-green-500 w-full"
-									:placeholder="copy[mode].formUsernamePlaceholder"
-									variant="soft"
-									:avatar="{ src: avatarUrl }"
-								>
-									<template #trailing>
-										<UButton v-if="username" variant="ghost" @click="username = ''" icon="i-mdi-close" />
-									</template>
-								</USelectMenu>
-							</UFormField>
-							<BaseText
-								v-if="isFriendMode && profileType === 'Organization'"
-								size="sm"
-								class="font-bold mt-2 font-mono"
-							>
-								Ooohh... You're roasting an organization! That's spicy! 🌶️
-							</BaseText>
-						</div>
+						<div class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 font-cursive">Create a Christmas Carol</div>
 
-						<div class="items-start gap-2">
-							<p class="text-gray-900 font-bold text-2xl font-cursive mt-2">{{ copy[mode].formWishList }}</p>
-							<UFormField block size="xl" class="flex-1 mt-2">
-								<UTextarea
-									v-model="wishlist"
-									class="border-red-200 focus:border-green-500 w-full"
-									:placeholder="copy[mode].formWishListPlaceholder"
+						<div class="space-y-2">
+							<p class="text-gray-900 text-xl font-bold font-cursive">LinkedIn Profile URL</p>
+							<UFormField block size="xl">
+								<UInput
+									v-model="linkedinUrl"
+									type="url"
+									placeholder="https://linkedin.com/in/username"
 									variant="soft"
-									autoresize
+									class="w-full"
+									:color="!isValidLinkedInUrl ? 'error' : undefined"
 								/>
 							</UFormField>
-							<p class="text-gray-900 font-bold text-2xl font-cursive mt-2">for Christmas this year! 🎁</p>
+							<p v-if="!isValidLinkedInUrl" class="text-red-600 text-sm font-mono">
+								Please enter a valid LinkedIn URL (e.g., https://linkedin.com/in/username)
+							</p>
 						</div>
 
-						<div class="flex flex-col items-end" v-auto-animate>
-							<p class="text-gray-900 text-right font-bold italic font-cursive text-2xl">Love from,</p>
-							<template v-if="loggedIn">
-								<p class="text-gray-900 text-right font-bold italic font-cursive text-2xl">{{ user?.login }}</p>
-							</template>
-							<template v-else-if="!loggedIn && isFriendMode">
-								<UButton
-									color="neutral"
-									leading-icon="i-mdi-github"
-									size="xl"
-									class="justify-end text-right mt-2"
-									:to="`${url}/auth/github`"
-								>
-									Sign in with Github
-								</UButton>
-							</template>
+						<div class="space-y-2">
+							<p class="text-gray-900 text-xl font-bold font-cursive">Your Name</p>
+							<UFormField block size="xl">
+								<UInput v-model="name" type="text" placeholder="Enter your name" variant="soft" class="w-full" />
+							</UFormField>
 						</div>
+
+						<div class="space-y-2">
+							<p class="text-gray-900 text-xl font-bold font-cursive">Your Email</p>
+							<UFormField block size="xl">
+								<UInput
+									v-model="email"
+									type="email"
+									placeholder="you@example.com"
+									variant="soft"
+									class="w-full"
+									:color="!isValidEmail ? 'error' : undefined"
+								/>
+							</UFormField>
+							<p v-if="!isValidEmail" class="text-red-600 text-sm font-mono">Please enter a valid email address</p>
+							<p class="text-gray-600 text-sm font-mono">We'll email you when your carol is ready!</p>
+						</div>
+
+						<UAlert
+							v-if="errorMessage"
+							icon="lucide:alert-circle"
+							:title="errorMessage"
+							variant="soft"
+							color="error"
+							class="mt-2"
+						/>
 
 						<UButton
 							type="submit"
-							:disabled="!canSubmit"
+							:disabled="!canSubmit || !isValidLinkedInUrl || !isValidEmail"
 							:loading="loading"
 							class="w-full bg-green-600 hover:bg-green-700 text-white"
 							size="xl"
 						>
 							<span class="flex w-full items-center justify-center gap-2">
-								<span v-if="!loading">Send to Santa</span>
-								<span v-else>Checking twice...</span>
+								<span v-if="!loading">Create My Carol</span>
+								<span v-else>Creating magic...</span>
 								🎄
 							</span>
 						</UButton>
-						<UAlert
-							v-if="!loggedIn"
-							icon="lucide:info"
-							title="You have to log in with GitHub before you can send your letter to Santa."
-							variant="soft"
-							color="error"
-						/>
 					</UForm>
 					<p class="max-w-sm text-balance mt-4 text-gray-900 text-center text-sm mx-auto font-mono font-bold">
-						Note: Santa doesn't store any of your private Github data in his database. He just needs to verify your
-						identity.
+						Note: We only use publicly available LinkedIn profile information to create your carol.
 					</p>
 				</NotebookPaper>
 			</div>

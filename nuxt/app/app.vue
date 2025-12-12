@@ -8,16 +8,16 @@ useHead({
 });
 
 useSeoMeta({
-	titleTemplate: '%s / Salty Open Source Santa',
+	titleTemplate: '%s / LinkedIn Carolling',
 	description:
-		"Santa knows who's been naughty and who's been nice in the open source community. Write your letter to Santa to find out if you're on his good side.",
-	ogSiteName: 'Salty Open Source Santa',
+		'Create personalized Christmas carols for any LinkedIn profile. Spread holiday cheer with AI-generated festive music!',
+	ogSiteName: 'LinkedIn Carolling',
 });
 
 useSchemaOrg([
 	defineOrganization({
-		'@id': 'https://opensourcesanta.com/#organization',
-		name: 'Salty Open Source Santa',
+		'@id': 'https://linkedincarolling.com/#organization',
+		name: 'LinkedIn Carolling',
 		logo: '/favicon.ico',
 		sameAs: [
 			'https://x.com/directus',
