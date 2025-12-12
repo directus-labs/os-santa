@@ -287,16 +287,17 @@ defineOgImageComponent('Carol', {
 										<!-- Progress Bar -->
 										<div class="relative py-2 -my-2">
 											<div class="h-2 bg-primary/20 rounded-full overflow-hidden">
-												<div class="h-full bg-primary rounded-full transition-all" :style="{ width: `${progress}%` }" />
+												<div class="h-full bg-primary rounded-full" :style="{ width: `${progress}%` }" />
 											</div>
 											<input
 												type="range"
 												min="0"
-												:max="duration"
-												step="0.1"
+												:max="duration || 100"
+												step="any"
 												:value="currentTime"
 												class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
 												@input="onSeek"
+												@change="onSeek"
 											/>
 										</div>
 										<!-- Time Display -->
