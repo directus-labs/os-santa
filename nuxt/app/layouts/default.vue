@@ -25,7 +25,7 @@ const copy = {
 </script>
 <template>
 	<div
-		class="relative antialiased transition duration-150 text-gray-900 min-h-screen bg-linear-to-b from-sky-400 to-sky-800 flex flex-col"
+		class="relative antialiased transition duration-150 text-gray-900 min-h-screen bg-linear-to-b from-sky-400 to-sky-800 flex flex-col pb-20 md:pb-0"
 	>
 		<Navigation />
 		<div class="relative z-10 grow">
