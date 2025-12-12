@@ -307,16 +307,16 @@ defineOgImageComponent('Carol', {
 									</div>
 								</div>
 							</div>
-
-							<!-- Mobile Social Share -->
-							<div class="flex justify-center gap-4 lg:hidden pt-4">
-								<SocialShare class="flex gap-4">
-									<SocialShareTwitter class="text-2xl text-gray-500 hover:text-green-600 transition-colors" />
-									<SocialShareLinkedIn class="text-2xl text-gray-500 hover:text-green-600 transition-colors" />
-								</SocialShare>
-							</div>
 						</div>
 					</FeltPaper>
+
+					<!-- Mobile Social Share -->
+					<div class="flex justify-center gap-4 lg:hidden mt-4">
+						<SocialShare class="flex gap-4">
+							<SocialShareTwitter class="text-2xl text-white hover:text-primary-200 transition-colors" />
+							<SocialShareLinkedIn class="text-2xl text-white hover:text-primary-200 transition-colors" />
+						</SocialShare>
+					</div>
 					<!-- See Lyrics Button -->
 					<UCollapsible v-if="data?.lyrics" class="w-full mt-4">
 						<div class="flex justify-center">
