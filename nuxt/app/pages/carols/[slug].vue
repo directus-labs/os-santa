@@ -191,7 +191,7 @@ defineOgImageComponent('Carol', {
 				<!-- <img src="/images/carolers.png" alt="Carolers" class="w-full" /> -->
 				<LazyBaseTransparentVideo
 					ref="videoRef"
-					src="carols"
+					src="carolers"
 					loop
 					muted
 					no-controls
@@ -285,15 +285,15 @@ defineOgImageComponent('Carol', {
 									<!-- Progress & Time -->
 									<div class="flex-1">
 										<!-- Progress Bar -->
-										<div class="relative h-2 bg-primary/20 rounded-full overflow-hidden">
-											<div
-												class="absolute inset-y-0 left-0 bg-primary rounded-full transition-all"
-												:style="{ width: `${progress}%` }"
-											/>
+										<div class="relative py-2 -my-2">
+											<div class="h-2 bg-primary/20 rounded-full overflow-hidden">
+												<div class="h-full bg-primary rounded-full transition-all" :style="{ width: `${progress}%` }" />
+											</div>
 											<input
 												type="range"
 												min="0"
 												:max="duration"
+												step="0.1"
 												:value="currentTime"
 												class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
 												@input="onSeek"
