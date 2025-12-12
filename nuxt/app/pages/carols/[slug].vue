@@ -225,7 +225,7 @@ defineOgImageComponent('Carol', {
 				</FeltPaper>
 
 				<!-- Completed Carol -->
-				<div v-else-if="data?.status === 'completed'" class="relative -mt-32">
+				<div v-else-if="data?.status === 'completed'" class="relative -mt-16">
 					<!-- Carolers standing on top of felt paper -->
 
 					<!-- Social Share Sidebar -->
@@ -236,72 +236,71 @@ defineOgImageComponent('Carol', {
 						</SocialShare>
 					</div>
 
-					<!-- <FeltPaper color="cream"> -->
-					<div class="relative flex flex-col gap-6 px-8">
-						<img src="/images/player-bg.png" alt="Carolers" class="absolute inset-0" />
-						<!-- Custom Felt Audio Player -->
-						<div v-if="audioUrl" class="mt-12 relative z-10">
-							<!-- Hidden audio element -->
-							<audio
-								ref="audioRef"
-								:src="audioUrl"
-								@timeupdate="onTimeUpdate"
-								@loadedmetadata="onLoadedMetadata"
-								@play="isPlaying = true"
-								@pause="isPlaying = false"
-								@ended="isPlaying = false"
-							/>
+					<FeltPaper color="cream">
+						<div class="flex flex-col gap-6 px-8">
+							<!-- Custom Felt Audio Player -->
+							<div v-if="audioUrl" class="">
+								<!-- Hidden audio element -->
+								<audio
+									ref="audioRef"
+									:src="audioUrl"
+									@timeupdate="onTimeUpdate"
+									@loadedmetadata="onLoadedMetadata"
+									@play="isPlaying = true"
+									@pause="isPlaying = false"
+									@ended="isPlaying = false"
+								/>
 
-							<div class="flex items-center gap-4 mt-8 px-8">
-								<!-- Play/Pause Button -->
-								<button
-									class="w-24 h-24 rounded-full bg-primary-600 border-4 border-white border-dashed flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-									@click="togglePlay"
-								>
-									<UIcon
-										:name="isPlaying ? 'i-heroicons-pause-solid' : 'i-heroicons-play-solid'"
-										class="w-7 h-7 text-white"
-										:class="{ 'ml-1': !isPlaying }"
-									/>
-								</button>
+								<div class="flex items-center gap-4">
+									<!-- Play/Pause Button -->
+									<button
+										class="w-14 h-14 rounded-full bg-primary flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+										@click="togglePlay"
+									>
+										<UIcon
+											:name="isPlaying ? 'i-heroicons-pause-solid' : 'i-heroicons-play-solid'"
+											class="w-7 h-7 text-white"
+											:class="{ 'ml-1': !isPlaying }"
+										/>
+									</button>
 
-								<!-- Progress & Time -->
-								<div class="flex-1 mt-16">
-									<!-- Progress Bar -->
-									<div class="relative h-4 bg-primary-600/30 border-2 border-gray-500/20 rounded-full overflow-hidden">
-										<div
-											class="absolute inset-y-0 left-0 bg-primary-600 rounded-full transition-all"
-											:style="{ width: `${progress}%` }"
-										/>
-										<input
-											type="range"
-											min="0"
-											:max="duration"
-											:value="currentTime"
-											class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-											@input="onSeek"
-										/>
-									</div>
-									<!-- Time Display -->
-									<div class="flex justify-between mt-2 text-sm text-primary-800 font-mono">
-										<span>{{ formatTime(currentTime) }}</span>
-										<span>{{ formatTime(duration) }}</span>
+									<!-- Progress & Time -->
+									<div class="flex-1">
+										<!-- Progress Bar -->
+										<div class="relative h-2 bg-primary/20 rounded-full overflow-hidden">
+											<div
+												class="absolute inset-y-0 left-0 bg-primary rounded-full transition-all"
+												:style="{ width: `${progress}%` }"
+											/>
+											<input
+												type="range"
+												min="0"
+												:max="duration"
+												:value="currentTime"
+												class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+												@input="onSeek"
+											/>
+										</div>
+										<!-- Time Display -->
+										<div class="flex justify-between mt-2 text-xs text-primary font-mono">
+											<span>{{ formatTime(currentTime) }}</span>
+											<span>{{ formatTime(duration) }}</span>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
 
-						<!-- Mobile Social Share -->
-						<div class="flex justify-center gap-4 lg:hidden pt-4">
-							<SocialShare class="flex gap-4">
-								<SocialShareTwitter class="text-2xl text-gray-500 hover:text-green-600 transition-colors" />
-								<SocialShareLinkedIn class="text-2xl text-gray-500 hover:text-green-600 transition-colors" />
-							</SocialShare>
+							<!-- Mobile Social Share -->
+							<div class="flex justify-center gap-4 lg:hidden pt-4">
+								<SocialShare class="flex gap-4">
+									<SocialShareTwitter class="text-2xl text-gray-500 hover:text-green-600 transition-colors" />
+									<SocialShareLinkedIn class="text-2xl text-gray-500 hover:text-green-600 transition-colors" />
+								</SocialShare>
+							</div>
 						</div>
-					</div>
-					<!-- </FeltPaper> -->
+					</FeltPaper>
 					<!-- See Lyrics Button -->
-					<UCollapsible v-if="data?.lyrics" class="w-full mt-12">
+					<UCollapsible v-if="data?.lyrics" class="w-full mt-4">
 						<div class="flex justify-center">
 							<UButton icon="i-heroicons-musical-note" variant="solid" color="primary" label="Toggle Lyrics" />
 						</div>
